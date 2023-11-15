@@ -9,6 +9,9 @@ import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
 import { SeederModule } from '#/seeder/seeder.module';
+import { TrainingThemeController } from './training_theme/training_theme.controller';
+import { TrainingThemeService } from './training_theme/training_theme.service';
+import { TrainingThemeModule } from './training_theme/training_theme.module';
 
 @Module({
   imports: [
@@ -96,6 +99,9 @@ import { SeederModule } from '#/seeder/seeder.module';
     SeederModule,
     UsersModule,
     HealthModule,
+    TrainingThemeModule,
   ],
+  controllers: [TrainingThemeController],
+  providers: [TrainingThemeService],
 })
 export class AppModule {}
