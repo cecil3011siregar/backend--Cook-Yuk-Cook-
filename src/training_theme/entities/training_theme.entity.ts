@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Training_theme {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -18,13 +18,13 @@ export class User {
 //   reviews: Reviews;
 
   @Column()
-  firstName: string;
+  name: string;
 
   @Column()
-  lastName: string;
+  chef_name: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column()
+  price: number;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
