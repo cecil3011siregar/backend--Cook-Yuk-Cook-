@@ -11,6 +11,10 @@ import * as pino from 'pino';
 // import { SeederModule } from '#/seeder/seeder.module';
 import { LevelUsersModule } from './level-users/level-users.module';
 import { AuthModule } from './auth/auth.module';
+import { TrainingThemeController } from './training_theme/training_theme.controller';
+import { TrainingThemeService } from './training_theme/training_theme.service';
+import { TrainingThemeModule } from './training_theme/training_theme.module';
+
 @Module({
   imports: [
     LoggerModule.forRoot({
@@ -98,7 +102,10 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     HealthModule,
     LevelUsersModule,
-    AuthModule
+    AuthModule,
+    TrainingThemeModule,
   ],
+  controllers: [TrainingThemeController],
+  providers: [TrainingThemeService],
 })
 export class AppModule {}
