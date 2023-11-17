@@ -8,13 +8,10 @@ import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
 // import { SeederModule } from '#/seeder/seeder.module';
-<<<<<<< HEAD
 import { LevelUsersModule } from './level-users/level-users.module';
 import { AuthModule } from './auth/auth.module';
 import { TrainingThemeController } from './training_theme/training_theme.controller';
 import { TrainingThemeService } from './training_theme/training_theme.service';
-=======
->>>>>>> tyo
 import { TrainingThemeModule } from './training_theme/training_theme.module';
 import { UsersModule } from './users/users.module';
 
