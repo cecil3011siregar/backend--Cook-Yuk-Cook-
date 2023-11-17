@@ -1,45 +1,74 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  VersionColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { LevelUsers } from "#/level-users/entities/level-users.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryColumnCannotBeNullableError, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
+export enum gender{
+    PRIA = 'Pria',
+    WANITA = 'Wanita'
+
+}
+export enum statusUser{
+    ACTIVE = 'active',
+    INCATIVE = 'inactive',
+    AVAILABLE = 'available',
+    UNAVAILABLE = 'unavailable'
+}
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Users_cyc{
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column()
-  firstName: string;
+    @Column({type:"varchar", length:100})
+    name: string;
 
-  @Column()
-  lastName: string;
+    @Column({type:"varchar", length:255})
+    email: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+    @Column()
+    salt: string;
 
-  @CreateDateColumn({
-    type: 'timestamp with time zone',
-    nullable: false,
-  })
-  createdAt: Date;
+    @Column({type:"varchar", length:100})
+    password: string;
 
-  @UpdateDateColumn({
-    type: 'timestamp with time zone',
-    nullable: false,
-  })
-  updatedAt: Date;
+    @Column({type: 'date'})
+    dateOfBirth: Date;
 
-  @DeleteDateColumn({
-    type: 'timestamp with time zone',
-    nullable: true,
-  })
-  deletedAt: Date;
+    @Column({type:"enum", enum:gender})
+    gender: gender;
 
-  @VersionColumn()
-  version: number;
+    @Column({type: "varchar", length:15})
+    phoneNumber: string;
+
+    @Column({type: "text"})
+    photo: string;
+
+    @Column({type: "text"})
+    address: string;
+
+    @Column({
+        type:"enum", 
+        enum:statusUser,
+        default: statusUser.INCATIVE
+    })
+    status: statusUser;
+
+    @CreateDateColumn({
+        type: "timestamp with time zone",
+        nullable: false
+    })
+    createdAt: Date
+
+    @UpdateDateColumn({
+        type:"timestamp with time zone",
+        nullable: false
+    })
+    updatedAt: Date
+
+    @DeleteDateColumn({
+        type:"timestamp with time zone",
+        nullable: true
+    })
+    deletedAt: Date
+
+    @ManyToOne(()=> LevelUsers, (level) => level.user)
+    level:LevelUsers[];
 }

@@ -1,71 +1,58 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-  ParseUUIDPipe,
-  HttpStatus,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-
+import { CreateUsersDto } from './dto/create-user.dto';
+import { UpdateUsersDto } from './dto/update-user.dto';
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+    constructor(
+        private usersService: UsersService,
+    ){}
+    
+    @Get()
+    async getAllUsers(){
+        const [data, count] = await this.usersService.getAll();
+        return {
+            data,
+            count,
+            statusCode: HttpStatus.OK,
+            MESSAGE: "Success"
+        }
+    }
 
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    return {
-      data: await this.usersService.create(createUserDto),
-      statusCode: HttpStatus.CREATED,
-      message: 'success',
-    };
-  }
+    @Get('/:id')
+    async getDetailUsers(@Param('id', ParseUUIDPipe) id: string){
+        return{
+            data: await this.usersService.getUsersById(id),
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
 
-  @Get()
-  async findAll() {
-    const [data, count] = await this.usersService.findAll();
+    // @Post()
+    // async createUsers(@Body()createUsersDto: CreateUsersDto){
+    //     const data = await this.usersService.createUsers(createUsersDto)
+    //     return{
+    //         data,
+    //         statusCode: HttpStatus.CREATED,
+    //         message: "Success"
+    //     }
+    // }
 
-    return {
-      data,
-      count,
-      statusCode: HttpStatus.OK,
-      message: 'success',
-    };
-  }
+    @Put('/:id')
+    async updateUsers(@Param('id', ParseUUIDPipe) id: string, @Body() updateUsersDto: UpdateUsersDto){
+        const data = await this.usersService.updateUsers(id, updateUsersDto)
+        return {
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
 
-  @Get(':id')
-  async findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return {
-      data: await this.usersService.findOne(id),
-      statusCode: HttpStatus.OK,
-      message: 'success',
-    };
-  }
-
-  @Put(':id')
-  async update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return {
-      data: await this.usersService.update(id, updateUserDto),
-      statusCode: HttpStatus.OK,
-      message: 'success',
-    };
-  }
-
-  @Delete(':id')
-  async remove(@Param('id', ParseUUIDPipe) id: string) {
-    await this.usersService.remove(id);
-
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'success',
-    };
-  }
+    @Delete('/:id')
+    async deleteUsers(@Param('id', ParseUUIDPipe) id: string){
+        return{
+            statusCode: HttpStatus.OK,
+            message: await this.usersService.deleteUsers(id)
+        }
+    }
 }

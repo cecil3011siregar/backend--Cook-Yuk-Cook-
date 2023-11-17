@@ -8,7 +8,8 @@ import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
-import { SeederModule } from '#/seeder/seeder.module';
+// import { SeederModule } from '#/seeder/seeder.module';
+import { LevelUsersModule } from './level-users/level-users.module';
 
 @Module({
   imports: [
@@ -93,9 +94,10 @@ import { SeederModule } from '#/seeder/seeder.module';
       },
       inject: [ConfigService],
     }),
-    SeederModule,
+    // SeederModule,
     UsersModule,
     HealthModule,
+    LevelUsersModule,
   ],
 })
 export class AppModule {}

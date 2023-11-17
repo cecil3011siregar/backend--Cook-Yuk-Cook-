@@ -1,104 +1,99 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { EntityNotFoundError, Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
+import { Users_cyc } from './entities/user.entity';
+import { EntityNotFoundError, Repository } from 'typeorm';
+// import { CreateUsersDto } from './dto/create-users.dto';
+import { LevelUsersService } from '#/level-users/level-users.service';
+import { UpdateUsersDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-  ) {}
+    constructor(
+        @InjectRepository(Users_cyc)
+        private usersRepo: Repository<Users_cyc>,
+        private levelUsersService: LevelUsersService
+    ){}
 
-  async create(createUserDto: CreateUserDto) {
-    const result = await this.usersRepository.insert(createUserDto);
-
-    return this.usersRepository.findOneOrFail({
-      where: {
-        id: result.identifiers[0].id,
-      },
-    });
-  }
-
-  findAll() {
-    return this.usersRepository.findAndCount();
-  }
-
-  async findOne(id: string) {
-    try {
-      return await this.usersRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
-    } catch (e) {
-      if (e instanceof EntityNotFoundError) {
-        throw new HttpException(
-          {
-            statusCode: HttpStatus.NOT_FOUND,
-            error: 'Data not found',
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      } else {
-        throw e;
-      }
+    getAll(){
+        return this.usersRepo.findAndCount()
     }
-  }
-
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    try {
-      await this.usersRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
-    } catch (e) {
-      if (e instanceof EntityNotFoundError) {
-        throw new HttpException(
-          {
-            statusCode: HttpStatus.NOT_FOUND,
-            error: 'Data not found',
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      } else {
-        throw e;
-      }
+    
+    async getUsersById(id: string){
+        try{
+            return await this.usersRepo.findOneOrFail({where:{id}})
+        }catch(e){
+            if(e instanceof EntityNotFoundError){
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: "Data not found"
+                    },
+                    HttpStatus.NOT_FOUND
+                )
+            }else{
+                throw e
+            }
+        }
     }
 
-    await this.usersRepository.update(id, updateUserDto);
+    // async createUsers(createUsersDto: CreateUsersDto){
+    //     try{
+    //         const findLevelUsersId = await this.levelUsersService.getLevelById(createUsersDto.level_id)
+    //         const usersEntity = new Users
+    //         usersEntity.name = createUsersDto.name
+    //         usersEntity.email = createUsersDto.email
+    //         // usersEntity.salt = createUsersDto.salt
+    //         usersEntity.password = createUsersDto.password
+    //         usersEntity.dateOfBirth = new Date(createUsersDto.dateOfBirth)
+    //         usersEntity.gender = createUsersDto.gender
+    //         usersEntity.phoneNumber = createUsersDto.phoneNumber
+    //         usersEntity.photo = createUsersDto.photo
+    //         usersEntity.address = createUsersDto.address
+    //         // usersEntity.status = createUsersDto.status
+    //         usersEntity.level = findLevelUsersId
 
-    return this.usersRepository.findOneOrFail({
-      where: {
-        id,
-      },
-    });
-  }
+    //         const insertUsers = await this.usersRepo.insert(usersEntity)
+    //         return this.usersRepo.findOneOrFail({
+    //             where:{id: insertUsers.identifiers[0].id}
+    //         })
+    //     }catch(e){
+    //     throw e
+    //     }
+    // }
 
-  async remove(id: string) {
-    try {
-      await this.usersRepository.findOneOrFail({
-        where: {
-          id,
-        },
-      });
-    } catch (e) {
-      if (e instanceof EntityNotFoundError) {
-        throw new HttpException(
-          {
-            statusCode: HttpStatus.NOT_FOUND,
-            error: 'Data not found',
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      } else {
-        throw e;
-      }
+    async updateUsers(id: string, updateUsersDto: UpdateUsersDto){
+        try{
+            await this.getUsersById(id)
+
+            const usersEntity = new Users_cyc
+            usersEntity.name = updateUsersDto.name
+            usersEntity.email = updateUsersDto.email
+            // usersEntity.salt = updateUsersDto.salt
+            usersEntity.password = updateUsersDto.password
+            usersEntity.dateOfBirth = new Date(updateUsersDto.dateOfBirth)
+            usersEntity.gender = updateUsersDto.gender
+            usersEntity.phoneNumber = updateUsersDto.phoneNumber
+            usersEntity.photo = updateUsersDto.photo
+            usersEntity.address = updateUsersDto.address
+            // usersEntity.status = updateUsersDto.status
+
+            await this.usersRepo.update(id, usersEntity)
+
+            return await this.usersRepo.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+            throw e
+        }
     }
 
-    await this.usersRepository.delete(id);
-  }
+    async deleteUsers(id: string){
+        try{
+            await this.getUsersById(id)
+
+            await this.usersRepo.softDelete(id)
+            return "Success"
+        }catch(e){
+            throw e
+        }
+    }
 }
