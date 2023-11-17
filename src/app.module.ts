@@ -7,6 +7,13 @@ import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
+// import { SeederModule } from '#/seeder/seeder.module';
+import { LevelUsersModule } from './level-users/level-users.module';
+import { AuthModule } from './auth/auth.module';
+import { TrainingThemeController } from './training_theme/training_theme.controller';
+import { TrainingThemeService } from './training_theme/training_theme.service';
+import { TrainingThemeModule } from './training_theme/training_theme.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -91,7 +98,14 @@ import * as pino from 'pino';
       },
       inject: [ConfigService],
     }),
+    // SeederModule,
+    UsersModule,
     HealthModule,
+    LevelUsersModule,
+    AuthModule,
+    TrainingThemeModule,
   ],
+  controllers: [TrainingThemeController],
+  providers: [TrainingThemeService],
 })
 export class AppModule {}
