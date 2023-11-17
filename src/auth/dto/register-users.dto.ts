@@ -1,7 +1,7 @@
-import { IsEmail, IsEnum, IsMobilePhone, IsNotEmpty, IsOptional } from "class-validator";
-import { gender } from "../entities/user.entity";
+import { IsEmail, IsEnum, IsMobilePhone, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
+import { gender } from "#/users/entities/user.entity";
 
-export class CreateUsersDto{
+export class RegisterUsersDto{
     @IsNotEmpty()
     level_id: string;
 
@@ -12,6 +12,7 @@ export class CreateUsersDto{
     @IsEmail()
     email: string;
 
+  
     @IsNotEmpty()
     password: string
 

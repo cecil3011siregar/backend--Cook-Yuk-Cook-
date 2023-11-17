@@ -9,5 +9,6 @@ import { LevelUsersModule } from '#/level-users/level-users.module';
   imports: [TypeOrmModule.forFeature([Users_cyc]), LevelUsersModule],
   controllers: [UsersController],
   providers: [UsersService],
+  // exports: [UsersService]
 })
 export class UsersModule {}

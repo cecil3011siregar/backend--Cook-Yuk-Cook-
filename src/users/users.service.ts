@@ -5,6 +5,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 // import { CreateUsersDto } from './dto/create-users.dto';
 import { LevelUsersService } from '#/level-users/level-users.service';
 import { UpdateUsersDto } from './dto/update-user.dto';
+import { CreateUsersDto } from './dto/create-user.dto';
 @Injectable()
 export class UsersService {
     constructor(
@@ -38,7 +39,7 @@ export class UsersService {
     // async createUsers(createUsersDto: CreateUsersDto){
     //     try{
     //         const findLevelUsersId = await this.levelUsersService.getLevelById(createUsersDto.level_id)
-    //         const usersEntity = new Users
+    //         const usersEntity = new Users_cyc
     //         usersEntity.name = createUsersDto.name
     //         usersEntity.email = createUsersDto.email
     //         // usersEntity.salt = createUsersDto.salt

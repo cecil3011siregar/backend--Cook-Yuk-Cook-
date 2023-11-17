@@ -10,7 +10,7 @@ import configuration from './config/configuration';
 import * as pino from 'pino';
 // import { SeederModule } from '#/seeder/seeder.module';
 import { LevelUsersModule } from './level-users/level-users.module';
-
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     LoggerModule.forRoot({
@@ -98,6 +98,7 @@ import { LevelUsersModule } from './level-users/level-users.module';
     UsersModule,
     HealthModule,
     LevelUsersModule,
+    AuthModule
   ],
 })
 export class AppModule {}
