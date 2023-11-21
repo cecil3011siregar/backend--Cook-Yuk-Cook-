@@ -106,8 +106,6 @@ import { GaleryKitchenModule } from './galery_kitchen/galery_kitchen.module';
     AuthModule,
     TrainingThemeModule,
     GaleryKitchenModule,
-  ],
-  controllers: [TrainingThemeController],
-  providers: [TrainingThemeService],
+  ]
 })
 export class AppModule {}

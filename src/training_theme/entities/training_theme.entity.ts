@@ -17,10 +17,12 @@ export class Training_theme {
 //   @OneToMany(() => Reviews, (review) => review.trainee)
 //   reviews: Reviews;
 
-  @Column()
+  @Column({type:"varchar", length:255})
   name: string;
 
-  @Column()
+  @Column({
+    type:"bigint"
+  })
   chef_name: string;
 
   @Column()
