@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { TrainingThemeController } from './training_theme/training_theme.controller';
 import { TrainingThemeService } from './training_theme/training_theme.service';
 import { TrainingThemeModule } from './training_theme/training_theme.module';
+import { GaleryKitchenModule } from './galery_kitchen/galery_kitchen.module';
 
 @Module({
   imports: [
@@ -104,6 +105,7 @@ import { TrainingThemeModule } from './training_theme/training_theme.module';
     LevelUsersModule,
     AuthModule,
     TrainingThemeModule,
+    GaleryKitchenModule,
   ],
   controllers: [TrainingThemeController],
   providers: [TrainingThemeService],
