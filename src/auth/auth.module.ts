@@ -7,6 +7,7 @@ import { UsersModule } from '#/users/users.module';
 import { LevelUsersModule } from '#/level-users/level-users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy.service';
+import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
 
 @Module({
   controllers: [AuthController],
@@ -17,6 +18,6 @@ import { JwtStrategy } from './jwt.strategy.service';
       secret: 'TOPSECRET2023',
       signOptions:{expiresIn:'24h'}
     }),
-    TypeOrmModule.forFeature([Users_cyc]),UsersModule, LevelUsersModule]
+    TypeOrmModule.forFeature([Users_cyc]), TypeOrmModule.forFeature([KitchenStudio]), UsersModule, LevelUsersModule]
 })
 export class AuthModule {}

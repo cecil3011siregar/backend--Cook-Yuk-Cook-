@@ -46,7 +46,8 @@ export class KitchenStudio{
     @OneToMany(() => GaleryKitchen, (gallery) => gallery.kitchen)
     gallery:GaleryKitchen;
     
-    @OneToOne(()=> Users_cyc)
+    @OneToOne(()=> Users_cyc,
+    {cascade: true})
     @JoinColumn()
     users: Users_cyc
 }

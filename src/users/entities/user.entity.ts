@@ -29,16 +29,16 @@ export class Users_cyc{
     @Column({type:"varchar", length:100})
     password: string;
 
-    @Column({type: 'date'})
+    @Column({type: 'date', nullable: true})
     dateOfBirth: Date;
 
-    @Column({type:"enum", enum:gender})
+    @Column({type:"enum", enum:gender, nullable:true})
     gender: gender;
 
     @Column({type: "varchar", length:15})
     phoneNumber: string;
 
-    @Column({type: "text"})
+    @Column({type: "text", nullable:true})
     photo: string;
 
     @Column({type: "text"})

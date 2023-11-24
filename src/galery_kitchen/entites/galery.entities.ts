@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-
+import { KitchenStudio } from "#/kitchen_studio/entities/kitchen_studio.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+@Entity()
 export class GaleryKitchen{
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -25,5 +26,6 @@ export class GaleryKitchen{
     })
     deletedAt: Date;
 
-    
+    @ManyToOne(()=>KitchenStudio, (kitchen) => kitchen.gallery)
+    kitchen:KitchenStudio;
 }
