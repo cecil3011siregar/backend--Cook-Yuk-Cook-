@@ -36,30 +36,30 @@ export class UsersService {
         }
     }
 
-    // async createUsers(createUsersDto: CreateUsersDto){
-    //     try{
-    //         const findLevelUsersId = await this.levelUsersService.getLevelById(createUsersDto.level_id)
-    //         const usersEntity = new Users_cyc
-    //         usersEntity.name = createUsersDto.name
-    //         usersEntity.email = createUsersDto.email
-    //         // usersEntity.salt = createUsersDto.salt
-    //         usersEntity.password = createUsersDto.password
-    //         usersEntity.dateOfBirth = new Date(createUsersDto.dateOfBirth)
-    //         usersEntity.gender = createUsersDto.gender
-    //         usersEntity.phoneNumber = createUsersDto.phoneNumber
-    //         usersEntity.photo = createUsersDto.photo
-    //         usersEntity.address = createUsersDto.address
-    //         // usersEntity.status = createUsersDto.status
-    //         usersEntity.level = findLevelUsersId
+    async createUsers(createUsersDto: CreateUsersDto){
+        try{
+            const findLevelUsersId = await this.levelUsersService.getLevelById(createUsersDto.level_id)
+            const usersEntity = new Users_cyc
+            usersEntity.name = createUsersDto.name
+            usersEntity.email = createUsersDto.email
+            // usersEntity.salt = createUsersDto.salt
+            usersEntity.password = createUsersDto.password
+            usersEntity.dateOfBirth = new Date(createUsersDto.dateOfBirth)
+            usersEntity.gender = createUsersDto.gender
+            usersEntity.phoneNumber = createUsersDto.phoneNumber
+            usersEntity.photo = createUsersDto.photo
+            usersEntity.address = createUsersDto.address
+            // usersEntity.status = createUsersDto.status
+            usersEntity.level = findLevelUsersId
 
-    //         const insertUsers = await this.usersRepo.insert(usersEntity)
-    //         return this.usersRepo.findOneOrFail({
-    //             where:{id: insertUsers.identifiers[0].id}
-    //         })
-    //     }catch(e){
-    //     throw e
-    //     }
-    // }
+            const insertUsers = await this.usersRepo.insert(usersEntity)
+            return this.usersRepo.findOneOrFail({
+                where:{id: insertUsers.identifiers[0].id}
+            })
+        }catch(e){
+        throw e
+        }
+    }
 
     async updateUsers(id: string, updateUsersDto: UpdateUsersDto){
         try{

@@ -14,6 +14,10 @@ import { TrainingThemeController } from './training_theme/training_theme.control
 import { TrainingThemeService } from './training_theme/training_theme.service';
 import { TrainingThemeModule } from './training_theme/training_theme.module';
 import { UsersModule } from './users/users.module';
+import { BankController } from './bank/bank.controller';
+import { BankModule } from './bank/bank.module';
+import { CertificateController } from './certificate/certificate.controller';
+import { CertificateModule } from './certificate/certificate.module';
 
 @Module({
   imports: [
@@ -104,6 +108,9 @@ import { UsersModule } from './users/users.module';
     LevelUsersModule,
     AuthModule,
     TrainingThemeModule,
-  ]
+    BankModule,
+    CertificateModule,
+  ],
+  controllers: []
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
+import { Bank } from "#/bank/entities/bank.entity";
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum gender{
     PRIA = 'Pria',
@@ -71,4 +72,8 @@ export class Users_cyc{
 
     @ManyToOne(()=> LevelUsers, (level) => level.user)
     level:LevelUsers;
+
+    @OneToMany(() => Bank, (bank) => bank.users)
+    bank: Bank;
+
 }

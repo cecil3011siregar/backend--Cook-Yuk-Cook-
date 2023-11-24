@@ -28,15 +28,15 @@ export class UsersController {
         }
     }
 
-    // @Post()
-    // async createUsers(@Body()createUsersDto: CreateUsersDto){
-    //     const data = await this.usersService.createUsers(createUsersDto)
-    //     return{
-    //         data,
-    //         statusCode: HttpStatus.CREATED,
-    //         message: "Success"
-    //     }
-    // }
+    @Post()
+    async createUsers(@Body()createUsersDto: CreateUsersDto){
+        const data = await this.usersService.createUsers(createUsersDto)
+        return{
+            data,
+            statusCode: HttpStatus.CREATED,
+            message: "Success"
+        }
+    }
 
     @Put('/:id')
     async updateUsers(@Param('id', ParseUUIDPipe) id: string, @Body() updateUsersDto: UpdateUsersDto){
