@@ -15,6 +15,7 @@ import { TrainingThemeController } from './training_theme/training_theme.control
 import { TrainingThemeService } from './training_theme/training_theme.service';
 import { TrainingThemeModule } from './training_theme/training_theme.module';
 import { GaleryKitchenModule } from './galery_kitchen/galery_kitchen.module';
+import { KitchenStudioModule } from './kitchen_studio/kitchen_studio.module';
 
 @Module({
   imports: [
@@ -106,6 +107,7 @@ import { GaleryKitchenModule } from './galery_kitchen/galery_kitchen.module';
     AuthModule,
     TrainingThemeModule,
     GaleryKitchenModule,
+    KitchenStudioModule,
   ]
 })
 export class AppModule {}
