@@ -1,9 +1,10 @@
 import { gender } from "#/users/entities/user.entity";
-import { IsEmail, IsEnum, IsMobilePhone, IsNotEmpty, IsOptional } from "class-validator";
+import { IsEmail, IsEmpty, IsEnum, IsMobilePhone, IsNotEmpty, IsOptional } from "class-validator";
+import { IsNull } from "typeorm";
 
 export class RegisterDto{
     @IsNotEmpty()
-    level_id: string;
+    level: string;
 
     @IsNotEmpty()
     name: string;

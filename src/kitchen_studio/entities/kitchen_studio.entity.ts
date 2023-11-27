@@ -7,22 +7,22 @@ export class KitchenStudio{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({type:"text"})
+    @Column({type:"text", nullable: true})
     legality: string;
 
-    @Column({type:"int"})
+    @Column({type:"int", nullable:true})
     numberOfChefs: number;
 
-    @Column({type:"int"})
+    @Column({type:"int", nullable:true})
     chefOnWork: number;
 
-    @Column({type:"int"})
+    @Column({type:"int", nullable:true})
     chefOnAvailable: number;
 
-    @Column({type:'text'})
+    @Column({type:'text', nullable:true})
     logos: string;
 
-    @Column({type:"text"})
+    @Column({type:"text", nullable:true})
     description: string;
 
     @CreateDateColumn({

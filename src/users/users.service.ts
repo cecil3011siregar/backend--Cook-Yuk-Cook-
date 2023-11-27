@@ -35,7 +35,7 @@ export class UsersService {
             }
         }
     }
-
+    
     // async createUsers(createUsersDto: CreateUsersDto){
     //     try{
     //         const findLevelUsersId = await this.levelUsersService.getLevelById(createUsersDto.level_id)
