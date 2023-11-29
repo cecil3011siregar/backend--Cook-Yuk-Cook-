@@ -2,16 +2,21 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users_cyc } from './entities/user.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
-// import { CreateUsersDto } from './dto/create-users.dto';
 import { LevelUsersService } from '#/level-users/level-users.service';
 import { UpdateUsersDto } from './dto/update-user.dto';
 import { CreateUsersDto } from './dto/create-user.dto';
+import { UpdateKitchenDto } from './dto/updateKitchen-user.dto';
+import { UpdatePasswordDto } from './dto/updatePassword-user.dto';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(Users_cyc)
         private usersRepo: Repository<Users_cyc>,
-        private levelUsersService: LevelUsersService
+        private levelUsersService: LevelUsersService,
+        private jwtService: JwtService
     ){}
 
     getAll(){
@@ -35,6 +40,10 @@ export class UsersService {
             }
         }
     }
+
+    // async getAllUserByStatus(status: string){
+    //         return await this.usersRepo.findAndCount()
+    // }
 
     async createUsers(createUsersDto: CreateUsersDto){
         try{
@@ -66,10 +75,10 @@ export class UsersService {
             await this.getUsersById(id)
 
             const usersEntity = new Users_cyc
-            usersEntity.name = updateUsersDto.name
+            usersEntity.name = updateUsersDto.nama
             usersEntity.email = updateUsersDto.email
             // usersEntity.salt = updateUsersDto.salt
-            usersEntity.password = updateUsersDto.password
+            // usersEntity.password = updateUsersDto.password
             usersEntity.dateOfBirth = new Date(updateUsersDto.dateOfBirth)
             usersEntity.gender = updateUsersDto.gender
             usersEntity.phoneNumber = updateUsersDto.phoneNumber
@@ -83,6 +92,50 @@ export class UsersService {
                 where:{id}
             })
         }catch(e){
+            throw e
+        }
+    }
+
+    async updateStatusStudio(id: string, updateKitchenDto: UpdateKitchenDto){
+        try {
+            await this.getUsersById(id)
+
+            const usersEntity = new Users_cyc
+            usersEntity.status = updateKitchenDto.status
+
+            await this.usersRepo.update(id, usersEntity)
+
+            return await this.usersRepo.findOneOrFail({
+                where:{id}
+            })
+
+        } catch (e) {
+            throw e
+        }
+    }
+
+    async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto){
+        try {
+            await this.getUsersById(id)
+
+
+            //generate salt
+            const saltGenerate = await bcrypt.genSalt()
+
+            //hash password
+            const password = updatePasswordDto.password
+            const hash = await bcrypt.hash(password, saltGenerate)  
+
+
+            const usersEntity = new Users_cyc
+            usersEntity.password = hash
+
+            await this.usersRepo.update(id, usersEntity)
+
+            return await this.usersRepo.findOneOrFail({
+                where: {id}
+            })
+        } catch (e) {
             throw e
         }
     }

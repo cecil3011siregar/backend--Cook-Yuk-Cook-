@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, 
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
+import { UpdateKitchenDto } from './dto/updateKitchen-user.dto';
+import { UpdatePasswordDto } from './dto/updatePassword-user.dto';
 @Controller('users')
 export class UsersController {
     constructor(
@@ -41,6 +43,26 @@ export class UsersController {
     @Put('/:id')
     async updateUsers(@Param('id', ParseUUIDPipe) id: string, @Body() updateUsersDto: UpdateUsersDto){
         const data = await this.usersService.updateUsers(id, updateUsersDto)
+        return {
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
+
+    @Put('/kitchen/:id')
+    async updateStudio(@Param('id', ParseUUIDPipe) id: string, @Body() updateKitchenDto: UpdateKitchenDto){
+        const data = await this.usersService.updateStatusStudio(id, updateKitchenDto)
+        return {
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
+
+    @Put('/password/:id')
+    async updatePassword(@Param('id', ParseUUIDPipe)id: string, @Body()updatePasswordDto: UpdatePasswordDto){
+        const data = await this.usersService.updatePassword(id, updatePasswordDto)
         return {
             data,
             statusCode: HttpStatus.OK,
