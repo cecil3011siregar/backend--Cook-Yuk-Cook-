@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseArrayPipe, ParseUUIDPipe, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
@@ -27,7 +27,14 @@ export class UsersController {
             message: "Success"
         }
     }
-
+    @Get('/find/:id')
+    async getUsersByRole(@Param('id', ParseUUIDPipe) id: string){
+        return {
+            data: await this.usersService.findUserByRole(id),
+            statusCode: HttpStatus.OK,
+            message:"Success"
+        }
+    }
     // @Post()
     // async createUsers(@Body()createUsersDto: CreateUsersDto){
     //     const data = await this.usersService.createUsers(createUsersDto)

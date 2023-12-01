@@ -61,6 +61,18 @@ export class UsersService {
     //     }
     // }
 
+    // find user by role
+    async findUserByRole(id: string){
+        try{
+            const level = await this.levelUsersService.getLevelById(id)
+            return await this.usersRepo.findAndCount({
+                where:{level:{id:id}}
+            })
+        }catch(e){
+            throw e
+        }
+    }
+
     async updateUsers(id: string, updateUsersDto: UpdateUsersDto){
         try{
             await this.getUsersById(id)
