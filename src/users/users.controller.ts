@@ -29,8 +29,10 @@ export class UsersController {
     }
     @Get('/find/:id')
     async getUsersByRole(@Param('id', ParseUUIDPipe) id: string){
+        const [data, count] = await this.usersService.findUserByRole(id)
         return {
-            data: await this.usersService.findUserByRole(id),
+            data,
+            count,
             statusCode: HttpStatus.OK,
             message:"Success"
         }
