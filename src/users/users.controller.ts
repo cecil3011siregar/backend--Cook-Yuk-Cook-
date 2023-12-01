@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, ParseArrayPipe, Parse
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
+import { get } from 'http';
 @Controller('users')
 export class UsersController {
     constructor(
@@ -37,6 +38,12 @@ export class UsersController {
             message:"Success"
         }
     }
+    @Get('approve/:id')
+    async approve(@Param('id', ParseUUIDPipe) id: string){
+        return {
+            data: await this.usersService.approveRejectKitchen(id)
+        }
+    }
     // @Post()
     // async createUsers(@Body()createUsersDto: CreateUsersDto){
     //     const data = await this.usersService.createUsers(createUsersDto)
@@ -56,6 +63,7 @@ export class UsersController {
             message: "Success"
         }
     }
+
 
     @Delete('/:id')
     async deleteUsers(@Param('id', ParseUUIDPipe) id: string){

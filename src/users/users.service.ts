@@ -6,12 +6,15 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { LevelUsersService } from '#/level-users/level-users.service';
 import { UpdateUsersDto } from './dto/update-user.dto';
 import { CreateUsersDto } from './dto/create-user.dto';
+import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(Users_cyc)
         private usersRepo: Repository<Users_cyc>,
-        private levelUsersService: LevelUsersService
+        private levelUsersService: LevelUsersService,
+        @InjectRepository(KitchenStudio)
+        private kitchenRepo: Repository<KitchenStudio>,
     ){}
 
     getAll(){
@@ -94,6 +97,14 @@ export class UsersService {
             return await this.usersRepo.findOneOrFail({
                 where:{id}
             })
+        }catch(e){
+            throw e
+        }
+    }
+    async approveRejectKitchen(id:string){
+        try{
+            const level = await this.levelUsersService.getLevelById(id)
+            const cariLevel = level.name
         }catch(e){
             throw e
         }
