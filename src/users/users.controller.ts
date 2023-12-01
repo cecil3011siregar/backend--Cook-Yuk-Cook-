@@ -10,7 +10,7 @@ export class UsersController {
         private usersService: UsersService,
     ){}
     
-    @Get()
+    @Get('/all')
     async getAllUsers(){
         const [data, count] = await this.usersService.getAll();
         return {
@@ -27,6 +27,17 @@ export class UsersController {
             data: await this.usersService.getUsersById(id),
             statusCode: HttpStatus.OK,
             message: "Success"
+        }
+    }
+
+    @Get()
+    async getAllByActive(){
+        const [data, count] =  await this.usersService.getAllUserByStatus()
+        return {
+            data,
+            count,
+            statusCode: HttpStatus.OK,
+            message: 'Success'
         }
     }
 

@@ -1,6 +1,7 @@
 import { Bank } from "#/bank/entities/bank.entity";
+import { KitchenStudio } from "#/kitchen_studio/entities/kitchen_studio.entity";
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum gender{
     PRIA = 'Pria',
@@ -75,5 +76,6 @@ export class Users_cyc{
 
     @OneToMany(() => Bank, (bank) => bank.users)
     bank: Bank;
+
 
 }

@@ -18,6 +18,12 @@ import { BankController } from './bank/bank.controller';
 import { BankModule } from './bank/bank.module';
 import { CertificateController } from './certificate/certificate.controller';
 import { CertificateModule } from './certificate/certificate.module';
+import { KitchenStudioService } from './kitchen_studio/kitchen_studio.service';
+import { KitchenStudioController } from './kitchen_studio/kitchen_studio.controller';
+import { KitchenStudioModule } from './kitchen_studio/kitchen_studio.module';
+import { GalleryKitchenController } from './gallery-kitchen/gallery-kitchen.controller';
+import { GalleryKitchenService } from './gallery-kitchen/gallery-kitchen.service';
+import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
 
 @Module({
   imports: [
@@ -110,7 +116,10 @@ import { CertificateModule } from './certificate/certificate.module';
     TrainingThemeModule,
     BankModule,
     CertificateModule,
+    KitchenStudioModule,
+    GalleryKitchenModule,
   ],
-  controllers: []
+  controllers: [],
+  providers: []
 })
 export class AppModule {}

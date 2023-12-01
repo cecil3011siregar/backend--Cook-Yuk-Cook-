@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users_cyc } from './entities/user.entity';
+import { Users_cyc, statusUser } from './entities/user.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { LevelUsersService } from '#/level-users/level-users.service';
 import { UpdateUsersDto } from './dto/update-user.dto';
@@ -41,9 +41,13 @@ export class UsersService {
         }
     }
 
-    // async getAllUserByStatus(status: string){
-    //         return await this.usersRepo.findAndCount()
-    // }
+    async getAllUserByStatus(){
+        return await this.usersRepo.findAndCount({
+            where: {
+                status: statusUser.ACTIVE
+            }
+        })
+    }
 
     async createUsers(createUsersDto: CreateUsersDto){
         try{
