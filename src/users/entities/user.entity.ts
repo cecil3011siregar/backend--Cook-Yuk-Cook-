@@ -9,8 +9,6 @@ export enum gender{
 export enum statusUser{
     ACTIVE = 'active',
     INCATIVE = 'inactive',
-    AVAILABLE = 'available',
-    UNAVAILABLE = 'unavailable'
 }
 @Entity()
 export class Users_cyc{
