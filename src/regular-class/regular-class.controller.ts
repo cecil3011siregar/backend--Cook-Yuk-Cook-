@@ -51,4 +51,13 @@ export class RegularClassController {
         }
     }
 
+    @Get('/find/:id')
+    async getRegClassByRole(@Param('id', ParseUUIDPipe) id: string){
+        return {
+            data : await this.regularClassService.regClassByKitchen(id),
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
+
 }

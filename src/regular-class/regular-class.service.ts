@@ -80,7 +80,15 @@ export class RegularClassService {
 
         }
     }
-    
 
-
+    async regClassByKitchen(id:string){
+        try{
+            const kitchen = await this.kitchenStudioService.findById(id)
+            return await this.regClassRepo.findAndCount({
+                where:{kitchen:{id:kitchen.id}}
+            })
+        }catch(e){
+            console.log("ga ada")
+        }
+    }
 }
