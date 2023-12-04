@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { KitchenStudio } from './entities/kitchen_studio.entity';
+import { KitchenStudio, statusKitchen } from './entities/kitchen_studio.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
@@ -31,4 +31,12 @@ export class KitchenStudioService {
             }
         }
 
+        async getAllUserByStatus(){
+            return await this.kitchenRepo.findAndCount({
+                where: {
+                    status: statusKitchen.AVAILABLE
+                }
+            })
+        }
+    
 }

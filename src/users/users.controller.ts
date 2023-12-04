@@ -30,16 +30,6 @@ export class UsersController {
         }
     }
 
-    @Get()
-    async getAllByActive(){
-        const [data, count] =  await this.usersService.getAllUserByStatus()
-        return {
-            data,
-            count,
-            statusCode: HttpStatus.OK,
-            message: 'Success'
-        }
-    }
 
     @Post()
     async createUsers(@Body()createUsersDto: CreateUsersDto){

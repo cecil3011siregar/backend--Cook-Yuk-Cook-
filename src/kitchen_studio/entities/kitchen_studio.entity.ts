@@ -1,6 +1,12 @@
 import { Users_cyc } from "#/users/entities/user.entity";
 import { Column, JoinColumn, CreateDateColumn, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
+export enum statusKitchen{
+    AVAILABLE = 'available',
+    UNAVAILABLE = 'unavailable'
+
+}
+
 @Entity()
 export class KitchenStudio{
     @PrimaryGeneratedColumn('uuid')
@@ -12,6 +18,13 @@ export class KitchenStudio{
 
     @Column({type: "varchar"})
     legality: string;
+
+    @Column({
+        type: "enum",
+        enum: statusKitchen,
+        default: statusKitchen.UNAVAILABLE
+    })
+    status: statusKitchen
 
     @Column({type: "int"})
     numberOfChef: number;

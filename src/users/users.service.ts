@@ -41,13 +41,6 @@ export class UsersService {
         }
     }
 
-    async getAllUserByStatus(){
-        return await this.usersRepo.findAndCount({
-            where: {
-                status: statusUser.ACTIVE
-            }
-        })
-    }
 
     async createUsers(createUsersDto: CreateUsersDto){
         try{

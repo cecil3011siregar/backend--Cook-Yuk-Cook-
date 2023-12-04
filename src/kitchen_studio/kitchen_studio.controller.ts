@@ -9,7 +9,7 @@ export class KitchenStudioController {
     ){}
 
 
-    @Get()
+    @Get('/all')
     async getAllKitchenStudio(){
         const [data, count] = await this.kitchenStudioService.getAll();
 
@@ -27,6 +27,17 @@ export class KitchenStudioController {
             data: await this.kitchenStudioService.getKitchenStudioById(id),
             statusCode: HttpStatus.OK,
             message: "Success"
+        }
+    }
+
+    @Get()
+    async getAllByActive(){
+        const [data, count] =  await this.kitchenStudioService.getAllUserByStatus()
+        return {
+            data,
+            count,
+            statusCode: HttpStatus.OK,
+            message: 'Success'
         }
     }
 
