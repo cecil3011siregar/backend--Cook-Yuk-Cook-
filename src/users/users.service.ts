@@ -70,7 +70,7 @@ export class UsersService {
         try{
             const level = await this.levelUsersService.getLevelById(id)
             return await this.usersRepo.findAndCount({
-                where:{level:{id:id}}
+                where:{level:{id:level.id}}
             })
         }catch(e){
             throw e
