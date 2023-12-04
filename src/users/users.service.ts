@@ -7,6 +7,7 @@ import { LevelUsersService } from '#/level-users/level-users.service';
 import { UpdateUsersDto } from './dto/update-user.dto';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
+import { ApproveRejectDto } from './dto/approve-Reject.dto';
 @Injectable()
 export class UsersService {
     constructor(
@@ -101,10 +102,16 @@ export class UsersService {
             throw e
         }
     }
-    async approveRejectKitchen(id:string){
+    async approveRejectKitchen(id:string, approveRejectDto: ApproveRejectDto){
         try{
-            const level = await this.levelUsersService.getLevelById(id)
-            const cariLevel = level.name
+            await this.getUsersById(id)
+            const users = new Users_cyc
+            users.status = approveRejectDto.status
+
+            await this.usersRepo.update(id, users)
+            return await this.usersRepo.findOneOrFail({
+                where:{id}
+            })
         }catch(e){
             throw e
         }

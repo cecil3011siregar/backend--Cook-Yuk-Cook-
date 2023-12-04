@@ -9,6 +9,7 @@ export enum gender{
 export enum statusUser{
     ACTIVE = 'active',
     INCATIVE = 'inactive',
+    PENDING = 'pending'
 }
 @Entity()
 export class Users_cyc{
@@ -45,7 +46,7 @@ export class Users_cyc{
     @Column({
         type:"enum", 
         enum:statusUser,
-        default: statusUser.INCATIVE
+        default: statusUser.PENDING
     })
     status: statusUser;
 

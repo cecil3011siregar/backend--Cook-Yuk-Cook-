@@ -33,7 +33,7 @@ export class AuthService {
             console.log(levelId)
             let status: any
             if(registerKDto.level === "Kitchen Studio"){
-                status = 'inactive'
+                status = 'pending'
             }else if(registerKDto.level === "Trainee"){
                 status = 'active'
             }

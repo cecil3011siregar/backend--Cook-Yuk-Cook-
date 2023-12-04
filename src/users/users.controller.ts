@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
 import { get } from 'http';
+import { ApproveRejectDto } from './dto/approve-Reject.dto';
 @Controller('users')
 export class UsersController {
     constructor(
@@ -38,10 +39,13 @@ export class UsersController {
             message:"Success"
         }
     }
-    @Get('approve/:id')
-    async approve(@Param('id', ParseUUIDPipe) id: string){
+    @Put('approve/:id')
+    async approve(@Param('id', ParseUUIDPipe) id: string, @Body() approveRejectDto:  ApproveRejectDto){
+        const data = await this.usersService.approveRejectKitchen(id, approveRejectDto)
         return {
-            data: await this.usersService.approveRejectKitchen(id)
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
         }
     }
     // @Post()
