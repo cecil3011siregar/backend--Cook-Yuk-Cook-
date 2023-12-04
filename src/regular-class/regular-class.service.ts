@@ -5,6 +5,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { KitchenStudioService } from '#/kitchen_studio/kitchen_studio.service';
 import { TrainingThemeService } from '#/training_theme/training_theme.service';
 import { CreateRegClassDto } from './dto/create-regular-class.dto';
+import { UpdateRegClassDto } from './dto/update-regular-class.dto';
 
 @Injectable()
 export class RegularClassService {
@@ -62,5 +63,24 @@ export class RegularClassService {
         }
     }
 
+    async updatePengajuan(id: string, updateRegClassDto: UpdateRegClassDto){
+        try{
+            await this.findById(id)
+            const theme = await this.trainingThemeService.findOneById(updateRegClassDto.theme_id)
+            const pengajuan = new RegularClass
+            pengajuan.theme = theme
+            pengajuan.courseName = updateRegClassDto.courseName
+
+            await this.regClassRepo.update(id, pengajuan)
+
+            return await this.regClassRepo.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+
+        }
+    }
     
+
+
 }

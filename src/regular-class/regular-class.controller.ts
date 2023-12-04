@@ -2,6 +2,7 @@ import { Controller, Get, HttpStatus, Post, Put, Body, Param, ParseUUIDPipe } fr
 import { RegularClassService } from './regular-class.service';
 import { CreateReadStreamOptions } from 'fs/promises';
 import { CreateRegClassDto } from './dto/create-regular-class.dto';
+import { UpdateRegClassDto } from './dto/update-regular-class.dto';
 
 @Controller('regular-class')
 export class RegularClassController {
@@ -37,6 +38,16 @@ export class RegularClassController {
             data,
             StatusCode: HttpStatus.CREATED,
             message: "Success"
+        }
+    }
+
+    @Put('/update-pengajuan/:id')
+    async updatePengajuan(@Param('id', ParseUUIDPipe) id: string, @Body()updateRegClassDto:UpdateRegClassDto){
+        const data = await this.regularClassService.updatePengajuan(id, updateRegClassDto)
+        return {
+            data,
+            statusCode:HttpStatus.OK,
+            message:"Success"
         }
     }
 
