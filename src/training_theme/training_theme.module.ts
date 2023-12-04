@@ -8,6 +8,7 @@ import { TrainingThemeService } from './training_theme.service';
 @Module({
     imports: [TypeOrmModule.forFeature([Training_theme])],
     controllers: [TrainingThemeController],
-    providers: [TrainingThemeService]
+    providers: [TrainingThemeService],
+    exports: [TrainingThemeService]
 })
 export class TrainingThemeModule {}

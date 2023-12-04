@@ -1,4 +1,5 @@
 import { GaleryKitchen } from "#/galery_kitchen/entites/galery.entities";
+import { RegularClass } from "#/regular-class/entities/regular-class.entity";
 import { Users_cyc } from "#/users/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -46,6 +47,9 @@ export class KitchenStudio{
     @OneToMany(() => GaleryKitchen, (gallery) => gallery.kitchen)
     gallery:GaleryKitchen;
     
+    @OneToMany(() => RegularClass, (regular) => regular.kitchen)
+    regular:RegularClass;
+
     @OneToOne(()=> Users_cyc,
     {cascade: true})
     @JoinColumn()

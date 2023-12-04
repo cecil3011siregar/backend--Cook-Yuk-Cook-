@@ -8,7 +8,8 @@ import { UsersModule } from '#/users/users.module';
 @Module({
   imports:[TypeOrmModule.forFeature([KitchenStudio]), UsersModule],
   controllers: [KitchenStudioController],
-  providers: [KitchenStudioService]
+  providers: [KitchenStudioService],
+  exports:[KitchenStudioService]
   
 })
 export class KitchenStudioModule {}

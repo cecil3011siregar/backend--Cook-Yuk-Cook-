@@ -1,3 +1,4 @@
+import { RegularClass } from '#/regular-class/entities/regular-class.entity';
 import {
   Entity,
   Column,
@@ -17,14 +18,16 @@ export class Training_theme {
 //   @OneToMany(() => Reviews, (review) => review.trainee)
 //   reviews: Reviews;
 
+  @OneToMany(() => RegularClass, (regular) => regular.theme)
+  regular:RegularClass;
+  
   @Column({type:"varchar", length:255})
   name: string;
 
   @Column({
-    type:"bigint"
+    type:"text"
   })
   chef_name: string;
-
   @Column()
   price: number;
 

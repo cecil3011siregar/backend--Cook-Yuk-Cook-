@@ -1,5 +1,6 @@
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { RegularClass } from "#/regular-class/entities/regular-class.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum gender{
     PRIA = 'Pria',
