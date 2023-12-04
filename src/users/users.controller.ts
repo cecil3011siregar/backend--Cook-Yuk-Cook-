@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
@@ -11,8 +11,8 @@ export class UsersController {
     ){}
     
     @Get('/all')
-    async getAllUsers(){
-        const [data, count] = await this.usersService.getAll();
+    async getAllUsers(@Query('page') page: number, @Query('limit') limit: number){
+        const [data, count] = await this.usersService.getAll(page, limit);
         return {
             data,
             count,

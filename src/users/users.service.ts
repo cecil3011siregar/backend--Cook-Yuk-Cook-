@@ -19,8 +19,15 @@ export class UsersService {
         private jwtService: JwtService
     ){}
 
-    getAll(){
-        return this.usersRepo.findAndCount()
+    // getAll(){
+    //     return this.usersRepo.findAndCount()
+    // }
+
+    getAll(page: number = 1, limit: number = 10){
+        return this.usersRepo.findAndCount({
+            skip: --page * limit, 
+            take: limit
+        })
     }
     
     async getUsersById(id: string){
