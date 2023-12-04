@@ -4,12 +4,15 @@ import { RegularClass } from './entities/regular-class.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { KitchenStudioService } from '#/kitchen_studio/kitchen_studio.service';
 import { TrainingThemeService } from '#/training_theme/training_theme.service';
+import { CreateRegClassDto } from './dto/create-regular-class.dto';
 
 @Injectable()
 export class RegularClassService {
     constructor(
         @InjectRepository(RegularClass)
         private regClassRepo: Repository<RegularClass>,
+        private trainingThemeService: TrainingThemeService,
+        private kitchenStudioService: KitchenStudioService
     ){}
 
     getAll(){
@@ -33,4 +36,31 @@ export class RegularClassService {
             }
         }
     }
+
+    async createPengajuan(createRegClassDto: CreateRegClassDto){
+        try{
+            const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
+            const kitchenId = await this.kitchenStudioService.findById(createRegClassDto.kitchen_id)
+            const regular = new RegularClass
+            regular.kitchen = kitchenId
+            regular.theme = themeId
+            regular.courseName = createRegClassDto.courseName
+            regular.startDate = createRegClassDto.startDate
+            regular.endDate = createRegClassDto.endDate
+            regular.numberOfBenches = createRegClassDto.numberOfBenches
+            regular.adminFee = createRegClassDto.adminFee
+            regular.price = createRegClassDto.price
+            regular.description = createRegClassDto.description
+
+            const buatPengajuan = await this.regClassRepo.insert(regular)
+            const result = await this.regClassRepo.findOneOrFail({
+                where:{id:buatPengajuan.identifiers[0].id}
+            })
+            return result;
+        }catch(e){
+            throw e
+        }
+    }
+
+    
 }
