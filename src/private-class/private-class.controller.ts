@@ -40,7 +40,7 @@ export class PrivateClassController {
             message:"Success"
         }
     }
-    
+
     @Get('/find-trainee/:id')
     async getPrivateByTrainee(@Param('id', ParseUUIDPipe)id: string){
         const data = await this.privateService.findPrivateByTrainee(id)
@@ -51,4 +51,13 @@ export class PrivateClassController {
         }
     }
     
+    @Get('/:id')
+    async getPrivateById(@Param('id', ParseUUIDPipe) id: string){
+        const data = await this.privateService.findDetailPrivate(id)
+        return{
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
 }

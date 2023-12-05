@@ -65,4 +65,27 @@ export class PrivateClassService {
             throw e
         }
     }
+
+    async findDetailPrivate(id: string){
+        try{
+            return await this.privateRepo.findOneOrFail({
+                where:{id},
+                relations:{
+                    trainee: true,
+                    kitchen:true,
+                    theme: true
+                }
+            })
+        }catch(e){
+            if(e instanceof EntityNotFoundError){
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: "Data Not Found"
+                    },
+                    HttpStatus.NOT_FOUND
+                )
+            }
+        }
+    }
 }
