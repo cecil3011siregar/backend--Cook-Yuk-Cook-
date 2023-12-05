@@ -43,4 +43,15 @@ export class PrivateClassService {
             throw e
         }
     }
+
+    async findPrivateByKitchen(id: string){
+        try{
+            const kitchen = await this.kitchenService.findById(id)
+            return await this.privateRepo.findAndCount({
+                where:{kitchen:{id:kitchen.id}}
+            })
+        }catch(e){
+            throw e
+        }
+    }
 }

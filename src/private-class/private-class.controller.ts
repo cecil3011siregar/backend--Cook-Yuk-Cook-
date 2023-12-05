@@ -31,5 +31,14 @@ export class PrivateClassController {
         }
     }
 
+    @Get('/find-kitchen/:id')
+    async getPrivateByKitchen(@Param('id', ParseUUIDPipe)id: string){
+        const data = await this.privateService.findPrivateByKitchen(id)
+        return{
+            data,
+            statusCode: HttpStatus.OK,
+            message:"Success"
+        }
+    }
     
 }
