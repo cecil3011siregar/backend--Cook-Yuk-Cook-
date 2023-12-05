@@ -54,4 +54,15 @@ export class PrivateClassService {
             throw e
         }
     }
+
+    async findPrivateByTrainee(id: string){
+        try{
+            const trainee = await this.usersService.getUsersById(id)
+            return await this.privateRepo.findAndCount({
+                where:{trainee:{id:trainee.id}}
+            })
+        }catch(e){
+            throw e
+        }
+    }
 }
