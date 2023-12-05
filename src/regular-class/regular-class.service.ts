@@ -41,7 +41,7 @@ export class RegularClassService {
     async createPengajuan(createRegClassDto: CreateRegClassDto){
         try{
             const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
-            const kitchenId = await this.kitchenStudioService.findById(createRegClassDto.kitchen_id)
+            const kitchenId = await this.kitchenStudioService.getKitchenStudioById(createRegClassDto.kitchen_id)
             const regular = new RegularClass
             regular.kitchen = kitchenId
             regular.theme = themeId
@@ -83,7 +83,7 @@ export class RegularClassService {
 
     async regClassByKitchen(id:string){
         try{
-            const kitchen = await this.kitchenStudioService.findById(id)
+            const kitchen = await this.kitchenStudioService.getKitchenStudioById(id)
             return await this.regClassRepo.findAndCount({
                 where:{kitchen:{id:kitchen.id}}
             })

@@ -25,7 +25,7 @@ export class PrivateClassService {
     async create(createPrivateClassDto:CreatePrivateClassDto){
         try{
             const themeId = await this.themeService.findOneById(createPrivateClassDto.theme)
-            const kitchenId = await this.kitchenService.findById(createPrivateClassDto.kitchen)
+            const kitchenId = await this.kitchenService.getKitchenStudioById(createPrivateClassDto.kitchen)
             const traineeId = await this.usersService.getUsersById(createPrivateClassDto.trainee)
 
             const priv = new PrivateClass
@@ -47,7 +47,7 @@ export class PrivateClassService {
 
     async findPrivateByKitchen(id: string){
         try{
-            const kitchen = await this.kitchenService.findById(id)
+            const kitchen = await this.kitchenService.getKitchenStudioById(id)
             return await this.privateRepo.findAndCount({
                 where:{kitchen:{id:kitchen.id}}
             })

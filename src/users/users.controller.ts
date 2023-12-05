@@ -4,12 +4,13 @@
 // import { UpdateUsersDto } from './dto/update-user.dto';
 // import { get } from 'http';
 import { ApproveRejectDto } from './dto/approve-Reject.dto';
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
 import { UpdateKitchenDto } from './dto/updateKitchen-user.dto';
 import { UpdatePasswordDto } from './dto/updatePassword-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('users')
 export class UsersController {
     constructor(
@@ -45,6 +46,8 @@ export class UsersController {
             message:"Success"
         }
     }
+
+    @UseGuards(AuthGuard('jwt'))
     @Put('approve/:id')
     async approve(@Param('id', ParseUUIDPipe) id: string, @Body() approveRejectDto:  ApproveRejectDto){
         const data = await this.usersService.approveRejectKitchen(id, approveRejectDto)

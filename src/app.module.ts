@@ -127,6 +127,7 @@ import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
     CertificateModule,
     KitchenStudioModule,
     GalleryKitchenModule,
+    // UsersPaymentModule,
   ],
   controllers: [],
   providers: []
