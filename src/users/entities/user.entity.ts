@@ -1,4 +1,5 @@
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
+import { PrivateClass } from "#/private-class/entities/private-class.entity";
 import { RegularClass } from "#/regular-class/entities/regular-class.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -71,4 +72,7 @@ export class Users_cyc{
 
     @ManyToOne(()=> LevelUsers, (level) => level.user)
     level:LevelUsers;
+
+    @OneToMany(() => PrivateClass, (priv) => priv.trainee)
+    priv:PrivateClass
 }

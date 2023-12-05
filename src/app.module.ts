@@ -17,6 +17,8 @@ import { TrainingThemeModule } from './training_theme/training_theme.module';
 import { GaleryKitchenModule } from './galery_kitchen/galery_kitchen.module';
 import { KitchenStudioModule } from './kitchen_studio/kitchen_studio.module';
 import { RegularClassModule } from './regular-class/regular-class.module';
+import { MaterialModule } from './material/material.module';
+import { PrivateClassModule } from './private-class/private-class.module';
 
 @Module({
   imports: [
@@ -110,6 +112,8 @@ import { RegularClassModule } from './regular-class/regular-class.module';
     GaleryKitchenModule,
     KitchenStudioModule,
     RegularClassModule,
+    MaterialModule,
+    PrivateClassModule,
   ]
 })
 export class AppModule {}

@@ -10,6 +10,7 @@ import { TrainingThemeModule } from '#/training_theme/training_theme.module';
 @Module({
   imports:[TypeOrmModule.forFeature([RegularClass]), KitchenStudioModule, TrainingThemeModule],
   controllers: [RegularClassController],
-  providers: [RegularClassService]
+  providers: [RegularClassService],
+  exports:[RegularClassService]
 })
 export class RegularClassModule {}

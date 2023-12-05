@@ -12,58 +12,28 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export enum statusRegular {
+export enum statusPrivate {
   APPROVE = 'approve',
   REJECT = 'reject',
   PENDING = 'pending',
 }
 @Entity()
-export class RegularClass {
+export class PrivateClass {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    type:"varchar",
-    length: 255
-  })
-  courseName: string;
-
-  @Column({
-    type:"date"
-  })
+  @Column({type:"date"})
   startDate: Date;
 
-  @Column({
-    type:"date"
-  })
+  @Column({type:"date"})
   endDate: Date;
 
   @Column({
-    type:"bigint"
-  })
-  price: number;
-
-  @Column({
-    type: "bigint"
-  })
-  adminFee: number;
-
-  @Column({
-    type:"int"
-  })
-  numberOfBenches: number;
-
-  @Column({
-    type:"text"
-  })
-  description: string;
-
-  @Column({
     type: 'enum',
-    enum: statusRegular,
-    default: statusRegular.PENDING,
+    enum: statusPrivate,
+    default: statusPrivate.PENDING,
   })
-  status: statusRegular;
+  status: statusPrivate;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -88,4 +58,10 @@ export class RegularClass {
 
   @ManyToOne(() => KitchenStudio, (kitchen) => kitchen.regular)
   kitchen: KitchenStudio;
+
+  @ManyToOne(() => Users_cyc, (trainee) => trainee.priv)
+  trainee:Users_cyc
+  
+
+
 }
