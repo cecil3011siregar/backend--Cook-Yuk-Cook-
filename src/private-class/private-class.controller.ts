@@ -60,4 +60,14 @@ export class PrivateClassController {
             message: "Success"
         }
     }
+
+    @Put('/approve/:id')
+    async ApproveReject(@Param('id', ParseUUIDPipe)id: string, @Body()approveRejectDto: ApproveRejectPrivateDto){
+        const data = await this.privateService.approveReject(id, approveRejectDto)
+        return {
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
 }

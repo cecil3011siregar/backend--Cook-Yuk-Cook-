@@ -6,6 +6,7 @@ import { CreatePrivateClassDto } from './dto/create-private-class.dto';
 import { UsersService } from '#/users/users.service';
 import { KitchenStudioService } from '#/kitchen_studio/kitchen_studio.service';
 import { TrainingThemeService } from '#/training_theme/training_theme.service';
+import { ApproveRejectPrivateDto } from './dto/approve-reject-private-class.dto';
 
 @Injectable()
 export class PrivateClassService {
@@ -86,6 +87,20 @@ export class PrivateClassService {
                     HttpStatus.NOT_FOUND
                 )
             }
+        }
+    }
+    async approveReject(id: string, approveRejectDto : ApproveRejectPrivateDto){
+        try{
+            await this.findDetailPrivate(id)
+            const cekPrivate = new PrivateClass
+            cekPrivate.status = approveRejectDto.status
+
+            await this.privateRepo.update(id, cekPrivate)
+            return await this.privateRepo.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+            throw e
         }
     }
 }
