@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
-import { UsersModule } from './users/users.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
 // import { SeederModule } from '#/seeder/seeder.module';
+
 import { LevelUsersModule } from './level-users/level-users.module';
 import { AuthModule } from './auth/auth.module';
 import { TrainingThemeController } from './training_theme/training_theme.controller';
@@ -17,8 +17,8 @@ import { TrainingThemeModule } from './training_theme/training_theme.module';
 import { GaleryKitchenModule } from './galery_kitchen/galery_kitchen.module';
 import { KitchenStudioModule } from './kitchen_studio/kitchen_studio.module';
 import { RegularClassModule } from './regular-class/regular-class.module';
-import { MaterialModule } from './material/material.module';
 import { PrivateClassModule } from './private-class/private-class.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -112,7 +112,7 @@ import { PrivateClassModule } from './private-class/private-class.module';
     GaleryKitchenModule,
     KitchenStudioModule,
     RegularClassModule,
-    MaterialModule,
+    // MaterialModule,
     PrivateClassModule,
   ]
 })
