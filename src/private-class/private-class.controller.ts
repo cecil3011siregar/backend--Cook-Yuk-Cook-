@@ -21,5 +21,15 @@ export class PrivateClassController {
         }
     }
 
+    @Post('/create')
+    async createPrivate(@Body()createPrivateClassDto: CreatePrivateClassDto){
+        const data = await this.privateService.create(createPrivateClassDto)
+        return{
+            data,
+            statusCode: HttpStatus.CREATED,
+            message: "Success"
+        }
+    }
+
     
 }

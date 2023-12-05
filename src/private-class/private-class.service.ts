@@ -20,4 +20,27 @@ export class PrivateClassService {
     findAll(){
         return this.privateRepo.findAndCount()
     }
+
+    async create(createPrivateClassDto:CreatePrivateClassDto){
+        try{
+            const themeId = await this.themeService.findOneById(createPrivateClassDto.theme)
+            const kitchenId = await this.kitchenService.findById(createPrivateClassDto.kitchen)
+            const traineeId = await this.usersService.getUsersById(createPrivateClassDto.trainee)
+
+            const priv = new PrivateClass
+            priv.startDate = createPrivateClassDto.startDate
+            priv.endDate = createPrivateClassDto.endDate
+            priv.theme = themeId
+            priv.kitchen = kitchenId
+            priv.trainee = traineeId
+
+            const insertPriv = await this.privateRepo.insert(priv)
+            const result = await this.privateRepo.findOneOrFail({
+                where:{id:insertPriv.identifiers[0].id}
+            })
+            return result
+        }catch(e){
+            throw e
+        }
+    }
 }
