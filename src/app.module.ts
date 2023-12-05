@@ -19,6 +19,15 @@ import { KitchenStudioModule } from './kitchen_studio/kitchen_studio.module';
 import { RegularClassModule } from './regular-class/regular-class.module';
 import { PrivateClassModule } from './private-class/private-class.module';
 import { UsersModule } from './users/users.module';
+import { BankController } from './bank/bank.controller';
+import { BankModule } from './bank/bank.module';
+import { CertificateController } from './certificate/certificate.controller';
+import { CertificateModule } from './certificate/certificate.module';
+import { KitchenStudioService } from './kitchen_studio/kitchen_studio.service';
+import { KitchenStudioController } from './kitchen_studio/kitchen_studio.controller';
+import { GalleryKitchenController } from './gallery-kitchen/gallery-kitchen.controller';
+import { GalleryKitchenService } from './gallery-kitchen/gallery-kitchen.service';
+import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
 
 @Module({
   imports: [
@@ -114,6 +123,12 @@ import { UsersModule } from './users/users.module';
     RegularClassModule,
     // MaterialModule,
     PrivateClassModule,
-  ]
+    BankModule,
+    CertificateModule,
+    KitchenStudioModule,
+    GalleryKitchenModule,
+  ],
+  controllers: [],
+  providers: []
 })
 export class AppModule {}

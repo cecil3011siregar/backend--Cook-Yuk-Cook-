@@ -10,6 +10,5 @@ import { UsersModule } from '#/users/users.module';
   controllers: [KitchenStudioController],
   providers: [KitchenStudioService],
   exports:[KitchenStudioService]
-  
 })
 export class KitchenStudioModule {}

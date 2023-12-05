@@ -2,6 +2,11 @@ import { GaleryKitchen } from "#/galery_kitchen/entites/galery.entities";
 import { RegularClass } from "#/regular-class/entities/regular-class.entity";
 import { Users_cyc } from "#/users/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+export enum statusKitchen{
+    AVAILABLE = 'available',
+    UNAVAILABLE = 'unavailable'
+
+}
 
 @Entity()
 export class KitchenStudio{
@@ -26,23 +31,12 @@ export class KitchenStudio{
     @Column({type:"text", nullable:true})
     description: string;
 
-    @CreateDateColumn({
-        type:"timestamp with time zone",
-        nullable:false
+    @Column({
+        type: "enum",
+        enum: statusKitchen,
+        default: statusKitchen.UNAVAILABLE
     })
-    createdAt: Date;
-
-    @UpdateDateColumn({
-        type:"timestamp with time zone",
-        nullable: false
-    })
-    updatedAt: Date;
-
-    @DeleteDateColumn({
-        type: "timestamp with time zone",
-        nullable:true
-    })
-    deletedAt:Date;
+    status: statusKitchen
 
     @OneToMany(() => GaleryKitchen, (gallery) => gallery.kitchen)
     gallery:GaleryKitchen;
