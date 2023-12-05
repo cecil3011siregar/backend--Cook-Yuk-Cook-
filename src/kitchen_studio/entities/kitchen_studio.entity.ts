@@ -38,6 +38,24 @@ export class KitchenStudio{
     })
     status: statusKitchen
 
+    @CreateDateColumn({
+        type: "timestamp with time zone",
+        nullable: false
+    })
+    createdAt: Date
+
+    @UpdateDateColumn({
+        type:"timestamp with time zone",
+        nullable: false
+    })
+    updatedAt: Date;
+
+    @DeleteDateColumn({
+        type: "timestamp with time zone",
+        nullable:true
+    })
+    deletedAt:Date;
+
     @OneToMany(() => GaleryKitchen, (gallery) => gallery.kitchen)
     gallery:GaleryKitchen;
     
