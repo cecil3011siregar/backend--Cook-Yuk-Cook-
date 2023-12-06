@@ -42,6 +42,8 @@ export class RegularClassService {
         try{
             const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
             const kitchenId = await this.kitchenStudioService.getKitchenStudioById(createRegClassDto.kitchen_id)
+            const biaya = (createRegClassDto.price * 10)/ 100
+            const price = createRegClassDto.price + biaya
             const regular = new RegularClass
             regular.kitchen = kitchenId
             regular.theme = themeId
@@ -50,7 +52,7 @@ export class RegularClassService {
             regular.endDate = createRegClassDto.endDate
             regular.numberOfBenches = createRegClassDto.numberOfBenches
             regular.adminFee = createRegClassDto.adminFee
-            regular.price = createRegClassDto.price
+            regular.price = price
             regular.description = createRegClassDto.description
 
             const buatPengajuan = await this.regClassRepo.insert(regular)
