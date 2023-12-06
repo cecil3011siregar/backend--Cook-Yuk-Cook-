@@ -4,12 +4,14 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { Bank } from './entities/bank.entity';
 import { CreateBankDto } from './dto/create-bank.dto';
 import { UpdateBankDto } from './dto/update-bank.dto';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class BankService {
     constructor(
         @InjectRepository(Bank)
-        private bankRepository: Repository<Bank>
+        private bankRepository: Repository<Bank>,
+        private usersService: UsersService
         // untuk foreign key ditambah code di baris ini
 
     ){}
@@ -44,9 +46,9 @@ export class BankService {
     async create(createBankDto: CreateBankDto){
         try {
             // untuk foreign key harus ditambah di baris ini
-
-
+            const users = await this.usersService.getUsersById(createBankDto.id_users)
             const bank = new Bank
+            bank.users = users
             bank.account_number = createBankDto.account_number
             bank.bank_name = createBankDto.bank_name
             bank.account_owner = createBankDto.account_owner

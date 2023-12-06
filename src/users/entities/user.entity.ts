@@ -3,6 +3,7 @@ import { KitchenStudio } from "#/kitchen_studio/entities/kitchen_studio.entity";
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
 import { PrivateClass } from "#/private-class/entities/private-class.entity";
 import { RegularClass } from "#/regular-class/entities/regular-class.entity";
+import { UsersPayment } from "#/users-payment/entities/users-payment.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum gender{
@@ -38,13 +39,13 @@ export class Users_cyc{
     @Column({type:"enum", enum:gender, nullable:true})
     gender: gender;
 
-    @Column({type: "varchar", length:15})
+    @Column({type: "varchar", length:15, nullable:true})
     phoneNumber: string;
 
     @Column({type: "text", nullable:true})
     photo: string;
 
-    @Column({type: "text"})
+    @Column({type: "text", nullable:true})
     address: string;
 
     @Column({
@@ -81,5 +82,7 @@ export class Users_cyc{
     @OneToMany(() => Bank, (bank) => bank.users)
     bank: Bank;
 
+    @OneToMany(() => UsersPayment, (usersPay) => usersPay.users)
+    usersPay: UsersPayment
 
 }

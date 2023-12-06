@@ -28,6 +28,7 @@ import { KitchenStudioController } from './kitchen_studio/kitchen_studio.control
 import { GalleryKitchenController } from './gallery-kitchen/gallery-kitchen.controller';
 import { GalleryKitchenService } from './gallery-kitchen/gallery-kitchen.service';
 import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
+import { UsersPaymentModule } from './users-payment/users-payment.module';
 
 @Module({
   imports: [
@@ -127,7 +128,7 @@ import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
     CertificateModule,
     KitchenStudioModule,
     GalleryKitchenModule,
-    // UsersPaymentModule,
+    UsersPaymentModule,
   ],
   controllers: [],
   providers: []

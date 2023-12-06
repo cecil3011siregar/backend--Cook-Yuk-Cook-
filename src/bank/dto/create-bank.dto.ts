@@ -2,8 +2,8 @@ import { IsNotEmpty } from "class-validator";
 
 export class CreateBankDto {
 
-    // @IsNotEmpty()
-    // id_users: string;
+    @IsNotEmpty()
+    id_users: string;
 
     @IsNotEmpty()
     account_number: string;

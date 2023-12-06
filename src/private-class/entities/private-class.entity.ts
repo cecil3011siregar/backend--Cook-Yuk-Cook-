@@ -1,5 +1,6 @@
 import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
 import { Training_theme } from '#/training_theme/entities/training_theme.entity';
+import { UsersPayment } from '#/users-payment/entities/users-payment.entity';
 import { Users_cyc } from '#/users/entities/user.entity';
 import {
   Column,
@@ -60,8 +61,10 @@ export class PrivateClass {
   kitchen: KitchenStudio;
 
   @ManyToOne(() => Users_cyc, (trainee) => trainee.priv)
-  trainee:Users_cyc
-  
+  trainee:Users_cyc;
+
+  @OneToMany(() => UsersPayment, (usersPay) => usersPay.privclass)
+  usersPay: UsersPayment
 
 
 }

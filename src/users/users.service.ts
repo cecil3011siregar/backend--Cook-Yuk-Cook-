@@ -11,6 +11,7 @@ import { UpdateKitchenDto } from './dto/updateKitchen-user.dto';
 import { UpdatePasswordDto } from './dto/updatePassword-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CreateAdminDto } from './dto/create-admin.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -82,24 +83,28 @@ export class UsersService {
     }
   }
 
-  async createUsers(createUsersDto: CreateUsersDto) {
+  async createUsers(createAdminDto: CreateAdminDto) {
     try {
-      const findLevelUsersId = await this.levelUsersService.getLevelById(
-        createUsersDto.level_id,
-      );
-      const usersEntity = new Users_cyc();
-      usersEntity.name = createUsersDto.name;
-      usersEntity.email = createUsersDto.email;
-      // usersEntity.salt = createUsersDto.salt
-      usersEntity.password = createUsersDto.password;
-      usersEntity.dateOfBirth = new Date(createUsersDto.dateOfBirth);
-      usersEntity.gender = createUsersDto.gender;
-      usersEntity.phoneNumber = createUsersDto.phoneNumber;
-      usersEntity.photo = createUsersDto.photo;
-      usersEntity.address = createUsersDto.address;
-      // usersEntity.status = createUsersDto.status
+      const findLevelUsersId = await this.levelUsersService.getLevelById(createAdminDto.level_id);
+      console.log(findLevelUsersId, "ada ga")
+      let status:any
+        if(findLevelUsersId && findLevelUsersId.name === "Admin"){
+          status = "active"
+        }else{
+          console.log("role tidak ditemukan")
+        }
+      //generate salt
+      const saltGenerate = await bcrypt.genSalt();
+      //hash password
+      const password = createAdminDto.password;
+      const hash = await bcrypt.hash(password, saltGenerate);
+      const usersEntity = new Users_cyc;
+      usersEntity.name = createAdminDto.name;
+      usersEntity.email = createAdminDto.email;
+      usersEntity.salt = saltGenerate
+      usersEntity.password = hash
       usersEntity.level = findLevelUsersId;
-
+      usersEntity.status = status
       const insertUsers = await this.usersRepo.insert(usersEntity);
       return this.usersRepo.findOneOrFail({
         where: { id: insertUsers.identifiers[0].id },

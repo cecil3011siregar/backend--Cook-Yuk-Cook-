@@ -11,6 +11,7 @@ import { UpdateUsersDto } from './dto/update-user.dto';
 import { UpdateKitchenDto } from './dto/updateKitchen-user.dto';
 import { UpdatePasswordDto } from './dto/updatePassword-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateAdminDto } from './dto/create-admin.dto';
 @Controller('users')
 export class UsersController {
     constructor(
@@ -69,8 +70,8 @@ export class UsersController {
 
 
     @Post()
-    async createUsers(@Body()createUsersDto: CreateUsersDto){
-        const data = await this.usersService.createUsers(createUsersDto)
+    async createUsers(@Body()createAdminDto: CreateAdminDto){
+        const data = await this.usersService.createUsers(createAdminDto)
         return{
             data,
             statusCode: HttpStatus.CREATED,
