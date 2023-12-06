@@ -20,9 +20,6 @@ export class CreateRegClassDto{
     price: number;
 
     @IsNotEmpty()
-    adminFee: number;
-
-    @IsNotEmpty()
     numberOfBenches: number;
 
     @IsNotEmpty()

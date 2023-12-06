@@ -51,7 +51,7 @@ export class RegularClassService {
             regular.startDate = createRegClassDto.startDate
             regular.endDate = createRegClassDto.endDate
             regular.numberOfBenches = createRegClassDto.numberOfBenches
-            regular.adminFee = createRegClassDto.adminFee
+            regular.adminFee = biaya
             regular.price = price
             regular.description = createRegClassDto.description
 
