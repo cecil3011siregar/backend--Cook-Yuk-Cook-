@@ -79,7 +79,7 @@ export class RegularClassService {
                 where:{id}
             })
         }catch(e){
-
+            throw e
         }
     }
 

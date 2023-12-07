@@ -1,6 +1,7 @@
 import { Bank } from "#/bank/entities/bank.entity";
 import { KitchenStudio } from "#/kitchen_studio/entities/kitchen_studio.entity";
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
+import { Notifikasi } from "#/notifikasi/entities/notifikasi.entity";
 import { PrivateClass } from "#/private-class/entities/private-class.entity";
 import { RegularClass } from "#/regular-class/entities/regular-class.entity";
 import { UsersPayment } from "#/users-payment/entities/users-payment.entity";
@@ -83,6 +84,12 @@ export class Users_cyc{
     bank: Bank;
 
     @OneToMany(() => UsersPayment, (usersPay) => usersPay.users)
-    usersPay: UsersPayment
+    usersPay: UsersPayment;
+
+    @OneToMany(() => Notifikasi, (notif1) => notif1.receiver)
+    notif1: Notifikasi;
+
+    @OneToMany(() => Notifikasi, (notif2) => notif2.sender)
+    notif2: Notifikasi;
 
 }
