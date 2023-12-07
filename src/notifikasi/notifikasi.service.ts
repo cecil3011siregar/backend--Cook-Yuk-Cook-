@@ -41,6 +41,23 @@ export class NotifikasiService {
         }
     }
 
+    async findNotifUnread(inputStatus: string){
+        let enumStatus:any
+
+        if(inputStatus == "unread"){
+            enumStatus = statusNotif.UNREAD
+        }
+        try{
+            console.log(enumStatus, "ini status")
+            const result =  await this.notifRepo.find({
+                where:{status: enumStatus}
+            })
+            console.log(result, "halo")
+            return result
+        }catch(e){
+            throw e
+        }
+    }
     async createNotifikasi(createNotifikasiDto: CreateNotifikasiDto){
         try{
             const receiver = await this.usersService.getUsersById(createNotifikasiDto.receiver)
@@ -62,62 +79,4 @@ export class NotifikasiService {
         }
     }
 
-    async updateStatusNotif(id: string, updateStatusNotifikasiDto: UpdateStatusNotifikasiDto){
-        try{
-            await this.findNotifById(id)
-            const statusNotif = new Notifikasi
-            statusNotif.status = updateStatusNotifikasiDto.status
-
-            await this.notifRepo.update(id, statusNotif)
-            return await this.notifRepo.findOneOrFail({
-                where:{id}
-            })
-        }catch(e){
-            throw e
-        }
-    }
-
-    async updateMessageNotif(id: string, updateMessageNotifikasiDto: UpdateMessageNotifikasiDto){
-        try{
-            await this.findNotifById(id)
-            const notifContent = new Notifikasi
-            notifContent.title = updateMessageNotifikasiDto.title
-            notifContent.message = updateMessageNotifikasiDto.message
-
-            await this.notifRepo.update(id, notifContent)
-            return await this.notifRepo.findOneOrFail({
-                where: {id}
-            })
-        }catch(e){
-            throw e
-        }
-    }
-
-    async findNotifUnread(inputStatus: string){
-        let enumStatus:any
-
-        if(inputStatus == "unread"){
-            enumStatus = statusNotif.UNREAD
-        }
-        try{
-            console.log(enumStatus, "ini status")
-            const result =  await this.notifRepo.find({
-                where:{status: enumStatus}
-            })
-            console.log(result, "halo")
-            return result
-        }catch(e){
-            throw e
-        }
-    }
-
-    async deleteNotif(id: string){
-        try{
-            await this.findNotifById(id)
-            await this.notifRepo.softDelete(id)
-            return "Success"
-        }catch(e){
-            throw e
-        }
-    }
 }

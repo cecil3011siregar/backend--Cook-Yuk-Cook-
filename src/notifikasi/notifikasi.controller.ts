@@ -51,7 +51,6 @@ export class NotifikasiController {
       message: 'Success',
     };
   }
-
   @Post('/create-notif')
   async createNotifikasi(@Body() createNotifikasiDto: CreateNotifikasiDto) {
     const data = await this.notifikasiService.createNotifikasi(
@@ -64,45 +63,4 @@ export class NotifikasiController {
     };
   }
 
-  @Put('/status-notif/:id')
-  async updateStatusNotif(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateStatusNotifikasiDto: UpdateStatusNotifikasiDto,
-  ) {
-    const data = await this.notifikasiService.updateStatusNotif(
-      id,
-      updateStatusNotifikasiDto,
-    );
-    return {
-      data,
-      statusCode: HttpStatus.OK,
-      message: 'Success',
-    };
-  }
-
-  @Put('/notif-content/:id')
-  async updateNotifContent(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateMessageNotifikasiDto: UpdateMessageNotifikasiDto,
-  ) {
-    const data = await this.notifikasiService.updateMessageNotif(
-      id,
-      updateMessageNotifikasiDto,
-    );
-    return {
-      data,
-      statusCode: HttpStatus.OK,
-      message: 'Success',
-    };
-  }
-
-  
-
-  @Delete("/delete/:id")
-  async deleteNotifikasi(@Param('id', ParseUUIDPipe)id: string){
-    return{
-        statusCode: HttpStatus.OK,
-        message: await this.notifikasiService.deleteNotif(id)
-    }
-  }
 }
