@@ -8,7 +8,7 @@ import {
   ParseUUIDPipe,
   Put,
   Query,
-  Delete
+  Delete,
 } from '@nestjs/common';
 import { NotifikasiService } from './notifikasi.service';
 import { CreateNotifikasiDto } from './dto/create-notifikasi.dto';
@@ -22,14 +22,14 @@ export class NotifikasiController {
   constructor(private notifikasiService: NotifikasiService) {}
 
   @Get('')
-  async getNotifUnread(@Query('status') status: string){
-    console.log(status, "ini status")
-    const data = await this.notifikasiService.findNotifUnread(status)
+  async getNotifUnread(@Query('status') status: string) {
+    console.log(status, 'ini status');
+    const data = await this.notifikasiService.findNotifUnread(status);
     return {
-        data,
-        statusCode: HttpStatus.OK,
-        message: "Success"
-    }
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
   }
 
   @Get('all')
@@ -63,4 +63,19 @@ export class NotifikasiController {
     };
   }
 
+  @Put('/status-notif/:id')
+  async updateStatusNotif(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateStatusNotifikasiDto: UpdateStatusNotifikasiDto,
+  ) {
+    const data = await this.notifikasiService.updateStatusNotif(
+      id,
+      updateStatusNotifikasiDto,
+    );
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
 }

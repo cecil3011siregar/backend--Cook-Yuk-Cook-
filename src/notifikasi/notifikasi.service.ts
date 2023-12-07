@@ -78,5 +78,19 @@ export class NotifikasiService {
             throw e
         }
     }
+    async updateStatusNotif(id: string, updateStatusNotifikasiDto: UpdateStatusNotifikasiDto){
+        try{
+            await this.findNotifById(id)
+            const statusNotif = new Notifikasi
+            statusNotif.status = updateStatusNotifikasiDto.status
+
+            await this.notifRepo.update(id, statusNotif)
+            return await this.notifRepo.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+            throw e
+        }
+    }
 
 }

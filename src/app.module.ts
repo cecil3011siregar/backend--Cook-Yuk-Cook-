@@ -29,6 +29,7 @@ import { GalleryKitchenController } from './gallery-kitchen/gallery-kitchen.cont
 import { GalleryKitchenService } from './gallery-kitchen/gallery-kitchen.service';
 import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
 import { UsersPaymentModule } from './users-payment/users-payment.module';
+import { NotifikasiModule } from './notifikasi/notifikasi.module';
 
 @Module({
   imports: [
@@ -107,7 +108,7 @@ import { UsersPaymentModule } from './users-payment/users-payment.module';
           entities: [],
           synchronize: configService.get<string>('env') === 'development',
           autoLoadEntities: true,
-          logging: false,
+          logging: ["query", "error"],
           namingStrategy: new SnakeNamingStrategy(),
         };
       },
@@ -129,6 +130,7 @@ import { UsersPaymentModule } from './users-payment/users-payment.module';
     KitchenStudioModule,
     GalleryKitchenModule,
     UsersPaymentModule,
+    NotifikasiModule,
   ],
   controllers: [],
   providers: []
