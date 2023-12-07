@@ -1,4 +1,5 @@
 import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
+import { Material } from '#/material/entities/material.entity';
 import { Training_theme } from '#/training_theme/entities/training_theme.entity';
 import { UsersPayment } from '#/users-payment/entities/users-payment.entity';
 import { Users_cyc } from '#/users/entities/user.entity';
@@ -92,4 +93,7 @@ export class RegularClass {
 
   @OneToMany(() => UsersPayment, (usersPay) => usersPay.regular)
   usersPay: UsersPayment;
+
+  @OneToMany(() => Material, (material) => material.regular)
+  material:Material;
 }

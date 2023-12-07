@@ -30,6 +30,7 @@ import { GalleryKitchenService } from './gallery-kitchen/gallery-kitchen.service
 import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
 import { UsersPaymentModule } from './users-payment/users-payment.module';
 import { NotifikasiModule } from './notifikasi/notifikasi.module';
+import { MaterialModule } from './material/material.module';
 
 @Module({
   imports: [
@@ -131,6 +132,7 @@ import { NotifikasiModule } from './notifikasi/notifikasi.module';
     GalleryKitchenModule,
     UsersPaymentModule,
     NotifikasiModule,
+    MaterialModule,
   ],
   controllers: [],
   providers: []
