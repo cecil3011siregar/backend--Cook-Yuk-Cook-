@@ -18,6 +18,15 @@ export class MaterialController {
             message: "Success"
         }
     }
+    @Post('/create-material')
+    async createMaterial(@Body() createMaterialDto: CreateMaterialDto){
+        const data = await this.materialService.createMaterial(createMaterialDto)
+        return {
+            data,
+            statusCode:HttpStatus.CREATED,
+            message: "Success"
+        }
+    }
 
     
 }

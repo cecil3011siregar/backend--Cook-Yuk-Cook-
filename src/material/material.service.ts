@@ -25,6 +25,29 @@ export class MaterialService {
     return this.materialRepo.findAndCount();
   }
 
+  async createMaterial(creatematerialDto: CreateMaterialDto) {
+    try {
+        let cariKelas;
+        const material = new Material();
+        if (creatematerialDto.type_class === 'Regular Class') {
+            cariKelas = await this.regularClassService.findById(creatematerialDto.idclass);
+            material.regular = cariKelas;
+        } else if (creatematerialDto.type_class === 'Private Class') {
+            cariKelas = await this.privateClassService.findDetailPrivate(creatematerialDto.idclass);
+            material.priv = cariKelas;
+        }
+        material.link = creatematerialDto.link;
+        material.name = creatematerialDto.name;
+
+        const insertMaterial = await this.materialRepo.insert(material);
+        const result = await this.materialRepo.findOneOrFail({
+            where: { id: insertMaterial.identifiers[0].id },
+        });
+        return result;
+    } catch (e) {
+      throw e;
+    }
+  }
   
 
   
