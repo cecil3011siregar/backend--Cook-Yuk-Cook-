@@ -93,4 +93,20 @@ export class NotifikasiService {
         }
     }
 
+    async updateMessageNotif(id: string, updateMessageNotifikasiDto: UpdateMessageNotifikasiDto){
+        try{
+            await this.findNotifById(id)
+            const notifContent = new Notifikasi
+            notifContent.title = updateMessageNotifikasiDto.title
+            notifContent.message = updateMessageNotifikasiDto.message
+
+            await this.notifRepo.update(id, notifContent)
+            return await this.notifRepo.findOneOrFail({
+                where: {id}
+            })
+        }catch(e){
+            throw e
+        }
+    }
+
 }

@@ -78,4 +78,20 @@ export class NotifikasiController {
       message: 'Success',
     };
   }
+
+  @Put('/notif-content/:id')
+  async updateNotifContent(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateMessageNotifikasiDto: UpdateMessageNotifikasiDto,
+  ) {
+    const data = await this.notifikasiService.updateMessageNotif(
+      id,
+      updateMessageNotifikasiDto,
+    );
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
 }
