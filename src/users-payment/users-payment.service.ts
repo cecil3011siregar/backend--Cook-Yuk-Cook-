@@ -20,11 +20,11 @@ export class UsersPaymentService {
     async uploadPembayaran(pembayaranPengajuanDto : PembayaranPengajuanDto){
         try{
             const bank = await this.bankService.getBankById(pembayaranPengajuanDto.bank)
-            // const users = await this.usersService.getUsersById(pembayaranPengajuanDto.users)
+            const users = await this.usersService.getUsersById(pembayaranPengajuanDto.users)
             const regular = await this.regularService.findById(pembayaranPengajuanDto.regular)
             const upload = new UsersPayment
             upload.bank = bank
-            // upload.users = users
+            upload.users = users
             upload.regular = regular
             upload.date = pembayaranPengajuanDto.date
             upload.price  = pembayaranPengajuanDto.price

@@ -5,8 +5,8 @@ export class PembayaranPengajuanDto{
     @IsNotEmpty()
     bank: string;
 
-    // @IsNotEmpty()
-    // users: string;
+    @IsNotEmpty()
+    users: string;
 
     @IsNotEmpty()
     regular: string;
