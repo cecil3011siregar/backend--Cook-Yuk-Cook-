@@ -59,4 +59,12 @@ export class MaterialController {
             message: "Success"
         }
     }
+
+    @Delete('/del/:id')
+    async deleteMaterial(@Param('id', ParseUUIDPipe) id: string){
+        return {
+            statusCode: HttpStatus.OK,
+            message: await this.materialService.deleteMaterial(id)
+        }
+    }
 }

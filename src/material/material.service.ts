@@ -105,4 +105,15 @@ export class MaterialService {
       throw e
     }
   }
+
+  async deleteMaterial(id: string){
+    try{
+      await this.findMaterialById(id)
+      
+      await this.materialRepo.softDelete(id)
+      return "Success"
+    }catch(e){
+      throw e
+    }
+  }
 }
