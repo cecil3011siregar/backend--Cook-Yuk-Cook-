@@ -1,12 +1,10 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { Entity, EntityNotFoundError, Repository } from 'typeorm';
 import { Material } from './entities/material.entity';
 import { RegularClassService } from '#/regular-class/regular-class.service';
 import { CreateMaterialDto } from './dto/create-material.dto';
 import { PrivateClassService } from '#/private-class/private-class.service';
-import { RegularClass } from '#/regular-class/entities/regular-class.entity';
-import { PrivateClass } from '#/private-class/entities/private-class.entity';
 
 @Injectable()
 export class MaterialService {
@@ -48,7 +46,45 @@ export class MaterialService {
       throw e;
     }
   }
-  
 
-  
+  async findMaterialByClass(id: string){
+    try{
+      const materialByClass = await this.materialRepo.findOneOrFail({
+        where:[{regular:{id}}, {priv:{id}}],
+      relations: {regular: true, priv: true}})
+      // console.log(materialByClass, "halo")
+      return materialByClass;
+    }catch(e){
+      if(e instanceof EntityNotFoundError){
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: "Data Not Found"
+          },
+          HttpStatus.NOT_FOUND
+        )
+      }else{
+        throw e
+      }
+    }
+  }
+
+  async findMaterialById(id: string){
+    try{
+      return await this.materialRepo.findOneOrFail({where:{id},relations:{regular: true, priv:true}})
+    }catch(e){
+      if(e instanceof EntityNotFoundError){
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: "Data Not Found"
+          },
+          HttpStatus.NOT_FOUND
+        )
+      }else{
+        throw e
+      }
+    }
+  }
+
 }
