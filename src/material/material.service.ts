@@ -5,6 +5,7 @@ import { Material } from './entities/material.entity';
 import { RegularClassService } from '#/regular-class/regular-class.service';
 import { CreateMaterialDto } from './dto/create-material.dto';
 import { PrivateClassService } from '#/private-class/private-class.service';
+import { UpdateMaterialDto } from './dto/update-material.dto';
 
 @Injectable()
 export class MaterialService {
@@ -87,4 +88,21 @@ export class MaterialService {
     }
   }
 
+  async updateMaterial(id: string, updateMaterialDto: UpdateMaterialDto){
+    try{
+      const material = await this.findMaterialById(id)
+      if((material.regular && material.regular.id !== updateMaterialDto.idclass) || 
+        (material.priv && material.priv.id !== updateMaterialDto.idclass)){
+        throw new BadRequestException("ID Class tidak ditemukan!")
+      }
+      material.name = updateMaterialDto.name
+      material.link = updateMaterialDto.link
+
+      await this.materialRepo.update(id, material)
+      // console.log(material, "halo")
+      return await this.materialRepo.findOneOrFail({where:[{id}, {regular:{id}}, {priv:{id}}]})
+    }catch(e){
+      throw e
+    }
+  }
 }
