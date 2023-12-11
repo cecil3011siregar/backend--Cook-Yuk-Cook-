@@ -8,8 +8,18 @@ import { ApproveRejectPrivateDto } from './dto/approve-reject-private-class.dto'
 export class PrivateClassController {
     constructor(
         private privateService: PrivateClassService
-    ){}
-
+        ){}
+        
+        @Put('/reject/:id')
+        async reject(@Param('id', ParseUUIDPipe)id: string, @Body()approveRejectDto: ApproveRejectPrivateDto){
+            console.log(approveRejectDto)
+            const data = await this.privateService.reject(id, approveRejectDto)
+            return {
+                data,
+                statusCode: HttpStatus.OK,
+                message: "Success"
+            }
+        }
     @Get()
     async getAllPrivate(){
         const [data, count] = await this.privateService.findAll()
@@ -62,12 +72,13 @@ export class PrivateClassController {
     }
 
     @Put('/approve/:id')
-    async ApproveReject(@Param('id', ParseUUIDPipe)id: string, @Body()approveRejectDto: ApproveRejectPrivateDto){
-        const data = await this.privateService.approveReject(id, approveRejectDto)
+    async approve(@Param('id', ParseUUIDPipe)id: string){
+        const data = await this.privateService.approve(id)
         return {
             data,
             statusCode: HttpStatus.OK,
             message: "Success"
         }
     }
+
 }

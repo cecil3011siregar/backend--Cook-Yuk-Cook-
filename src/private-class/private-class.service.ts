@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PrivateClass } from './entities/private-class.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
@@ -89,16 +89,38 @@ export class PrivateClassService {
             }
         }
     }
-    async approveReject(id: string, approveRejectDto : ApproveRejectPrivateDto){
+    async approve(id: string){
         try{
             await this.findDetailPrivate(id)
+            const status:any = "approve"
             const cekPrivate = new PrivateClass
-            cekPrivate.status = approveRejectDto.status
-
+            cekPrivate.status = status
             await this.privateRepo.update(id, cekPrivate)
             return await this.privateRepo.findOneOrFail({
                 where:{id}
             })
+        }catch(e){
+            throw e
+        }
+    }
+
+    async reject(id: string, approveRejectDto: ApproveRejectPrivateDto){
+        try{
+            const cariStatus = await this. findDetailPrivate(id)
+            console.log(approveRejectDto.alasan_tolak)
+            if(cariStatus.status === "pending"){
+                const cekPrivate = new PrivateClass
+                cekPrivate.status = approveRejectDto.status
+                cekPrivate.alasan = approveRejectDto.alasan_tolak
+                await this.privateRepo.update(id, cekPrivate)
+                
+                return await this.privateRepo.findOneOrFail({
+                    where:{id}
+                })
+            }else{
+                throw new BadRequestException ("kelas tidak ketemu")
+            }
+
         }catch(e){
             throw e
         }

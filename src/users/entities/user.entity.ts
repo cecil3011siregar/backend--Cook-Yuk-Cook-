@@ -56,6 +56,9 @@ export class Users_cyc{
     })
     status: statusUser;
 
+    @Column({type:"varchar", nullable:true})
+    alasan: string
+
     @CreateDateColumn({
         type: "timestamp with time zone",
         nullable: false

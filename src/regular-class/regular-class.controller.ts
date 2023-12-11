@@ -3,6 +3,7 @@ import { RegularClassService } from './regular-class.service';
 import { CreateReadStreamOptions } from 'fs/promises';
 import { CreateRegClassDto } from './dto/create-regular-class.dto';
 import { UpdateRegClassDto } from './dto/update-regular-class.dto';
+import { ApproveRejectRegularDto } from './dto/approve-reject-regular.dto';
 
 @Controller('regular-class')
 export class RegularClassController {
@@ -37,6 +38,26 @@ export class RegularClassController {
         return{
             data,
             StatusCode: HttpStatus.CREATED,
+            message: "Success"
+        }
+    }
+
+    @Put('/approve/:id')
+    async approve (@Param('id', ParseUUIDPipe)id: string){
+        const data = await this.regularClassService.approveRegular(id)
+        return {
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
+
+    @Put('/reject/:id')
+    async reject (@Param('id', ParseUUIDPipe)id: string, @Body()approveRejectRegularDto: ApproveRejectRegularDto){
+        const data = await this.regularClassService.rejectRegular(id, approveRejectRegularDto)
+        return {
+            data,
+            statusCode: HttpStatus.OK,
             message: "Success"
         }
     }

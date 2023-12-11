@@ -50,8 +50,18 @@ export class UsersController {
 
     @UseGuards(AuthGuard('jwt'))
     @Put('approve/:id')
-    async approve(@Param('id', ParseUUIDPipe) id: string, @Body() approveRejectDto:  ApproveRejectDto){
-        const data = await this.usersService.approveRejectKitchen(id, approveRejectDto)
+    async approve(@Param('id', ParseUUIDPipe) id: string){
+        const data = await this.usersService.approveKitchen(id)
+        return {
+            data,
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
+
+    @Put('reject/:id')
+    async reject(@Param('id', ParseUUIDPipe) id: string, @Body()approveRejectDto: ApproveRejectDto){
+        const data = await this.usersService.rejectKitchen(id, approveRejectDto)
         return {
             data,
             statusCode: HttpStatus.OK,

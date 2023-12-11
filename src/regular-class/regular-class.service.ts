@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegularClass } from './entities/regular-class.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
@@ -6,6 +6,7 @@ import { KitchenStudioService } from '#/kitchen_studio/kitchen_studio.service';
 import { TrainingThemeService } from '#/training_theme/training_theme.service';
 import { CreateRegClassDto } from './dto/create-regular-class.dto';
 import { UpdateRegClassDto } from './dto/update-regular-class.dto';
+import { ApproveRejectRegularDto } from './dto/approve-reject-regular.dto';
 
 @Injectable()
 export class RegularClassService {
@@ -67,17 +68,21 @@ export class RegularClassService {
 
     async updatePengajuan(id: string, updateRegClassDto: UpdateRegClassDto){
         try{
-            await this.findById(id)
-            const theme = await this.trainingThemeService.findOneById(updateRegClassDto.theme_id)
-            const pengajuan = new RegularClass
-            pengajuan.theme = theme
-            pengajuan.courseName = updateRegClassDto.courseName
-
-            await this.regClassRepo.update(id, pengajuan)
-
-            return await this.regClassRepo.findOneOrFail({
-                where:{id}
-            })
+            const cariRegular = await this.findById(id)
+            if(cariRegular.status === "pending"){
+                const theme = await this.trainingThemeService.findOneById(updateRegClassDto.theme_id)
+                const pengajuan = new RegularClass
+                pengajuan.theme = theme
+                pengajuan.courseName = updateRegClassDto.courseName
+    
+                await this.regClassRepo.update(id, pengajuan)
+    
+                return await this.regClassRepo.findOneOrFail({
+                    where:{id}
+                })
+            }else{
+                throw new BadRequestException("Tidak dapat mengubah data pengajuan kelas!")
+            }
         }catch(e){
             throw e
         }
@@ -92,5 +97,36 @@ export class RegularClassService {
         }catch(e){
             console.log("ga ada")
         }
+    }
+
+    async approveRegular(id: string){
+        try{
+            await this.findById(id)
+            const approve: any = "approve"
+            const regular = new RegularClass
+            regular.status = approve
+            await this.regClassRepo.update(id, regular)
+            return await this.regClassRepo.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+            throw e
+        } 
+    }
+
+    async rejectRegular(id: string, approveRejectRegularDto: ApproveRejectRegularDto){
+        try{
+            await this.findById(id)
+            const regular = new RegularClass
+            regular.status = approveRejectRegularDto.status
+            regular.alasan = approveRejectRegularDto.alasan
+
+            await this.regClassRepo.update(id, regular)
+            return await this.regClassRepo.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+            throw e
+        } 
     }
 }

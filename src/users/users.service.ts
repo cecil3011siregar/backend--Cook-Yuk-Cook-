@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users_cyc, statusUser } from './entities/user.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
@@ -114,16 +114,36 @@ export class UsersService {
     }
   }
 
-  async approveRejectKitchen(id: string, approveRejectDto: ApproveRejectDto) {
+  async approveKitchen(id: string) {
     try {
       await this.getUsersById(id);
+      const approve : any = "active"
       const users = new Users_cyc();
-      users.status = approveRejectDto.status;
+      users.status = approve;
 
       await this.usersRepo.update(id, users);
       return await this.usersRepo.findOneOrFail({
         where: { id },
       });
+    } catch (e) {
+      throw e;
+    }
+  }
+  async rejectKitchen(id: string, approveRejectDto: ApproveRejectDto) {
+    try {
+      const findStatus = await this.getUsersById(id);
+      if(findStatus.status === "pending"){
+        const users = new Users_cyc();
+        users.status = approveRejectDto.status;
+        users.alasan = approveRejectDto.alasan;
+  
+        await this.usersRepo.update(id, users);
+        return await this.usersRepo.findOneOrFail({
+          where: { id },
+        });
+      }else{
+        throw new BadRequestException ('NOT FOUND!')
+      }
     } catch (e) {
       throw e;
     }
