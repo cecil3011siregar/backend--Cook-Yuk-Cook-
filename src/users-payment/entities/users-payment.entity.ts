@@ -2,7 +2,6 @@ import { Bank } from "#/bank/entities/bank.entity";
 import { PrivateClass } from "#/private-class/entities/private-class.entity";
 import { RegularClass } from "#/regular-class/entities/regular-class.entity";
 import { Users_cyc } from "#/users/entities/user.entity";
-import { stat } from "fs";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryColumnCannotBeNullableError, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum type{
@@ -53,7 +52,8 @@ export class UsersPayment{
     uniqueCode: string;
 
     @Column({
-        type:"text"
+        type:"text",
+        nullable: true
     })
     photoProof : string;
 
@@ -64,6 +64,9 @@ export class UsersPayment{
     })
     status: statusPay;
 
+    @Column({type: "varchar", nullable:true})
+    alasan: string;
+    
     @CreateDateColumn({
         type: "timestamp with time zone",
         nullable: false

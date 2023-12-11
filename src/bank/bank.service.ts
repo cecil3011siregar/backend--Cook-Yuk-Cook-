@@ -24,7 +24,7 @@ export class BankService {
     async getBankById(id: string){
         try {
             return await this.bankRepository.findOneOrFail({
-                where: {id}
+                where: {id}, relations:{users: true}
 
                 // relations: {foreignkey: true}  // add else for foreign key (change foreignkey)
             })
@@ -93,12 +93,5 @@ export class BankService {
             throw e
         }
     }
-
-
-
-
-
-
-
 
 }

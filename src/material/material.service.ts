@@ -50,7 +50,7 @@ export class MaterialService {
 
   async findMaterialByClass(id: string){
     try{
-      const materialByClass = await this.materialRepo.findOneOrFail({
+      const materialByClass = await this.materialRepo.findAndCount({
         where:[{regular:{id}}, {priv:{id}}],
       relations: {regular: true, priv: true}})
       // console.log(materialByClass, "halo")

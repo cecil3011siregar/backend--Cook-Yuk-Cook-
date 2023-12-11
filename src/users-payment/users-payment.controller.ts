@@ -16,6 +16,7 @@ import { join } from 'path';
 import { of } from 'rxjs';
 import { UsersPaymentService } from './users-payment.service';
 import { PembayaranPengajuanDto } from './dto/pembayaran-pengajuan.dto';
+import { BookingRegularDto } from './dto/booking-regular.dto';
 
 @Controller('users-payment')
 export class UsersPaymentController {
@@ -53,4 +54,14 @@ export class UsersPaymentController {
     ) {
         return of(res.sendFile(join(process.cwd(), `upload/payment/${imagePath}`)));
     }
+
+    @Post('booking-regular')
+    async BookingRegular(@Body()bookingRegularDto: BookingRegularDto){
+        const data = await this.usersPaymentService.bookingRegular(bookingRegularDto)
+        return{
+            data,
+            statusCode: HttpStatus.CREATED,
+            message:"Success"
+        }
     }
+}

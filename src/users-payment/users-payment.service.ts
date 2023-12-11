@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { BankService } from '#/bank/bank.service';
 import { RegularClassService } from '#/regular-class/regular-class.service';
 import { UsersService } from '#/users/users.service';
+import { BookingRegularDto } from './dto/booking-regular.dto';
+import { RegularClassController } from '#/regular-class/regular-class.controller';
 @Injectable()
 export class UsersPaymentService {
     constructor(
@@ -27,7 +29,7 @@ export class UsersPaymentService {
             upload.users = users
             upload.regular = regular
             upload.date = pembayaranPengajuanDto.date
-            upload.price  = pembayaranPengajuanDto.price
+            upload.price  = regular.price
             upload. totalPayment = upload.price
             upload.type = pembayaranPengajuanDto.typePay
             upload.photoProof =pembayaranPengajuanDto.photoProof
