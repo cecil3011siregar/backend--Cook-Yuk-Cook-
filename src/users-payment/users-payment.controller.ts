@@ -10,6 +10,8 @@ import {
   HttpStatus,
   Body,
   ParseUUIDPipe,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storagePayment } from './helpers/upload-payment-image';
@@ -19,29 +21,19 @@ import { UsersPaymentService } from './users-payment.service';
 import { PembayaranPengajuanDto } from './dto/update-pembayaran-pengajuan.dto';
 import { BookingKelasDto } from './dto/booking-kelas.dto';
 import { PengajuanKelasDto } from './dto/pembayaran-pengajuan-kelas.dto';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('users-payment')
 export class UsersPaymentController {
   constructor(private usersPaymentService: UsersPaymentService) {}
   
  
-  @Get()
-  async getAllUsersPayment(){
-    const [data, count] = await this.usersPaymentService.findAll()
+  @Get('/payment-pengajuan')
+  async getPengajuanKelas(){
+    const data = await this.usersPaymentService.findUsersPaymentPengajuan()
     return {
-        data,
-        count,
-        statusCode:HttpStatus.OK,
-        message:"Success"
-    }
-  }
-
-  @Get('/:id')
-  async getUsersPaymentById(@Param('id', ParseUUIDPipe)id: string){
-    const data = await this.usersPaymentService.findById(id)
-    return {
-        data,
-        statusCode: HttpStatus.OK,
-        mesasge:"Success"
+      data,
+      statusCode: HttpStatus.OK,
+      message:"Success"
     }
   }
   @Get('type')
@@ -62,12 +54,76 @@ export class UsersPaymentController {
           message: "Success"
       }
   }
+  @Get()
+  async getAllUsersPayment(){
+    const [data, count] = await this.usersPaymentService.findAll()
+    return {
+        data,
+        count,
+        statusCode:HttpStatus.OK,
+        message:"Success"
+    }
+  }
+
+  // @Get('/:id')
+  // async getUsersPaymentById(@Param('id', ParseUUIDPipe)id: string){
+  //   const data = await this.usersPaymentService.findById(id)
+  //   return {
+  //       data,
+  //       statusCode: HttpStatus.OK,
+  //       mesasge:"Success"
+  //   }
+  // }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:id')
+  async getUsersPaymentById(@Req() req ){
+    const idKitchen = req.user.id
+    const data = await this.usersPaymentService.findPaymentTraineeByKitchen(idKitchen)
+    return {
+        data,
+        statusCode: HttpStatus.OK,
+        mesasge:"Success"
+    }
+  }
+
+  @Get('/all-trainee/:id')
+  async getblabla(@Param('id', ParseUUIDPipe)id: string){
+    const data = await this.usersPaymentService.findAllUsersPaymentTrainee(id)
+    return {
+        data,
+        statusCode: HttpStatus.OK,
+        mesasge:"Success"
+    }
+  }
+
+  @Get('/payment-trainee/:id')
+  async getUsersPaymentBytrainee(@Param('id', ParseUUIDPipe) id:string){
+    const [data, count] = await this.usersPaymentService.findUsersPaymentByTrainee(id)
+    return{
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: "Success"
+    }
+  }
+
+  @Get('/payment-kitchen/:id')
+  async getUsersPaymentByKitchen(@Param('id', ParseUUIDPipe) id:string){
+    const [data, count] = await this.usersPaymentService.findUsersPaymentByKitchen(id)
+    return{
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: "Success"
+    }
+  }
 
   @Post('/pay')
   async pembayaranPengajuan(
     @Body() pembayaranPengajuanDto: PembayaranPengajuanDto,
   ) {
-    const data = await this.usersPaymentService.uploadPembayaran(
+    const data = await this.usersPaymentService.bookingPengajuan(
       pembayaranPengajuanDto,
     );
     return {

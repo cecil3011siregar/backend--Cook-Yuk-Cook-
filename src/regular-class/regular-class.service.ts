@@ -7,6 +7,8 @@ import { TrainingThemeService } from '#/training_theme/training_theme.service';
 import { CreateRegClassDto } from './dto/create-regular-class.dto';
 import { UpdateRegClassDto } from './dto/update-regular-class.dto';
 import { ApproveRejectRegularDto } from './dto/approve-reject-regular.dto';
+import { JumlahBenchesDto } from './dto/update-jumlah-benches.dto';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class RegularClassService {
@@ -14,7 +16,8 @@ export class RegularClassService {
         @InjectRepository(RegularClass)
         private regClassRepo: Repository<RegularClass>,
         private trainingThemeService: TrainingThemeService,
-        private kitchenStudioService: KitchenStudioService
+        private kitchenStudioService: KitchenStudioService,
+        private usersService: UsersService
     ){}
 
     getAll(){
@@ -24,7 +27,8 @@ export class RegularClassService {
     async findById(id: string){
         try{
             return await this.regClassRepo.findOneOrFail({
-                where:{id}
+                where:{id},
+                relations:{kitchen:{users:true}}
             })
         }catch(e){
             if(e instanceof EntityNotFoundError){
@@ -90,7 +94,7 @@ export class RegularClassService {
     async regClassByKitchen(id:string){
         try{
             const kitchen = await this.kitchenStudioService.getKitchenStudioById(id)
-            return await this.regClassRepo.findAndCount({
+            return await this.regClassRepo.findOne({
                 where:{kitchen:{id:kitchen.id}}
             })
         }catch(e){
@@ -127,5 +131,33 @@ export class RegularClassService {
         }catch(e){
             throw e
         } 
+    }
+
+    async updateJumlahBenches(id: string, updateJumlahBenchesDto: JumlahBenchesDto){
+        try{
+            await this.findById(id)
+            const benches = new RegularClass()
+            benches.numberOfBenches = updateJumlahBenchesDto.numberOfBenches
+
+            await this.regClassRepo.update(id, benches)
+            return await this.regClassRepo.findOneOrFail({
+            where:{id}
+            })
+        }catch(e){
+            throw e
+        }
+    }
+
+    async findRegClassByUsersKitchen(id: string){
+        try{
+            const coba = await this.usersService.getUsersById(id)
+            console.log(coba.id, "halo")
+            return await this.regClassRepo.findOneOrFail({
+                where:{kitchen:{users:{id:id}}},
+                // relations:{kitchen:{users:true}, usersPay:true}
+            })
+        }catch(e){
+            throw e
+        }
     }
 }

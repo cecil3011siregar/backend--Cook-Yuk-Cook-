@@ -54,6 +54,7 @@ export class UsersPaymentService {
     }
   }
 
+  //users payment by type
   async findByType(inputType: string) {
     let typePay: any;
     if (inputType === 'regular class') {
@@ -74,6 +75,7 @@ export class UsersPaymentService {
     }
   }
 
+  //users payment by status
   async findByStatus(inputStatus: string) {
     let statusPayment: any;
     if (inputStatus === 'approve') {
@@ -96,22 +98,96 @@ export class UsersPaymentService {
     }
   }
 
-  async uploadPembayaran(pembayaranPengajuanDto: PembayaranPengajuanDto) {
+  //list pengajuan kelas (pending)
+  async findUsersPaymentPengajuan() {
     try {
-      const bank = await this.bankService.getBankById(
-        pembayaranPengajuanDto.bank,
-      );
+      const data = await this.usersPayRepo.find({
+        where: { type: type.CLASSPROP, status: statusPay.PENDING },
+      });
+      return data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  //list pembayaran trainee by trainee
+  async findUsersPaymentByTrainee(id: string) {
+    try {
+      const trainee = await this.usersService.getUsersById(id);
+      return await this.usersPayRepo.findAndCount({
+        where: { users: { id: trainee.id } },
+      });
+    } catch (e) {
+      throw e;
+    }
+    }
+
+    async findAllUsersPaymentTrainee(id:string){
+      try{
+        const users = await this.usersService.findUserByRole(id)
+        console.log(users, "oi")
+        return await this.usersPayRepo.find({
+          where:{users:{id:users.id}}
+        })
+      }catch(e){
+        throw e
+      }
+    }
+    //list pembayaran kitchen studio by kitchen studio
+    async findUsersPaymentByKitchen(id: string){
+      const kitchen = await this.usersService.getUsersById(id)
+      return await this.usersPayRepo.findAndCount({
+        where:{users:{id:kitchen.id}}
+      })
+    }
+    async findd(id: string){
+      try{
+        const cari = await this.regularService.findById(id)
+        console.log(cari.id, "ini id")
+        console.log(cari.kitchen.users)
+        return await this.usersPayRepo.find({
+          where:{regular:{id:cari.id}}
+        })
+      }catch(e){
+        throw e
+      }
+    }
+    //list pembayaran trainee by kitchen studio
+    async findPaymentTraineeByKitchen(idKitchen: string){
+      try{
+        const kitchen = await this.usersService.getUsersById(idKitchen)
+        const cari = await this.regularService.regClassByKitchen(kitchen.id)
+        console.log(cari)
+        if(!cari){
+          throw new Error("Kelas regular tidak tersedia!")
+        }
+        console.log(cari, "halo")
+        return await this.usersPayRepo.find({
+          where:{regular:{id: cari.id}},
+          relations:{regular:true, users:true}
+        })
+      }catch(e){throw e}
+    }
+
+    //transaksi pengajuan kelas
+  async bookingPengajuan(pembayaranPengajuanDto: PembayaranPengajuanDto) {
+    try {
+      // const bank = await this.bankService.getBankById(
+      //   pembayaranPengajuanDto.bank,
+      // );
       const users = await this.usersService.getUsersById(
         pembayaranPengajuanDto.users,
       );
       const regular = await this.regularService.findById(
         pembayaranPengajuanDto.regular,
       );
+      const date = new Date()
+      console.log(date.toLocaleString(), "tanggal")
       const upload = new UsersPayment();
       // upload.bank = bank;
       upload.users = users;
       upload.regular = regular;
-      upload.date = pembayaranPengajuanDto.date;
+      upload.date = date
       upload.price = regular.price;
       upload.totalPayment = upload.price;
       upload.type = pembayaranPengajuanDto.typePay;
@@ -127,6 +203,7 @@ export class UsersPaymentService {
     }
   }
 
+  //booking kelas regular
   async bookingKelasTrainee(bookingKelasDto: BookingKelasDto) {
     try {
       const users = await this.usersService.getUsersById(bookingKelasDto.users);
@@ -135,10 +212,10 @@ export class UsersPaymentService {
       const regular = await this.regularService.findById(
         bookingKelasDto.idclass,
       );
-      if (regular.numberOfBenches > 0) {
-        regular.numberOfBenches--;
-      }
-      console.log(regular, 'bangku');
+      // if (regular.numberOfBenches > 0) {
+      //   regular.numberOfBenches--;
+      // }
+      // console.log(regular, 'bangku');
       const date = new Date();
       console.log(date.toLocaleString(), 'tanggal');
       const booking = new UsersPayment();
@@ -163,6 +240,7 @@ export class UsersPaymentService {
     }
   }
 
+  //booking kelas private
   async bookingPrivateTrainee(bookingKelasDto: BookingKelasDto) {
     try {
       const users = await this.usersService.getUsersById(bookingKelasDto.users);
