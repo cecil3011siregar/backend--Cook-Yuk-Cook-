@@ -22,8 +22,19 @@ export class UsersPayment{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column({length: 36, nullable: true})
+    order_id:string;
+
+    @Column({type: "varchar", nullable: true})
+    va_number:string;
+
+    @Column({type: "varchar", nullable:true})
+    payment_method: string;
+
+    @Column({type: "varchar", nullable:true})
+    bank: string;
     @Column({
-        type: "date",
+        type: "timestamp",
     })
     date: Date;
 
@@ -87,8 +98,8 @@ export class UsersPayment{
 
     @ManyToOne(() => Users_cyc, (users) => users.usersPay)
     users: Users_cyc;
-    @ManyToOne(() => Bank, (bank) => bank.usersPay)
-    bank: Bank;
+    // @ManyToOne(() => Bank, (bank) => bank.usersPay)
+    // bank: Bank;
     @ManyToOne(() => RegularClass, (regular) => regular.usersPay)
     regular: RegularClass;
     @ManyToOne(() => PrivateClass, (privclass) => privclass.usersPay)

@@ -31,12 +31,12 @@ export class RegularClass {
   courseName: string;
 
   @Column({
-    type:"date"
+    type:"timestamp"
   })
   startDate: Date;
 
   @Column({
-    type:"date"
+    type:"timestamp"
   })
   endDate: Date;
 

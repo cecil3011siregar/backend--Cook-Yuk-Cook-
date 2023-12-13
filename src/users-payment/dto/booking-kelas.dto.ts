@@ -1,21 +1,24 @@
 import { IsNotEmpty } from "class-validator";
 import { type } from "../entities/users-payment.entity";
 
-export class BookingRegularDto{
-    @IsNotEmpty()
-    bank: string;
+export class BookingKelasDto{
+
+    // @IsNotEmpty()
+    // bank: string;
 
     @IsNotEmpty()
     users: string;
 
     @IsNotEmpty()
-    regular: string;
-
-    @IsNotEmpty()
-    date: Date;
+    idclass: string;
 
     // @IsNotEmpty()
-    // price: number;
+    // date: Date;
+
+    price: number;
+
+    // @IsNotEmpty()
+    // totalPayment: number;
     
     @IsNotEmpty()
     typePay: type;

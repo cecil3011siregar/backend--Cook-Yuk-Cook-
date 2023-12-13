@@ -24,10 +24,10 @@ export class PrivateClass {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({type:"date"})
+  @Column({type:"timestamp"})
   startDate: Date;
 
-  @Column({type:"date"})
+  @Column({type:"timestamp"})
   endDate: Date;
 
   @Column({

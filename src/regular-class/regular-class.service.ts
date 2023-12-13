@@ -87,7 +87,6 @@ export class RegularClassService {
             throw e
         }
     }
-
     async regClassByKitchen(id:string){
         try{
             const kitchen = await this.kitchenStudioService.getKitchenStudioById(id)
