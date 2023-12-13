@@ -98,5 +98,27 @@ export class UsersPaymentController {
     return of(res.sendFile(join(process.cwd(), `upload/payment/${imagePath}`)));
   }
 
- 
+  @Post('booking-regular')
+  async BookingRegular(@Body() bookingKelasDto: BookingKelasDto) {
+    const data = await this.usersPaymentService.bookingKelasTrainee(
+      bookingKelasDto,
+    );
+    return {
+      data,
+      statusCode: HttpStatus.CREATED,
+      message: 'Success',
+    };
+  }
+
+  @Post('booking-private')
+  async bookingPrivate(@Body() bookingKelasDto: BookingKelasDto) {
+    const data = await this.usersPaymentService.bookingPrivateTrainee(
+      bookingKelasDto,
+    );
+    return {
+      data,
+      statusCode: HttpStatus.CREATED,
+      message: 'Success',
+    };
+  }
 }
