@@ -44,6 +44,24 @@ export class UsersPaymentController {
         mesasge:"Success"
     }
   }
+  @Get('type')
+  async getUsersPaymentByType(@Query('inputType') inputType: string){
+    const data = await this.usersPaymentService.findByType(inputType)
+    return{
+      data,
+      statusCode: HttpStatus.OK,
+      message: "Success"
+    }
+  }
+  @Get('status')
+    async getusersPaymentByStatus(@Query('inputStatus') inputStatus: string){
+      const data = await this.usersPaymentService.findByStatus(inputStatus)
+      return{
+          data,
+          statusCode: HttpStatus.OK,
+          message: "Success"
+      }
+  }
 
   @Post('/pay')
   async pembayaranPengajuan(

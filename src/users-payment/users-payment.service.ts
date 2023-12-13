@@ -54,6 +54,48 @@ export class UsersPaymentService {
     }
   }
 
+  async findByType(inputType: string) {
+    let typePay: any;
+    if (inputType === 'regular class') {
+      typePay = type.REGCLASS;
+    } else if (inputType === 'private class') {
+      typePay = type.PRIVCLASS;
+    } else if (inputType === 'class proposal') {
+      typePay = type.CLASSPROP;
+    }
+    try {
+      console.log(typePay, 'ini type');
+      const result = await this.usersPayRepo.find({
+        where: { type: typePay },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async findByStatus(inputStatus: string) {
+    let statusPayment: any;
+    if (inputStatus === 'approve') {
+      statusPayment = statusPay.APPROVE;
+    } else if (inputStatus === 'reject') {
+      statusPayment = statusPay.REJECT;
+    } else if (inputStatus === 'pending') {
+      statusPayment = statusPay.PENDING;
+    } else if (inputStatus === 'done paid') {
+      statusPayment = statusPay.DONEPAID;
+    }
+    try {
+      console.log(statusPayment, 'ini status');
+      const result = await this.usersPayRepo.find({
+        where: { status: statusPayment },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async uploadPembayaran(pembayaranPengajuanDto: PembayaranPengajuanDto) {
     try {
       const bank = await this.bankService.getBankById(
