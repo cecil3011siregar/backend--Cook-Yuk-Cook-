@@ -6,7 +6,7 @@ import { LevelUsersService } from '#/level-users/level-users.service';
 import { UpdateUsersDto } from './dto/update-user.dto';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
-import { ApproveRejectDto } from './dto/approve-Reject.dto';
+import { ApproveRejectDto } from './dto/approve-reject.dto';
 import { UpdateKitchenDto } from './dto/updateKitchen-user.dto';
 import { UpdatePasswordDto } from './dto/updatePassword-user.dto';
 import * as bcrypt from 'bcrypt';

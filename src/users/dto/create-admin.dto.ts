@@ -8,7 +8,7 @@ export class CreateAdminDto{
     name: string;
 
     @IsNotEmpty()
-    @IsEmail()
+    // @IsEmail()
     email: string;
 
     @IsNotEmpty()

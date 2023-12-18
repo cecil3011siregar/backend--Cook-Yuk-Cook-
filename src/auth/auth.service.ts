@@ -94,8 +94,10 @@ export class AuthService {
         try{
             // cari data user by email
         const emailOne = await this.usersRepo.findOne({
-            where:{email:loginUsersDto.email}
+            where:{email:loginUsersDto.email},
+            relations:{level: true}
         })
+
 
         if(!emailOne){
             throw new HttpException(
@@ -123,7 +125,8 @@ export class AuthService {
         const payload = {
             id: emailOne.id,
             name: emailOne.name,
-            email: emailOne.email
+            email: emailOne.email,
+            role: emailOne.level.name
         }
         return {
             access_token: await this.jwtService.signAsync(payload)

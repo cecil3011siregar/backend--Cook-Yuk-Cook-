@@ -1,7 +1,7 @@
 import { PrivateClass } from "#/private-class/entities/private-class.entity";
 import { RegularClass } from "#/regular-class/entities/regular-class.entity";
 import { Training_theme } from "#/training_theme/entities/training_theme.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Material{
@@ -37,4 +37,7 @@ export class Material{
 
       @ManyToOne(()=>PrivateClass, (priv)=>priv.material)
       priv:PrivateClass;
+
+      @OneToMany(() =>Training_theme, (theme)=> theme.material)
+      theme: Training_theme
 }

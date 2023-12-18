@@ -3,7 +3,7 @@ import { IsEmail, IsEmpty, IsEnum, IsMobilePhone, IsNotEmpty, IsOptional } from 
 import { IsNull } from "typeorm";
 
 export class RegisterDto{
-    @IsNotEmpty()
+    @IsOptional()
     level: string;
 
     @IsNotEmpty()

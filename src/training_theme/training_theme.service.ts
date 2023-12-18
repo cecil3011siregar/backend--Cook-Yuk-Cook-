@@ -39,8 +39,8 @@ export class TrainingThemeService {
     async findOneById(id: string){
         try {
             return await this.training_themeRepository.findOneOrFail({
-                where: {id}
-                // relations: {trainee: true} // untuk foreign key
+                where: {id},
+                relations: {regular: true} // untuk foreign key
         })
 
         } catch (e) {
