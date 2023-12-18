@@ -1,4 +1,5 @@
 import { Bank } from "#/bank/entities/bank.entity";
+import { KitchenPayment } from "#/kitchen-payment/entity/kitchen-payment.entity";
 import { KitchenStudio } from "#/kitchen_studio/entities/kitchen_studio.entity";
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
 import { Notifikasi } from "#/notifikasi/entities/notifikasi.entity";
@@ -94,5 +95,8 @@ export class Users_cyc{
 
     @OneToMany(() => Notifikasi, (notif2) => notif2.sender)
     notif2: Notifikasi;
+    
+    @OneToMany(() => KitchenPayment, (kitchenPay) => kitchenPay.admin)
+    kitchenPay:KitchenPayment;
 
 }

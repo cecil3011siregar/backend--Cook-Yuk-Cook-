@@ -94,7 +94,7 @@ export class RegularClassService {
     async regClassByKitchen(id:string){
         try{
             const kitchen = await this.kitchenStudioService.getKitchenStudioById(id)
-            return await this.regClassRepo.findOne({
+            return await this.regClassRepo.find({
                 where:{kitchen:{id:kitchen.id}}
             })
         }catch(e){
@@ -152,7 +152,7 @@ export class RegularClassService {
         try{
             const coba = await this.usersService.getUsersById(id)
             console.log(coba.id, "halo")
-            return await this.regClassRepo.findOneOrFail({
+            return await this.regClassRepo.find({
                 where:{kitchen:{users:{id:id}}},
                 // relations:{kitchen:{users:true}, usersPay:true}
             })

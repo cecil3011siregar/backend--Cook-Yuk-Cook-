@@ -8,7 +8,7 @@ import { PembayaranPengajuanDto } from './dto/update-pembayaran-pengajuan.dto';
 import { storagePayment } from './helpers/upload-payment-image';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersPayment, statusPay, type } from './entities/users-payment.entity';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { EntityNotFoundError, In, Repository, getRepository } from 'typeorm';
 import { BankService } from '#/bank/bank.service';
 import { RegularClassService } from '#/regular-class/regular-class.service';
 import { UsersService } from '#/users/users.service';
@@ -17,12 +17,15 @@ import { PrivateClassService } from '#/private-class/private-class.service';
 import { PengajuanKelasDto } from './dto/pembayaran-pengajuan-kelas.dto';
 import { Type } from 'class-transformer';
 import { timeStamp } from 'console';
-import { timestamp } from 'rxjs';
+import { from, timestamp } from 'rxjs';
+import { RegularClass } from '#/regular-class/entities/regular-class.entity';
 @Injectable()
 export class UsersPaymentService {
   constructor(
     @InjectRepository(UsersPayment)
     private usersPayRepo: Repository<UsersPayment>,
+    @InjectRepository(RegularClass)
+    private regClassRepo: Repository<RegularClass>,
     private bankService: BankService,
     private regularService: RegularClassService,
     private privateService: PrivateClassService,
@@ -120,56 +123,91 @@ export class UsersPaymentService {
     } catch (e) {
       throw e;
     }
-    }
+  }
 
-    async findAllUsersPaymentTrainee(id:string){
-      try{
-        const users = await this.usersService.findUserByRole(id)
-        console.log(users, "oi")
-        return await this.usersPayRepo.find({
-          where:{users:{id:users.id}}
-        })
-      }catch(e){
-        throw e
-      }
-    }
-    //list pembayaran kitchen studio by kitchen studio
-    async findUsersPaymentByKitchen(id: string){
-      const kitchen = await this.usersService.getUsersById(id)
-      return await this.usersPayRepo.findAndCount({
-        where:{users:{id:kitchen.id}}
-      })
-    }
-    async findd(id: string){
-      try{
-        const cari = await this.regularService.findById(id)
-        console.log(cari.id, "ini id")
-        console.log(cari.kitchen.users)
-        return await this.usersPayRepo.find({
-          where:{regular:{id:cari.id}}
-        })
-      }catch(e){
-        throw e
-      }
-    }
-    //list pembayaran trainee by kitchen studio
-    async findPaymentTraineeByKitchen(idKitchen: string){
-      try{
-        const kitchen = await this.usersService.getUsersById(idKitchen)
-        const cari = await this.regularService.regClassByKitchen(kitchen.id)
-        console.log(cari)
-        if(!cari){
-          throw new Error("Kelas regular tidak tersedia!")
-        }
-        console.log(cari, "halo")
-        return await this.usersPayRepo.find({
-          where:{regular:{id: cari.id}},
-          relations:{regular:true, users:true}
-        })
-      }catch(e){throw e}
-    }
+  //list pembayaran kitchen studio by kitchen studio
+  async findUsersPaymentByKitchen(id: string) {
+    const kitchen = await this.usersService.getUsersById(id);
+    return await this.usersPayRepo.findAndCount({
+      where: { users: { id: kitchen.id } },
+    });
+  }
 
-    //transaksi pengajuan kelas
+  // list all pembayaran trainee & kitchen studio (by role)
+  async findAllUsersPaymentTraineeKitchen(id: string) {
+    try {
+      const users = await this.usersService.findUserByRole(id);
+      console.log(users, 'oi');
+      const users2 = users.map((items) => items.id);
+      console.log(users2, 'Halo');
+      const result = await this.usersPayRepo
+        .createQueryBuilder('users_payment')
+        .where('users_payment.users_id IN (:...usersIds)', { usersIds: users2 })
+        .getManyAndCount();
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // async findd(id: string){
+  //   try{
+  //     const cari = await this.regularService.findById(id)
+  //     console.log(cari.id, "ini id")
+  //     console.log(cari.kitchen.users)
+  //     return await this.usersPayRepo.find({
+  //       where:{regular:{id:cari.id}}
+  //     })
+  //   }catch(e){
+  //     throw e
+  //   }
+  // }
+  async findAllUsersPaymentTraineeKitchen2(id: string) {
+    try {
+      const users = await this.usersService.findUserByRole(id);
+      console.log(users, 'oi');
+      const users2 = users.map((items) => items.id);
+      console.log(users2, 'Halo');
+      const result = await this.usersPayRepo
+        .createQueryBuilder('users_payment')
+        .where('users_payment.users_id IN (:...usersIds)', { usersIds: users2 })
+        .getManyAndCount();
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  //list pembayaran trainee by kitchen studio
+  async findPaymentTraineeByKitchen(idKitchen: string) {
+    try {
+      // const kitchen = await this.usersService.getUsersById(idKitchen)
+      const cari = await this.regularService.findRegClassByUsersKitchen(
+        idKitchen,
+      );
+      const cari2 = await this.privateService.findPrivClassByUsersKitchen(
+        idKitchen,
+      );
+
+      const data1 = cari.map((regular) =>regular?.id ).filter((id) => id !== undefined);
+      console.log(data1);
+      const data2 = cari2.map((priv) => (priv?.id)).filter((id) => id !== undefined);
+      console.log(data2);
+      const result = await this.usersPayRepo.createQueryBuilder('users_payment')
+      .leftJoinAndSelect('users_payment.regular', 'regular_class', 'users_payment.regular_id = regular_class.id ')
+      .leftJoinAndSelect('users_payment.privclass', 'private_class', 'users_payment.privclass_id = private_class.id')
+      .where('(users_payment.regular_id IN (:...regIds) OR users_payment.privclass_id IN (:...privIds))', {regIds: data1, privIds:data2})
+      // .orWhere('users_payment.privclass_id IN (:...privIds)', {privIds:data2})
+      .andWhere('users_payment.status = :status', {status:'approve'})
+      .andWhere('users_payment.type IN (:...types)', {types:[type.REGCLASS, type.PRIVCLASS]})
+      .getMany()
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  //transaksi pengajuan kelas
   async bookingPengajuan(pembayaranPengajuanDto: PembayaranPengajuanDto) {
     try {
       // const bank = await this.bankService.getBankById(
@@ -181,13 +219,13 @@ export class UsersPaymentService {
       const regular = await this.regularService.findById(
         pembayaranPengajuanDto.regular,
       );
-      const date = new Date()
-      console.log(date.toLocaleString(), "tanggal")
+      const date = new Date();
+      console.log(date.toLocaleString(), 'tanggal');
       const upload = new UsersPayment();
       // upload.bank = bank;
       upload.users = users;
       upload.regular = regular;
-      upload.date = date
+      upload.date = date;
       upload.price = regular.price;
       upload.totalPayment = upload.price;
       upload.type = pembayaranPengajuanDto.typePay;
@@ -212,9 +250,13 @@ export class UsersPaymentService {
       const regular = await this.regularService.findById(
         bookingKelasDto.idclass,
       );
-      // if (regular.numberOfBenches > 0) {
-      //   regular.numberOfBenches--;
-      // }
+      let bangku;
+      if (regular.numberOfBenches > 0) {
+        bangku = { numberOfBenches: regular.numberOfBenches - 1 };
+      }
+
+      console.log(bangku, 'halo');
+      await this.regClassRepo.update(regular.id, bangku);
       // console.log(regular, 'bangku');
       const date = new Date();
       console.log(date.toLocaleString(), 'tanggal');
@@ -276,6 +318,15 @@ export class UsersPaymentService {
       return result;
     } catch (e) {
       throw e;
+    }
+  }
+
+  async transaksiAdminToKitchen(id:string){
+    try{
+      const cari = await this.regularService.findRegClassByUsersKitchen(id);
+      const cari2 = await this.privateService.findPrivClassByUsersKitchen(id);
+    }catch(e){
+      throw e
     }
   }
 }
