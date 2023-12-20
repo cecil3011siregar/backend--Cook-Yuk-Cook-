@@ -50,7 +50,7 @@ export class UsersService {
   async findUserByRole(id: string) {
     try {
       const level = await this.levelUsersService.getLevelById(id);
-      return await this.usersRepo.findAndCount({
+      return await this.usersRepo.findOneOrFail({
         where: { level: { id: level.id } },
       });
     } catch (e) {

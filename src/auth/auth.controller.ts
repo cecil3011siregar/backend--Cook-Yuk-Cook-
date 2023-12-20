@@ -9,25 +9,25 @@ export class AuthController {
         private authService: AuthService
     ){}
 
-    @Post('reg')
-    async registerK(@Body()registerDto: RegisterDto){
-        const data = await this.authService.register(registerDto)
+    // @Post('/reg')
+    // async register(@Body()registerDto: RegisterDto){
+    //     const data = await this.authService.register(registerDto)
+    //     return{
+    //         data,
+    //         statusCode: HttpStatus.CREATED,
+    //         message: "Success"
+    //     }
+    // }
+    
+    @Post('/register')
+    async registerUsers(@Body()registerUsersDto: RegisterDto){
+        const data = await this.authService.register(registerUsersDto)
         return{
             data,
             statusCode: HttpStatus.CREATED,
             message: "Success"
         }
     }
-    
-    // @Post('/register')
-    // async registerUsers(@Body()registerUsersDto: RegisterUsersDto){
-        // const data = await this.authService.register(registerUsersDto)
-        // return{
-        //     data,
-        //     statusCode: HttpStatus.CREATED,
-        //     message: "Success"
-        // }
-    // }
 
     @Post('/login')
     async login(@Body() loginUsersDto: LoginUsersDto){

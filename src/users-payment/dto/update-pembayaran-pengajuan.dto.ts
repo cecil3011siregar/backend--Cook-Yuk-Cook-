@@ -2,8 +2,8 @@ import { IsNotEmpty } from "class-validator";
 import { type } from "../entities/users-payment.entity";
 
 export class PembayaranPengajuanDto{
-    @IsNotEmpty()
-    bank: string;
+    // @IsNotEmpty()
+    // bank: string;
 
     @IsNotEmpty()
     users: string;
@@ -11,8 +11,8 @@ export class PembayaranPengajuanDto{
     @IsNotEmpty()
     regular: string;
     
-    @IsNotEmpty()
-    date: Date;
+    // @IsNotEmpty()
+    // date: Date;
 
     // @IsNotEmpty()
     // price:number;
@@ -23,7 +23,7 @@ export class PembayaranPengajuanDto{
     @IsNotEmpty()
     typePay: type
 
-    @IsNotEmpty()
-    photoProof: string;
+    // @IsNotEmpty()
+    // photoProof: string;
 
 }

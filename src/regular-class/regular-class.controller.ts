@@ -4,6 +4,7 @@ import { CreateReadStreamOptions } from 'fs/promises';
 import { CreateRegClassDto } from './dto/create-regular-class.dto';
 import { UpdateRegClassDto } from './dto/update-regular-class.dto';
 import { ApproveRejectRegularDto } from './dto/approve-reject-regular.dto';
+import { JumlahBenchesDto } from './dto/update-jumlah-benches.dto';
 
 @Controller('regular-class')
 export class RegularClassController {
@@ -75,7 +76,16 @@ export class RegularClassController {
     @Get('/find/:id')
     async getRegClassByRole(@Param('id', ParseUUIDPipe) id: string){
         return {
-            data : await this.regularClassService.regClassByKitchen(id),
+            data : await this.regularClassService.findRegClassByUsersKitchen(id),
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
+    @Put('benches/:id')
+    async updateJumlahBenches(@Param('id', ParseUUIDPipe)id: string, @Body()updateJumlahBenchesDto: JumlahBenchesDto){
+        const data = await this.regularClassService.updateJumlahBenches(id, updateJumlahBenchesDto)
+        return {
+            data, 
             statusCode: HttpStatus.OK,
             message: "Success"
         }
