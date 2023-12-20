@@ -2,6 +2,8 @@ import { IsNotEmpty, IsInt } from "class-validator";
 
 export class CreateTraining_themeDto {
     @IsNotEmpty()
+    kitchen: string;
+    @IsNotEmpty()
     name: string;
 
     @IsNotEmpty()

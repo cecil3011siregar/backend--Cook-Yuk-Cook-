@@ -41,6 +41,7 @@ export class MaterialService {
         const insertMaterial = await this.materialRepo.insert(material);
         const result = await this.materialRepo.findOneOrFail({
             where: { id: insertMaterial.identifiers[0].id },
+            relations:{regular: true, priv:true}
         });
         return result;
     } catch (e) {

@@ -4,28 +4,32 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { CreateTraining_themeDto } from './dto/create-training_theme.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateTraining_themeDto } from './dto/update-training_theme.dto';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class TrainingThemeService {
     constructor(
         @InjectRepository(Training_theme)
-        private training_themeRepository: Repository<Training_theme>
+        private training_themeRepository: Repository<Training_theme>,
+        private usersService: UsersService
         
     ){}
 
     async create(createTraining_themeDto: CreateTraining_themeDto){
         try {
-           //
+           const userKitchen = await this.usersService.getUsersById(createTraining_themeDto.kitchen)
            const training_theme = new Training_theme
            training_theme.name = createTraining_themeDto.name
            training_theme.chef_name = createTraining_themeDto.chef_name
            training_theme.price = createTraining_themeDto.price
+           training_theme.kitchen = userKitchen
 
            const insertTraining_theme = await this.training_themeRepository.insert(training_theme)
            return await this.training_themeRepository.findOneOrFail({
             where: {
                 id: insertTraining_theme.identifiers[0].id
-            }
+            },
+            relations:{kitchen: true}
            })
         } catch (e) {
             throw e

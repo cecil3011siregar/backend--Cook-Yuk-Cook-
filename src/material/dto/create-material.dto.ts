@@ -1,7 +1,7 @@
 import { IsNotEmpty } from "class-validator";
 
 export class CreateMaterialDto{
-    @IsNotEmpty()
+    // @IsNotEmpty()
     type_class: string
 
     @IsNotEmpty()
