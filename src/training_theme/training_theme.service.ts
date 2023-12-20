@@ -61,7 +61,27 @@ export class TrainingThemeService {
             }
         }
     }
+    async findbyUsersId(id: string){
+        try {
+            return await this.training_themeRepository.find({
+                where: {kitchen:{id:id}}
+                // relations: {trainee: true} // untuk foreign key
+        })
 
+        } catch (e) {
+            if (e instanceof EntityNotFoundError){
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: "Data Not Found",
+                    },
+                    HttpStatus.NOT_FOUND
+                )
+            } else {
+                throw e
+            }
+        }
+    }
     async update(id: string, updateTraining_themeDto:UpdateTraining_themeDto){
         try {
             // cari id

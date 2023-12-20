@@ -39,6 +39,16 @@ export class TrainingThemeController {
             message: "success"
         }
     }
+    @Get("/find/:id")
+    async getThemeByUsers(@Param('id') id: string){
+        const data = await this.training_themeService.findbyUsersId(id);
+
+        return {
+            data,
+            statusCode: HttpStatusCode.Ok,
+            message: "success"
+        }
+    }
     
     @Get()
     async getAll(){
