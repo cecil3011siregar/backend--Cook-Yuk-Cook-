@@ -1,4 +1,6 @@
+import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
 import { RegularClass } from '#/regular-class/entities/regular-class.entity';
+import { Users_cyc } from '#/users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -8,6 +10,7 @@ import {
   VersionColumn,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
@@ -17,7 +20,8 @@ export class Training_theme {
 
 //   @OneToMany(() => Reviews, (review) => review.trainee)
 //   reviews: Reviews;
-
+  @ManyToOne(() => Users_cyc, (kitchen) => kitchen.theme)
+  kitchen:Users_cyc
   @OneToMany(() => RegularClass, (regular) => regular.theme)
   regular:RegularClass;
   

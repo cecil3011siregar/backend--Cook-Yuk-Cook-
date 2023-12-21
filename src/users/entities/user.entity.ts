@@ -5,6 +5,7 @@ import { LevelUsers } from "#/level-users/entities/level-users.entity";
 import { Notifikasi } from "#/notifikasi/entities/notifikasi.entity";
 import { PrivateClass } from "#/private-class/entities/private-class.entity";
 import { RegularClass } from "#/regular-class/entities/regular-class.entity";
+import { Training_theme } from "#/training_theme/entities/training_theme.entity";
 import { UsersPayment } from "#/users-payment/entities/users-payment.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -98,5 +99,8 @@ export class Users_cyc{
     
     @OneToMany(() => KitchenPayment, (kitchenPay) => kitchenPay.admin)
     kitchenPay:KitchenPayment;
+    @OneToMany(() => Training_theme, (theme) => theme.kitchen)
+    theme:Training_theme
+
 
 }
