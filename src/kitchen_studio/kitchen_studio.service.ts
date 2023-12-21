@@ -35,7 +35,24 @@ export class KitchenStudioService {
                 }
             }
         }
-
+        async findKitchenByUsers(id:string){
+            try {
+                return await this.kitchenRepo.findOneOrFail({
+                    where:{users:{id:id}}
+                })
+            } catch (e) {
+                if(e instanceof EntityNotFoundError){
+                    throw new HttpException(
+                        {
+                            statusCode:HttpStatus.NOT_FOUND,
+                            error:"Data Not Found"
+                        },
+                        HttpStatus.NOT_FOUND
+                    )
+                }
+                throw e
+            }
+        }
         async getAllUserByStatus(){
             return await this.kitchenRepo.findAndCount({
                 where: {

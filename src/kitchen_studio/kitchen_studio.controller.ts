@@ -76,4 +76,13 @@ export class KitchenStudioController {
       message: 'Success',
     };
   }
+  @Get('/users/:id')
+  async getKitchenByUsers(@Param('id', ParseUUIDPipe)id: string){
+    const data = await this.kitchenService.findKitchenByUsers(id)
+    return {
+      data, 
+      statusCode:HttpStatus.OK,
+      message:"Success"
+      }
+  }
 }
