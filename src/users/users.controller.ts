@@ -3,7 +3,7 @@
 // import { CreateUsersDto } from './dto/create-user.dto';
 // import { UpdateUsersDto } from './dto/update-user.dto';
 // import { get } from 'http';
-import { ApproveRejectDto } from './dto/approve-reject.dto';
+import { ApproveRejectDto } from './dto/approve-Reject.dto';
 import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
@@ -53,9 +53,10 @@ export class UsersController {
   }
   @Get('/find/:id')
   async getUsersByRole(@Param('id', ParseUUIDPipe) id: string) {
-    const data = await this.usersService.findUserByRole(id);
+    const [data, count] = await this.usersService.findUserByRole(id);
     return {
       data,
+      count,
       statusCode: HttpStatus.OK,
       message: 'Success',
     };
@@ -72,6 +73,18 @@ export class UsersController {
     };
   }
 
+    @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storageProfileUsers))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (typeof file?.filename == 'undefined') {
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'error file cannot be upload',
+      };
+    } else {
+      return { fileName: file?.filename };
+    }
+  }
   @Put('reject/:id')
   async reject(
     @Param('id', ParseUUIDPipe) id: string,
@@ -93,18 +106,6 @@ export class UsersController {
   //         message: "Success"
   //     }
   // }
-    @Post('upload')
-  @UseInterceptors(FileInterceptor('file', storageProfileUsers))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    if (typeof file?.filename == 'undefined') {
-      return {
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'error file cannot be upload',
-      };
-    } else {
-      return { fileName: file?.filename };
-    }
-  }
 
   @Put('/:id')
   async updateUsers(
