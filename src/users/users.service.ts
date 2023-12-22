@@ -1,4 +1,9 @@
-import { Injectable, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users_cyc, statusUser } from './entities/user.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
@@ -50,7 +55,7 @@ export class UsersService {
   async findUserByRole(id: string) {
     try {
       const level = await this.levelUsersService.getLevelById(id);
-      return await this.usersRepo.findOneOrFail({
+      return await this.usersRepo.find({
         where: { level: { id: level.id } },
       });
     } catch (e) {
@@ -85,26 +90,28 @@ export class UsersService {
 
   async createUsers(createAdminDto: CreateAdminDto) {
     try {
-      const findLevelUsersId = await this.levelUsersService.getLevelById(createAdminDto.level_id);
-      console.log(findLevelUsersId, "ada ga")
-      let status:any
-        if(findLevelUsersId && findLevelUsersId.name === "Admin"){
-          status = "active"
-        }else{
-          console.log("role tidak ditemukan")
-        }
+      const findLevelUsersId = await this.levelUsersService.getLevelById(
+        createAdminDto.level_id,
+      );
+      console.log(findLevelUsersId, 'ada ga');
+      let status: any;
+      if (findLevelUsersId && findLevelUsersId.name === 'Admin') {
+        status = 'active';
+      } else {
+        console.log('role tidak ditemukan');
+      }
       //generate salt
       const saltGenerate = await bcrypt.genSalt();
       //hash password
       const password = createAdminDto.password;
       const hash = await bcrypt.hash(password, saltGenerate);
-      const usersEntity = new Users_cyc;
+      const usersEntity = new Users_cyc();
       usersEntity.name = createAdminDto.name;
       usersEntity.email = createAdminDto.email;
-      usersEntity.salt = saltGenerate
-      usersEntity.password = hash
+      usersEntity.salt = saltGenerate;
+      usersEntity.password = hash;
       usersEntity.level = findLevelUsersId;
-      usersEntity.status = status
+      usersEntity.status = status;
       const insertUsers = await this.usersRepo.insert(usersEntity);
       return this.usersRepo.findOneOrFail({
         where: { id: insertUsers.identifiers[0].id },
@@ -117,7 +124,7 @@ export class UsersService {
   async approveKitchen(id: string) {
     try {
       await this.getUsersById(id);
-      const approve : any = "active"
+      const approve: any = 'active';
       const users = new Users_cyc();
       users.status = approve;
 
@@ -132,17 +139,17 @@ export class UsersService {
   async rejectKitchen(id: string, approveRejectDto: ApproveRejectDto) {
     try {
       const findStatus = await this.getUsersById(id);
-      if(findStatus.status === "pending"){
+      if (findStatus.status === 'pending') {
         const users = new Users_cyc();
         users.status = approveRejectDto.status;
         users.alasan = approveRejectDto.alasan;
-  
+
         await this.usersRepo.update(id, users);
         return await this.usersRepo.findOneOrFail({
           where: { id },
         });
-      }else{
-        throw new BadRequestException ('NOT FOUND!')
+      } else {
+        throw new BadRequestException('NOT FOUND!');
       }
     } catch (e) {
       throw e;

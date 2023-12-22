@@ -125,4 +125,16 @@ export class PrivateClassService {
             throw e
         }
     }
+    async findPrivClassByUsersKitchen(id: string){
+        try{
+            const coba = await this.usersService.getUsersById(id)
+            console.log(coba.id, "halo")
+            return await this.privateRepo.find({
+                where:{kitchen:{users:{id:id}}},
+                // relations:{kitchen:{users:true}, usersPay:true}
+            })
+        }catch(e){
+            throw e
+        }
+    }
 }

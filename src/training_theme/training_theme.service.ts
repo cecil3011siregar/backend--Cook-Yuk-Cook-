@@ -40,7 +40,7 @@ export class TrainingThemeService {
         try {
             return await this.training_themeRepository.findOneOrFail({
                 where: {id},
-                relations: {regular: true} // untuk foreign key
+                // relations: {regular: true} // untuk foreign key
         })
 
         } catch (e) {

@@ -45,13 +45,13 @@ export class RegularClassService {
 
     async createPengajuan(createRegClassDto: CreateRegClassDto){
         try{
-            const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
+            // const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
             const kitchenId = await this.kitchenStudioService.getKitchenStudioById(createRegClassDto.kitchen_id)
             const biaya = (createRegClassDto.price * 10)/ 100
             const price = createRegClassDto.price + biaya
             const regular = new RegularClass
             regular.kitchen = kitchenId
-            regular.theme = themeId
+            // regular.theme = themeId
             regular.courseName = createRegClassDto.courseName
             regular.startDate = createRegClassDto.startDate
             regular.endDate = createRegClassDto.endDate
@@ -94,7 +94,7 @@ export class RegularClassService {
     async regClassByKitchen(id:string){
         try{
             const kitchen = await this.kitchenStudioService.getKitchenStudioById(id)
-            return await this.regClassRepo.findOne({
+            return await this.regClassRepo.find({
                 where:{kitchen:{id:kitchen.id}}
             })
         }catch(e){
@@ -152,8 +152,9 @@ export class RegularClassService {
         try{
             const coba = await this.usersService.getUsersById(id)
             console.log(coba.id, "halo")
-            return await this.regClassRepo.findOneOrFail({
+            return await this.regClassRepo.find({
                 where:{kitchen:{users:{id:id}}},
+                relations:{theme:true}
                 // relations:{kitchen:{users:true}, usersPay:true}
             })
         }catch(e){

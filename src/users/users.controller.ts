@@ -4,19 +4,7 @@
 // import { UpdateUsersDto } from './dto/update-user.dto';
 // import { get } from 'http';
 import { ApproveRejectDto } from './dto/approve-reject.dto';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  ParseUUIDPipe,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
@@ -24,6 +12,9 @@ import { UpdateKitchenDto } from './dto/updateKitchen-user.dto';
 import { UpdatePasswordDto } from './dto/updatePassword-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateAdminDto } from './dto/create-admin.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storagePayment } from '#/users-payment/helpers/upload-payment-image';
+import { storageProfileUsers } from './helpers/upload-profile';
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
@@ -102,6 +93,18 @@ export class UsersController {
   //         message: "Success"
   //     }
   // }
+    @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storageProfileUsers))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (typeof file?.filename == 'undefined') {
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'error file cannot be upload',
+      };
+    } else {
+      return { fileName: file?.filename };
+    }
+  }
 
   @Put('/:id')
   async updateUsers(

@@ -31,6 +31,7 @@ import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
 import { UsersPaymentModule } from './users-payment/users-payment.module';
 import { NotifikasiModule } from './notifikasi/notifikasi.module';
 import { MaterialModule } from './material/material.module';
+import { KitchenPaymentModule } from './kitchen-payment/kitchen-payment.module';
 
 @Module({
   imports: [
@@ -133,6 +134,7 @@ import { MaterialModule } from './material/material.module';
     UsersPaymentModule,
     NotifikasiModule,
     MaterialModule,
+    KitchenPaymentModule,
   ],
   controllers: [],
   providers: []

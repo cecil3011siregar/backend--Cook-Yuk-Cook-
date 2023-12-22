@@ -99,4 +99,5 @@ export class RegularClass {
 
   @OneToMany(() => Material, (material) => material.regular)
   material:Material;
+
 }

@@ -6,7 +6,7 @@ import { KitchenStudio } from './entities/kitchen_studio.entity';
 import { UsersModule } from '#/users/users.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([KitchenStudio]), UsersModule],
+  imports:[TypeOrmModule.forFeature([KitchenStudio]), UsersModule, ],
   controllers: [KitchenStudioController],
   providers: [KitchenStudioService],
   exports:[KitchenStudioService]

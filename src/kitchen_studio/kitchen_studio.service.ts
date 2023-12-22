@@ -21,7 +21,8 @@ export class KitchenStudioService {
 
         async getKitchenStudioById(id: string){
             try {
-                return await this.kitchenRepo.findOneOrFail({where: {id}})
+                return await this.kitchenRepo.findOneOrFail({where: {id},
+                relations:{users: true}})
             } catch (e) {
                 if (e instanceof EntityNotFoundError){
                     throw new HttpException(
@@ -39,6 +40,17 @@ export class KitchenStudioService {
             return await this.kitchenRepo.findAndCount({
                 where: {
                     status: statusKitchen.AVAILABLE
+                }
+            })
+        }
+
+
+        async getKitchenByUser(user) {
+            return await this.kitchenRepo.findOne({
+                where: {
+                    users: {
+                        id: user.id
+                    }
                 }
             })
         }

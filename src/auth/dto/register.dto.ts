@@ -24,7 +24,7 @@ export class RegisterDto{
     gender: gender;
 
     @IsNotEmpty()
-    @IsMobilePhone()
+    // @IsMobilePhone()
     phoneNumber: string;
 
     @IsOptional()

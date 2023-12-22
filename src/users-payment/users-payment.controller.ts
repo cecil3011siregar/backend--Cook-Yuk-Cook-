@@ -54,7 +54,7 @@ export class UsersPaymentController {
           message: "Success"
       }
   }
-  @Get()
+  @Get("payment")
   async getAllUsersPayment(){
     const [data, count] = await this.usersPaymentService.findAll()
     return {
@@ -76,7 +76,7 @@ export class UsersPaymentController {
   // }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/:id')
+  @Get('/cari')
   async getUsersPaymentById(@Req() req ){
     const idKitchen = req.user.id
     const data = await this.usersPaymentService.findPaymentTraineeByKitchen(idKitchen)
@@ -87,11 +87,12 @@ export class UsersPaymentController {
     }
   }
 
-  @Get('/all-trainee/:id')
+  @Get('/all/:id')
   async getblabla(@Param('id', ParseUUIDPipe)id: string){
-    const data = await this.usersPaymentService.findAllUsersPaymentTrainee(id)
+    const [data, count] = await this.usersPaymentService.findAllUsersPaymentTraineeKitchen(id)
     return {
         data,
+        count,
         statusCode: HttpStatus.OK,
         mesasge:"Success"
     }
