@@ -3,7 +3,7 @@
 // import { CreateUsersDto } from './dto/create-user.dto';
 // import { UpdateUsersDto } from './dto/update-user.dto';
 // import { get } from 'http';
-import { ApproveRejectDto } from './dto/approve-Reject.dto';
+import { ApproveRejectDto } from './dto/approve-reject.dto';
 import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';

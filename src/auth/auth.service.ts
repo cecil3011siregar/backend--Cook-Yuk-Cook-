@@ -127,8 +127,10 @@ export class AuthService {
             name: emailOne.name,
             email: emailOne.email,
             role: emailOne.level.name
+
         }
         return {
+            // payload
             access_token: await this.jwtService.signAsync(payload)
         }
         }catch(e){
