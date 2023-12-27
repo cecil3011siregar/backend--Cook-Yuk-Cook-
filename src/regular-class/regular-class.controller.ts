@@ -82,6 +82,14 @@ export class RegularClassController {
             message: "Success"
         }
     }
+    @Get('/find-pending/:id')
+    async getRegClassByRolePending(@Param('id', ParseUUIDPipe) id: string){
+        return {
+            data : await this.regularClassService.findRegClassByUsersKitchenPending(id),
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
     @Put('benches/:id')
     async updateJumlahBenches(@Param('id', ParseUUIDPipe)id: string, @Body()updateJumlahBenchesDto: JumlahBenchesDto){
         const data = await this.regularClassService.updateJumlahBenches(id, updateJumlahBenchesDto)

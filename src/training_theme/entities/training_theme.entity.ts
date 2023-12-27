@@ -1,6 +1,8 @@
 import { Material } from '#/material/entities/material.entity';
 import { PrivateClass } from '#/private-class/entities/private-class.entity';
+import { KitchenStudio } from '#/kitchen_studio/entities/kitchen_studio.entity';
 import { RegularClass } from '#/regular-class/entities/regular-class.entity';
+import { Users_cyc } from '#/users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -21,8 +23,6 @@ export class Training_theme {
   //   @OneToMany(() => Reviews, (review) => review.trainee)
   //   reviews: Reviews;
 
-  @ManyToOne(() => RegularClass, (regular) => regular.theme)
-  regular: RegularClass;
 
   @ManyToOne(() => PrivateClass, (priv) => priv.theme)
   priv: PrivateClass;
@@ -31,6 +31,14 @@ export class Training_theme {
   material: Material
 
   @Column({ type: 'varchar', length: 255 })
+//   @OneToMany(() => Reviews, (review) => review.trainee)
+//   reviews: Reviews;
+  @ManyToOne(() => Users_cyc, (kitchen) => kitchen.theme)
+  kitchen:Users_cyc
+  @OneToMany(() => RegularClass, (regular) => regular.theme)
+  regular:RegularClass;
+  
+  @Column({type:"varchar", length:255})
   name: string;
 
   @Column({

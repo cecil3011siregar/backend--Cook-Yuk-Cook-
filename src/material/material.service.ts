@@ -91,16 +91,16 @@ export class MaterialService {
   async updateMaterial(id: string, updateMaterialDto: UpdateMaterialDto){
     try{
       const material = await this.findMaterialById(id)
-      if((material.regular && material.regular.id !== updateMaterialDto.idclass) || 
-        (material.priv && material.priv.id !== updateMaterialDto.idclass)){
-        throw new BadRequestException("ID Class tidak ditemukan!")
-      }
+      // if((material.regular && material.regular.id !== updateMaterialDto.idclass) || 
+      //   (material.priv && material.priv.id !== updateMaterialDto.idclass)){
+      //   throw new BadRequestException("ID Class tidak ditemukan!")
+      // }
       material.name = updateMaterialDto.name
       material.link = updateMaterialDto.link
 
       await this.materialRepo.update(id, material)
       // console.log(material, "halo")
-      return await this.materialRepo.findOneOrFail({where:[{id}, {regular:{id}}, {priv:{id}}]})
+      return await this.materialRepo.findOneOrFail({where:{id}})
     }catch(e){
       throw e
     }

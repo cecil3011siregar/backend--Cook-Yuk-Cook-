@@ -89,10 +89,9 @@ export class UsersPaymentController {
 
   @Get('/all/:id')
   async getblabla(@Param('id', ParseUUIDPipe)id: string){
-    const [data, count] = await this.usersPaymentService.findAllUsersPaymentTraineeKitchen(id)
+    const data = await this.usersPaymentService.findAllUsersPaymentTraineeKitchen(id)
     return {
         data,
-        count,
         statusCode: HttpStatus.OK,
         mesasge:"Success"
     }

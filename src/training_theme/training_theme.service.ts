@@ -4,22 +4,26 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { CreateTraining_themeDto } from './dto/create-training_theme.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateTraining_themeDto } from './dto/update-training_theme.dto';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class TrainingThemeService {
     constructor(
         @InjectRepository(Training_theme)
-        private training_themeRepository: Repository<Training_theme>
+        private training_themeRepository: Repository<Training_theme>,
+        private usersService: UsersService
+
         
     ){}
 
     async create(createTraining_themeDto: CreateTraining_themeDto){
         try {
-           //
+           const kitchen = await this.usersService.getUsersById(createTraining_themeDto.kitchen)
            const training_theme = new Training_theme
            training_theme.name = createTraining_themeDto.name
            training_theme.chef_name = createTraining_themeDto.chef_name
            training_theme.price = createTraining_themeDto.price
+           training_theme.kitchen = kitchen
 
            const insertTraining_theme = await this.training_themeRepository.insert(training_theme)
            return await this.training_themeRepository.findOneOrFail({
@@ -41,6 +45,27 @@ export class TrainingThemeService {
             return await this.training_themeRepository.findOneOrFail({
                 where: {id},
                 relations: {regular: true} // untuk foreign key
+        })
+
+        } catch (e) {
+            if (e instanceof EntityNotFoundError){
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: "Data Not Found",
+                    },
+                    HttpStatus.NOT_FOUND
+                )
+            } else {
+                throw e
+            }
+        }
+    }
+    async findThemeByUsers(id:string){
+        try {
+            return await this.training_themeRepository.find({
+                where: {kitchen:{id:id}},relations:{kitchen:true}
+                // relations: {trainee: true} // untuk foreign key
         })
 
         } catch (e) {

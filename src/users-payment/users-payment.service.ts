@@ -140,10 +140,10 @@ export class UsersPaymentService {
       console.log(users, 'oi');
       const users2 = users.map((items) => items.id);
       console.log(users2, 'Halo');
-      const result = await this.usersPayRepo
-        .createQueryBuilder('users_payment')
-        .where('users_payment.users_id IN (:...usersIds)', { usersIds: users2 })
-        .getManyAndCount();
+      const result = await this.usersPayRepo.find({
+        where:{users:{id: In(users2)}, status:statusPay.APPROVE},
+        relations:{users: true, regular:true, privclass:true}
+      })
       return result;
     } catch (e) {
       throw e;
@@ -162,7 +162,7 @@ export class UsersPaymentService {
   //     throw e
   //   }
   // }
-  async findAllUsersPaymentTraineeKitchen2(id: string) {
+  async findAllUsersPaymentTraineeKitchen2(id: string){
     try {
       const users = await this.usersService.findUserByRole(id);
       console.log(users, 'oi');
