@@ -17,6 +17,7 @@ export class RegularClassController {
         const [data, count] = await this.regularClassService.getAll()
         return {
             data,
+            
             count,
             StatusCode: HttpStatus.OK,
             message:"Success"
