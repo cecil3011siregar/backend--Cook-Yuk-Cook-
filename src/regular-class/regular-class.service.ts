@@ -1,6 +1,6 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RegularClass } from './entities/regular-class.entity';
+import { RegularClass, statusRegular } from './entities/regular-class.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { KitchenStudioService } from '#/kitchen_studio/kitchen_studio.service';
 import { TrainingThemeService } from '#/training_theme/training_theme.service';
@@ -28,7 +28,7 @@ export class RegularClassService {
         try{
             return await this.regClassRepo.findOneOrFail({
                 where:{id},
-                relations:{kitchen:{users:true}}
+                relations:{kitchen:{users:true}, theme:true}
             })
         }catch(e){
             if(e instanceof EntityNotFoundError){
@@ -153,8 +153,21 @@ export class RegularClassService {
             const coba = await this.usersService.getUsersById(id)
             console.log(coba.id, "halo")
             return await this.regClassRepo.find({
-                where:{kitchen:{users:{id:id}}},
-                relations:{theme:true, material:true}
+                where:{kitchen:{users:{id:id}}, status:statusRegular.APPROVE},
+                relations:{theme:true, material:true, usersPay:{users: true}}
+                // relations:{kitchen:{users:true}, usersPay:true}
+            })
+        }catch(e){
+            throw e
+        }
+    }
+    async findRegClassByUsersKitchenPending(id: string){
+        try{
+            const coba = await this.usersService.getUsersById(id)
+            console.log(coba.id, "halo")
+            return await this.regClassRepo.find({
+                where:{kitchen:{users:{id:id}}, status:statusRegular.PENDING},
+                relations:{theme:true, material:true, usersPay:{users: true}}
                 // relations:{kitchen:{users:true}, usersPay:true}
             })
         }catch(e){
