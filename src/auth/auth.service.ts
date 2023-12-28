@@ -127,7 +127,6 @@ export class AuthService {
             name: emailOne.name,
             email: emailOne.email,
             role: emailOne.level.name
-
         }
         return {
             // payload
