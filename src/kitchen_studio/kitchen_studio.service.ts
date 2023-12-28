@@ -60,7 +60,7 @@ export class KitchenStudioService {
                 statusUsers = statusUser.PENDING
             }
             try {
-                return await this.kitchenRepo.findOneOrFail({
+                return await this.kitchenRepo.find({
                     where:{users:{status:statusUsers}},
                     relations:{users:{level:true}}
                 })
