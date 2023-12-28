@@ -6,6 +6,7 @@ import { UsersService } from '#/users/users.service';
 import { createKitchenDto } from './dto/create_kitchen.dto';
 import { create } from 'domain';
 import { UpdateKitchenDto } from './dto/update_kitchen.dto';
+import { statusUser } from '#/users/entities/user.entity';
 
 @Injectable()
 export class KitchenStudioService {
@@ -39,6 +40,29 @@ export class KitchenStudioService {
             try {
                 return await this.kitchenRepo.findOneOrFail({
                     where:{users:{id:id}}
+                })
+            } catch (e) {
+                if(e instanceof EntityNotFoundError){
+                    throw new HttpException(
+                        {
+                            statusCode:HttpStatus.NOT_FOUND,
+                            error:"Data Not Found"
+                        },
+                        HttpStatus.NOT_FOUND
+                    )
+                }
+                throw e
+            }
+        }
+        async findKitchenPending(status:string){
+            let statusUsers:any;
+            if(status === "pending"){
+                statusUsers = statusUser.PENDING
+            }
+            try {
+                return await this.kitchenRepo.findOneOrFail({
+                    where:{users:{status:statusUsers}},
+                    relations:{users:{level:true}}
                 })
             } catch (e) {
                 if(e instanceof EntityNotFoundError){

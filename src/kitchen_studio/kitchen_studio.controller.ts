@@ -10,6 +10,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { KitchenStudioService } from './kitchen_studio.service';
 import { createKitchenDto } from './dto/create_kitchen.dto';
@@ -23,6 +24,15 @@ import { storageLegalitas } from './helpers/upload-legalitas';
 export class KitchenStudioController {
   constructor(private kitchenService: KitchenStudioService) {}
 
+  @Get('users')
+  async getkitchenPending(@Query('status')status: string){
+    const data = await this.kitchenService.findKitchenPending(status)
+    return {
+      data, 
+      statusCode:HttpStatus.OK,
+      message:"Success"
+      }
+  }
   @Get()
   async getAllKitchen() {
     const [data, count] = await this.kitchenService.getAll();
