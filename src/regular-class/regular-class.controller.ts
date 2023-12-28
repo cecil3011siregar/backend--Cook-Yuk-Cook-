@@ -11,6 +11,15 @@ export class RegularClassController {
     constructor(
         private regularClassService : RegularClassService
     ){}
+    
+    @Get('/find/:id')
+    async getRegClassByRole(@Param('id', ParseUUIDPipe) id: string){
+        return {
+            data : await this.regularClassService.findRegClassByUsersKitchen(id),
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
 
     @Get()
     async getAllRegular(){
@@ -74,14 +83,6 @@ export class RegularClassController {
         }
     }
 
-    @Get('/find/:id')
-    async getRegClassByRole(@Param('id', ParseUUIDPipe) id: string){
-        return {
-            data : await this.regularClassService.findRegClassByUsersKitchen(id),
-            statusCode: HttpStatus.OK,
-            message: "Success"
-        }
-    }
     @Get('/find-pending/:id')
     async getRegClassByRolePending(@Param('id', ParseUUIDPipe) id: string){
         return {

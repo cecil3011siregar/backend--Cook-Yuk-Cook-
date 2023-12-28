@@ -154,7 +154,7 @@ export class RegularClassService {
             console.log(coba.id, "halo")
             return await this.regClassRepo.find({
                 where:{kitchen:{users:{id:id}}, status:statusRegular.APPROVE},
-                relations:{theme:true, material:true, usersPay:{users: true}}
+                relations:{theme:true, material:true, usersPay:{users: true}, kitchen: {users: true}}
                 // relations:{kitchen:{users:true}, usersPay:true}
             })
         }catch(e){
