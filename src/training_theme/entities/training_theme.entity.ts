@@ -30,7 +30,7 @@ export class Training_theme {
   @ManyToOne(() => Material, (material) => material.theme)
   material: Material
 
-  @Column({ type: 'varchar', length: 255 })
+  // @Column({ type: 'varchar', length: 255 })
 //   @OneToMany(() => Reviews, (review) => review.trainee)
 //   reviews: Reviews;
   @ManyToOne(() => Users_cyc, (kitchen) => kitchen.theme)

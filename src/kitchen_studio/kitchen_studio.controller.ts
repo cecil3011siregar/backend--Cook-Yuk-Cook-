@@ -13,6 +13,7 @@ import {
   UseGuards,
   Request,
   Query,
+  Res,
 } from '@nestjs/common';
 import { KitchenStudioService } from './kitchen_studio.service';
 import { createKitchenDto } from './dto/create_kitchen.dto';
@@ -22,6 +23,8 @@ import { storageProfile } from './helpers/upload_profile';
 import { MulterField } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { storageLegalitas } from './helpers/upload-legalitas';
 import { AuthGuard } from '@nestjs/passport';
+import { of } from 'rxjs';
+import { join } from 'path';
 
 @Controller('kitchen-studio')
 export class KitchenStudioController {
@@ -101,6 +104,14 @@ export class KitchenStudioController {
       statusCode: HttpStatus.OK,
       message: 'Success',
     };
+  }
+  @Get('upload-legalitas/:image/:type')
+  getImage(
+    @Param('type') type:string,
+    @Param('image') imagePath:string,
+    @Res() res:any,
+  ){
+    return of(res.sendFile(join(process.cwd(), `upload/legalitas/${imagePath}`)));
   }
   @Get('/users/:id')
   async getKitchenByUsers(@Param('id', ParseUUIDPipe)id: string){

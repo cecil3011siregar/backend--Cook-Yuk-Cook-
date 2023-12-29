@@ -62,7 +62,7 @@ export class UsersController {
     };
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Put('approve/:id')
   async approve(@Param('id', ParseUUIDPipe) id: string) {
     const data = await this.usersService.approveKitchen(id);
