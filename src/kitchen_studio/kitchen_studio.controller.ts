@@ -113,6 +113,14 @@ export class KitchenStudioController {
   ){
     return of(res.sendFile(join(process.cwd(), `upload/legalitas/${imagePath}`)));
   }
+  @Get('upload-logo/:image/:type')
+  getImageLogo(
+    @Param('type') type:string,
+    @Param('image') imagePath:string,
+    @Res() res:any,
+  ){
+    return of(res.sendFile(join(process.cwd(), `upload/profile/${imagePath}`)));
+  }
   @Get('/users/:id')
   async getKitchenByUsers(@Param('id', ParseUUIDPipe)id: string){
     const data = await this.kitchenService.findKitchenByUsers(id)
