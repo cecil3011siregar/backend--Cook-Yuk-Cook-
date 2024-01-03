@@ -32,6 +32,8 @@ import { UsersPaymentModule } from './users-payment/users-payment.module';
 import { NotifikasiModule } from './notifikasi/notifikasi.module';
 import { MaterialModule } from './material/material.module';
 import { KitchenPaymentModule } from './kitchen-payment/kitchen-payment.module';
+import { RiwayatKitchenController } from './riwayat-kitchen/riwayat-kitchen.controller';
+import { RiwayatKitchenModule } from './riwayat-kitchen/riwayat-kitchen.module';
 
 @Module({
   imports: [
@@ -135,8 +137,9 @@ import { KitchenPaymentModule } from './kitchen-payment/kitchen-payment.module';
     NotifikasiModule,
     MaterialModule,
     KitchenPaymentModule,
+    RiwayatKitchenModule,
   ],
-  controllers: [],
+  controllers: [RiwayatKitchenController],
   providers: []
 })
 export class AppModule {}

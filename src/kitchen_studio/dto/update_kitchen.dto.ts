@@ -1,21 +1,30 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class UpdateKitchenDto{
     @IsNotEmpty()
-    legality: string;
+    email:string;
+
+    @IsNotEmpty()
+    alamat: string;
+
+    @IsNotEmpty()
+    phoneNumber: string;
 
     @IsNotEmpty()
     numberOfChefs: number;
 
-    @IsNotEmpty()
+    @IsOptional()
+    legality: string;
+
+    @IsOptional()
     chefOnWork: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     chefOnAvailable: number;
     
-    @IsNotEmpty()
+    @IsOptional()
     logos: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     description: string;
 }

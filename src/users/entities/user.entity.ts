@@ -36,6 +36,9 @@ export class Users_cyc{
     @Column({type:"varchar", length:100})
     password: string;
 
+    @Column({type: 'int', nullable:true})
+    numberOfChef: string;
+
     @Column({type: 'date', nullable: true})
     dateOfBirth: Date;
 

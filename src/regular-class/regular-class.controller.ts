@@ -15,7 +15,7 @@ export class RegularClassController {
     @Get('/find/:id')
     async getRegClassByRole(@Param('id', ParseUUIDPipe) id: string){
         return {
-            data : await this.regularClassService.findRegClassByUsersKitchen(id),
+            data : await this.regularClassService.findRegClassByUsersKitchenPending(id),
             statusCode: HttpStatus.OK,
             message: "Success"
         }

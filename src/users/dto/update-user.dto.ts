@@ -16,10 +16,17 @@ export class UpdateUsersDto extends PartialType(CreateUsersDto) {
     @IsEmail()
     email: string;
     
+    @IsOptional()
+    numberOfChef: string;
+
+    @IsOptional()
+    address: string;
+
+    @IsOptional()
     @IsEnum(gender)
     gender: gender;
 
-    @IsNotEmpty()
+    @IsOptional()
     dateOfBirth: Date;
 
     @IsOptional()
