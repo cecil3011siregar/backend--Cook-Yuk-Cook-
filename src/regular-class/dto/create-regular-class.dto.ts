@@ -1,8 +1,8 @@
 import { IsNotEmpty } from "class-validator";
 
 export class CreateRegClassDto{
-    // @IsNotEmpty()
-    // theme_id: string;
+    @IsNotEmpty()
+    theme_id: string;
 
     @IsNotEmpty()
     kitchen_id: string;
