@@ -22,7 +22,7 @@ export class RegularClassService {
 
     getAll(){
         return this.regClassRepo.findAndCount({
-            relations:{theme:true, kitchen:{users:true}}
+            relations:{theme:true, kitchen:{users:true}, material:true}
         })
     }
     
