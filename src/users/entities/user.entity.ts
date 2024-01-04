@@ -37,7 +37,7 @@ export class Users_cyc{
     password: string;
 
     @Column({type: 'int', nullable:true})
-    numberOfChef: string;
+    numberOfChef: number;
 
     @Column({type: 'date', nullable: true})
     dateOfBirth: Date;
@@ -102,13 +102,9 @@ export class Users_cyc{
     
     @OneToMany(() => KitchenPayment, (kitchenPay) => kitchenPay.admin)
     kitchenPay:KitchenPayment;
+
     @OneToMany(() => Training_theme, (theme) => theme.kitchen)
     theme:Training_theme
 
-
-    
-
-    // @ManyToOne(() => RegularClass, (regular) => regular.users)
-    // regular: RegularClass;
 
 }

@@ -17,7 +17,7 @@ export class UpdateUsersDto extends PartialType(CreateUsersDto) {
     email: string;
     
     @IsOptional()
-    numberOfChef: string;
+    numberOfChef: number;
 
     @IsOptional()
     address: string;

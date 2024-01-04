@@ -71,11 +71,12 @@ export class UsersService {
       usersEntity.email = updateUsersDto.email;
       // usersEntity.salt = updateUsersDto.salt
       usersEntity.password = updateUsersDto.password;
-      usersEntity.dateOfBirth = new Date(updateUsersDto.dateOfBirth);
+      usersEntity.dateOfBirth = updateUsersDto.dateOfBirth;
       usersEntity.gender = updateUsersDto.gender;
       usersEntity.phoneNumber = updateUsersDto.phoneNumber;
       usersEntity.photo = updateUsersDto.photo;
       usersEntity.address = updateUsersDto.address;
+      usersEntity.numberOfChef = updateUsersDto.numberOfChef;
       // usersEntity.status = updateUsersDto.status
 
       await this.usersRepo.update(id, usersEntity);

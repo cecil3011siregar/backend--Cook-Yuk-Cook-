@@ -63,7 +63,7 @@ export class RegularClass {
   @Column({
     type: 'enum',
     enum: statusRegular,
-    default: statusRegular.PENDING,
+    default: statusRegular.APPROVE,
   })
   status: statusRegular;
 
@@ -99,5 +99,8 @@ export class RegularClass {
 
   @OneToMany(() => Material, (material) => material.regular)
   material:Material;
+
+  // @ManyToOne(() => Users_cyc, (users) => users.regular)
+  // users: Users_cyc;
 
 }

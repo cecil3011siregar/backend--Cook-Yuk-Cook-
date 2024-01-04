@@ -1,7 +1,7 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateRegClassDto{
-    @IsNotEmpty()
+    @IsOptional()
     theme_id: string;
 
     @IsNotEmpty()
