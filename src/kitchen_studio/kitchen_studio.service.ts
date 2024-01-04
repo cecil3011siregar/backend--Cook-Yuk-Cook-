@@ -92,7 +92,8 @@ export class KitchenStudioService {
                     users: {
                         id: user.id
                     }
-                }
+                },
+                relations:{users:true}
             })
         }
     

@@ -21,7 +21,9 @@ export class RegularClassService {
     ){}
 
     getAll(){
-        return this.regClassRepo.findAndCount()
+        return this.regClassRepo.findAndCount({
+            relations:{theme:true, kitchen:{users:true}}
+        })
     }
     
     async findById(id: string){
