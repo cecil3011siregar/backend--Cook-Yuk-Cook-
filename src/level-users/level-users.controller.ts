@@ -29,6 +29,14 @@ export class LevelUsersController {
         }
     }
 
+    @Get('/:name')
+    async getNamaLevel(@Param('name') name: string){
+        return {
+            data : await this.levelUsersService.getName(name),
+            statusCode: HttpStatus.OK,
+            message: "Success"
+        }
+    }
     @Post()
     async createLevelUsers(@Body() createLevelUsersDto: CreateLevelUsersDto){
         const data = await this.levelUsersService.createLevel(createLevelUsersDto)

@@ -8,11 +8,16 @@ import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
 // import { SeederModule } from '#/seeder/seeder.module';
+
 import { LevelUsersModule } from './level-users/level-users.module';
 import { AuthModule } from './auth/auth.module';
 import { TrainingThemeController } from './training_theme/training_theme.controller';
 import { TrainingThemeService } from './training_theme/training_theme.service';
 import { TrainingThemeModule } from './training_theme/training_theme.module';
+import { GaleryKitchenModule } from './galery_kitchen/galery_kitchen.module';
+import { KitchenStudioModule } from './kitchen_studio/kitchen_studio.module';
+import { RegularClassModule } from './regular-class/regular-class.module';
+import { PrivateClassModule } from './private-class/private-class.module';
 import { UsersModule } from './users/users.module';
 import { BankController } from './bank/bank.controller';
 import { BankModule } from './bank/bank.module';
@@ -20,10 +25,15 @@ import { CertificateController } from './certificate/certificate.controller';
 import { CertificateModule } from './certificate/certificate.module';
 import { KitchenStudioService } from './kitchen_studio/kitchen_studio.service';
 import { KitchenStudioController } from './kitchen_studio/kitchen_studio.controller';
-import { KitchenStudioModule } from './kitchen_studio/kitchen_studio.module';
 import { GalleryKitchenController } from './gallery-kitchen/gallery-kitchen.controller';
 import { GalleryKitchenService } from './gallery-kitchen/gallery-kitchen.service';
 import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
+import { UsersPaymentModule } from './users-payment/users-payment.module';
+import { NotifikasiModule } from './notifikasi/notifikasi.module';
+import { MaterialModule } from './material/material.module';
+import { KitchenPaymentModule } from './kitchen-payment/kitchen-payment.module';
+import { RiwayatKitchenController } from './riwayat-kitchen/riwayat-kitchen.controller';
+import { RiwayatKitchenModule } from './riwayat-kitchen/riwayat-kitchen.module';
 
 @Module({
   imports: [
@@ -102,7 +112,7 @@ import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
           entities: [],
           synchronize: configService.get<string>('env') === 'development',
           autoLoadEntities: true,
-          logging: false,
+          logging: ["query", "error"],
           namingStrategy: new SnakeNamingStrategy(),
         };
       },
@@ -114,12 +124,22 @@ import { GalleryKitchenModule } from './gallery-kitchen/gallery-kitchen.module';
     LevelUsersModule,
     AuthModule,
     TrainingThemeModule,
+    GaleryKitchenModule,
+    KitchenStudioModule,
+    RegularClassModule,
+    // MaterialModule,
+    PrivateClassModule,
     BankModule,
     CertificateModule,
     KitchenStudioModule,
     GalleryKitchenModule,
+    UsersPaymentModule,
+    NotifikasiModule,
+    MaterialModule,
+    KitchenPaymentModule,
+    RiwayatKitchenModule,
   ],
-  controllers: [],
+  controllers: [RiwayatKitchenController],
   providers: []
 })
 export class AppModule {}

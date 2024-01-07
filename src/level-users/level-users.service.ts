@@ -52,6 +52,25 @@ export class LevelUsersService {
             }
         }
     }
+    async getName(name: string){
+        try{
+            return await this.levelUsersRepo.findOneOrFail({
+                where:{name:name},
+            })
+        }catch(e){
+            if(e instanceof EntityNotFoundError){
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: "data not found"
+                    },
+                    HttpStatus.NOT_FOUND
+                )
+            }else{
+                throw e
+            }
+        }
+    }
 
     async updateLevel(id: string, updateLevelUsersDto: UpdateLevelUsersDto){
         try{

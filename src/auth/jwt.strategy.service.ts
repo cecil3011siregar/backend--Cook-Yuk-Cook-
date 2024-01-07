@@ -20,7 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy){
         try{
             //data id payload exist tidak di data user
             const user = this.userRepo.findOne({
-                where:{id: payload.id}
+                where:{id: payload.id},
+                relations:{level: true}
             })
 
             if(!user){

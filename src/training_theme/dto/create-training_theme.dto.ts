@@ -11,4 +11,6 @@ export class CreateTraining_themeDto {
     @IsInt()
     price: number;
 
+    @IsNotEmpty()
+    kitchen:string;
 }

@@ -1,6 +1,12 @@
 import { Bank } from "#/bank/entities/bank.entity";
+import { KitchenPayment } from "#/kitchen-payment/entity/kitchen-payment.entity";
 import { KitchenStudio } from "#/kitchen_studio/entities/kitchen_studio.entity";
 import { LevelUsers } from "#/level-users/entities/level-users.entity";
+import { Notifikasi } from "#/notifikasi/entities/notifikasi.entity";
+import { PrivateClass } from "#/private-class/entities/private-class.entity";
+import { RegularClass } from "#/regular-class/entities/regular-class.entity";
+import { Training_theme } from "#/training_theme/entities/training_theme.entity";
+import { UsersPayment } from "#/users-payment/entities/users-payment.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum gender{
@@ -11,6 +17,7 @@ export enum gender{
 export enum statusUser{
     ACTIVE = 'active',
     INCATIVE = 'inactive',
+    PENDING = 'pending'
 }
 @Entity()
 export class Users_cyc{
@@ -29,27 +36,33 @@ export class Users_cyc{
     @Column({type:"varchar", length:100})
     password: string;
 
-    @Column({type: 'date'})
+    @Column({type: 'int', nullable:true})
+    numberOfChef: number;
+
+    @Column({type: 'date', nullable: true})
     dateOfBirth: Date;
 
-    @Column({type:"enum", enum:gender})
+    @Column({type:"enum", enum:gender, nullable:true})
     gender: gender;
 
-    @Column({type: "varchar", length:15})
+    @Column({type: "varchar", length:15, nullable:true})
     phoneNumber: string;
 
-    @Column({type: "text"})
+    @Column({type: "text", nullable:true})
     photo: string;
 
-    @Column({type: "text"})
+    @Column({type: "text", nullable:true})
     address: string;
 
     @Column({
         type:"enum", 
         enum:statusUser,
-        default: statusUser.INCATIVE
+        default: statusUser.PENDING
     })
     status: statusUser;
+
+    @Column({type:"varchar", nullable:true})
+    alasan: string
 
     @CreateDateColumn({
         type: "timestamp with time zone",
@@ -72,8 +85,26 @@ export class Users_cyc{
     @ManyToOne(()=> LevelUsers, (level) => level.user)
     level:LevelUsers;
 
+    @OneToMany(() => PrivateClass, (priv) => priv.trainee)
+    priv:PrivateClass
+
     @OneToMany(() => Bank, (bank) => bank.users)
     bank: Bank;
+
+    @OneToMany(() => UsersPayment, (usersPay) => usersPay.users)
+    usersPay: UsersPayment;
+
+    @OneToMany(() => Notifikasi, (notif1) => notif1.receiver)
+    notif1: Notifikasi;
+
+    @OneToMany(() => Notifikasi, (notif2) => notif2.sender)
+    notif2: Notifikasi;
+    
+    @OneToMany(() => KitchenPayment, (kitchenPay) => kitchenPay.admin)
+    kitchenPay:KitchenPayment;
+
+    @OneToMany(() => Training_theme, (theme) => theme.kitchen)
+    theme:Training_theme
 
 
 }

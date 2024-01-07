@@ -1,5 +1,6 @@
+import { UsersPayment } from "#/users-payment/entities/users-payment.entity";
 import { Users_cyc } from "#/users/entities/user.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity()
@@ -40,4 +41,7 @@ export class Bank {
 
     @ManyToOne(() => Users_cyc, (users) => users.bank)
     users: Users_cyc;
+
+    @OneToMany(() => UsersPayment, (usersPay) => usersPay.bank)
+    usersPay: UsersPayment;
 }

@@ -1,5 +1,13 @@
+import { GaleryKitchen } from "#/galery_kitchen/entites/galery.entities";
+import { KitchenPayment } from "#/kitchen-payment/entity/kitchen-payment.entity";
+import { RegularClass } from "#/regular-class/entities/regular-class.entity";
 import { Users_cyc } from "#/users/entities/user.entity";
-import { Column, JoinColumn, CreateDateColumn, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+export enum statusKitchen{
+    AVAILABLE = 'available',
+    UNAVAILABLE = 'unavailable'
+
+}
 
 export enum statusUser{
     AVAILABLE = 'available',
@@ -11,30 +19,30 @@ export class KitchenStudio{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @OneToOne(() => Users_cyc)
-    @JoinColumn()
-    users: Users_cyc;
-
-    @Column({type: "varchar"})
+    @Column({type:"text", nullable: true})
     legality: string;
 
-    @Column({type: "int"})
-    numberOfChef: number;
+    @Column({type:"int", nullable:true})
+    numberOfChefs: number;
 
-    @Column({type: "int"})
+    @Column({type:"int", nullable:true})
     chefOnWork: number;
 
-    @Column({type: "int"})
+    @Column({type:"int", nullable:true})
     chefOnAvailable: number;
 
-    @Column({type: "varchar"})
+    @Column({type:'text', nullable:true})
     logos: string;
 
-    @Column({type: "varchar"})
+    @Column({type:"text", nullable:true})
     description: string;
 
-    @Column({type: "enum", enum: statusUser})
-    status: statusUser;
+    @Column({
+        type: "enum",
+        enum: statusKitchen,
+        default: statusKitchen.UNAVAILABLE
+    })
+    status: statusKitchen
 
     @CreateDateColumn({
         type: "timestamp with time zone",
@@ -46,13 +54,25 @@ export class KitchenStudio{
         type:"timestamp with time zone",
         nullable: false
     })
-    updatedAt: Date
+    updatedAt: Date;
 
     @DeleteDateColumn({
-        type:"timestamp with time zone",
-        nullable: true
+        type: "timestamp with time zone",
+        nullable:true
     })
-    deletedAt: Date
+    deletedAt:Date;
 
+    @OneToMany(() => GaleryKitchen, (gallery) => gallery.kitchen)
+    gallery:GaleryKitchen;
+    
+    @OneToMany(() => RegularClass, (regular) => regular.kitchen)
+    regular:RegularClass;
+    
+    @OneToMany(() =>KitchenPayment, (kitchenPay) => kitchenPay.kitchen)
+    kitchenPay: KitchenPayment;
 
+    @OneToOne(()=> Users_cyc,
+    {cascade: true})
+    @JoinColumn()
+    users: Users_cyc
 }
