@@ -1,6 +1,11 @@
 import { Users_cyc } from "#/users/entities/user.entity";
 import { Column, JoinColumn, CreateDateColumn, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
+export enum statusUser{
+    AVAILABLE = 'available',
+    UNAVAILABLE = 'unavailable'
+}
+
 @Entity()
 export class KitchenStudio{
     @PrimaryGeneratedColumn('uuid')
@@ -27,6 +32,9 @@ export class KitchenStudio{
 
     @Column({type: "varchar"})
     description: string;
+
+    @Column({type: "enum", enum: statusUser})
+    status: statusUser;
 
     @CreateDateColumn({
         type: "timestamp with time zone",
