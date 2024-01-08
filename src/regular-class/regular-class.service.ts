@@ -22,7 +22,7 @@ export class RegularClassService {
 
     getAll(){
         return this.regClassRepo.findAndCount({
-            relations:{theme:true, kitchen:{users:true}}
+            relations:{theme:true, kitchen:{users:true}, material:true}
         })
     }
 
@@ -67,13 +67,13 @@ export class RegularClassService {
 
     async createPengajuan(createRegClassDto: CreateRegClassDto){
         try{
-            // const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
+            const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
             const kitchenId = await this.kitchenStudioService.getKitchenStudioById(createRegClassDto.kitchen_id)
             const biaya = (createRegClassDto.price * 10)/ 100
             const price = createRegClassDto.price + biaya
             const regular = new RegularClass
             regular.kitchen = kitchenId
-            // regular.theme = themeId
+            regular.theme = themeId
             regular.courseName = createRegClassDto.courseName
             regular.startDate = createRegClassDto.startDate
             regular.endDate = createRegClassDto.endDate

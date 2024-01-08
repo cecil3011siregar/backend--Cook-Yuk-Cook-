@@ -4,7 +4,7 @@
 // import { UpdateUsersDto } from './dto/update-user.dto';
 // import { get } from 'http';
 import { ApproveRejectDto } from './dto/approve-reject.dto';
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUsersDto } from './dto/update-user.dto';
@@ -15,6 +15,8 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storagePayment } from '#/users-payment/helpers/upload-payment-image';
 import { storageProfileUsers } from './helpers/upload-profile';
+import { join } from 'path';
+import { of } from 'rxjs';
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
@@ -72,8 +74,8 @@ export class UsersController {
       message: 'Success',
     };
   }
-
-    @Post('upload')
+  
+  @Post('upload')
   @UseInterceptors(FileInterceptor('file', storageProfileUsers))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     if (typeof file?.filename == 'undefined') {
@@ -84,6 +86,14 @@ export class UsersController {
     } else {
       return { fileName: file?.filename };
     }
+  }
+  @Get('upload-profile/:image/:type')
+  getImage(
+    @Param('type') type:string,
+    @Param('image') imagePath:string,
+    @Res() res:any,
+  ){
+    return of(res.sendFile(join(process.cwd(), `upload/profile-users/${imagePath}`)));
   }
   @Put('reject/:id')
   async reject(

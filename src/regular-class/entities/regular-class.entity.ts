@@ -63,7 +63,7 @@ export class RegularClass {
   @Column({
     type: 'enum',
     enum: statusRegular,
-    default: statusRegular.APPROVE,
+    default: statusRegular.PENDING,
   })
   status: statusRegular;
 

@@ -9,6 +9,11 @@ export enum statusKitchen{
 
 }
 
+export enum statusUser{
+    AVAILABLE = 'available',
+    UNAVAILABLE = 'unavailable'
+}
+
 @Entity()
 export class KitchenStudio{
     @PrimaryGeneratedColumn('uuid')
