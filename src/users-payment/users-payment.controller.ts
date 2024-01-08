@@ -26,6 +26,15 @@ import { AuthGuard } from '@nestjs/passport';
 export class UsersPaymentController {
   constructor(private usersPaymentService: UsersPaymentService) {}
   
+
+  @Get('/pending/:id')
+  async getRegClassByTrainee(@Param('id', ParseUUIDPipe) id: string){
+    return {
+      data: await this.usersPaymentService.findRegClassTraineePending(id),
+      statusCode: HttpStatus.OK,
+      message: "success"
+    }
+  }
  
   @Get('/payment-pengajuan')
   async getPengajuanKelas(){
@@ -36,7 +45,7 @@ export class UsersPaymentController {
       message:"Success"
     }
   }
-  @Get('type')
+  @Get('/type')
   async getUsersPaymentByType(@Query('inputType') inputType: string){
     const data = await this.usersPaymentService.findByType(inputType)
     return{

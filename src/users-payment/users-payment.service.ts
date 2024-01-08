@@ -32,6 +32,18 @@ export class UsersPaymentService {
     private usersService: UsersService,
   ) {}
 
+  async findRegClassTraineePending(id: string){
+    try {
+      const idTrainee = await this.usersService.getUsersById(id)
+      return await this.usersPayRepo.find({
+        where: {users:{id:id}, status: statusPay.PENDING},
+        relations:{users:true, regular:true}
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
   findAll() {
     return this.usersPayRepo.findAndCount();
   }
@@ -235,6 +247,7 @@ export class UsersPaymentService {
       console.log(coba);
       return this.usersPayRepo.findOneOrFail({
         where: { id: coba.identifiers[0].id },
+        relations: {regular: true}
       });
     } catch (e) {
       throw e;

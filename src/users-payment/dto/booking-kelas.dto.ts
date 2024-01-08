@@ -6,6 +6,7 @@ export class BookingKelasDto{
     // @IsNotEmpty()
     // bank: string;
 
+
     @IsNotEmpty()
     users: string;
 
