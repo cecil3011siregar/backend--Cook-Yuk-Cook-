@@ -5,6 +5,7 @@ import { CreateRegClassDto } from './dto/create-regular-class.dto';
 import { UpdateRegClassDto } from './dto/update-regular-class.dto';
 import { ApproveRejectRegularDto } from './dto/approve-reject-regular.dto';
 import { JumlahBenchesDto } from './dto/update-jumlah-benches.dto';
+import { HttpStatusCode } from 'axios';
 
 @Controller('regular-class')
 export class RegularClassController {
@@ -30,6 +31,16 @@ export class RegularClassController {
             count,
             StatusCode: HttpStatus.OK,
             message:"Success"
+        }
+    }
+
+    @Get("/find/:id")
+    async getClassByTrainee(@Param('id') id: string){
+        const data = await this.regularClassService.findClassbyTrainee(id);
+        return {
+            data,
+            statusCode: HttpStatusCode.Ok,
+            message: "success"
         }
     }
 

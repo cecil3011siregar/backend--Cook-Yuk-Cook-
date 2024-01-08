@@ -106,5 +106,8 @@ export class Users_cyc{
     @OneToMany(() => Training_theme, (theme) => theme.kitchen)
     theme:Training_theme
 
+    @OneToMany(() => RegularClass, (regular) => regular.users)
+    regular: RegularClass;
+
 
 }

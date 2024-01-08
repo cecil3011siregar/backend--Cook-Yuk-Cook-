@@ -100,7 +100,7 @@ export class RegularClass {
   @OneToMany(() => Material, (material) => material.regular)
   material:Material;
 
-  // @ManyToOne(() => Users_cyc, (users) => users.regular)
-  // users: Users_cyc;
+  @ManyToOne(() => Users_cyc, (users) => users.regular)
+  users: Users_cyc;
 
 }

@@ -25,6 +25,26 @@ export class RegularClassService {
             relations:{theme:true, kitchen:{users:true}}
         })
     }
+
+    async findClassbyTrainee(id: string){
+        try {
+            return await this.regClassRepo.find({
+                where: {users: {id:id}}, relations:{users: true}
+            })
+        } catch (e) {
+            if (e instanceof EntityNotFoundError){
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: "Data Not Found"
+                    },
+                    HttpStatus.NOT_FOUND
+                )
+            } else {
+                throw e
+            }
+        }
+    }
     
     async findById(id: string){
         try{
