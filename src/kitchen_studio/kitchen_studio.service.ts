@@ -39,7 +39,8 @@ export class KitchenStudioService {
         async findKitchenByUsers(id:string){
             try {
                 return await this.kitchenRepo.findOneOrFail({
-                    where:{users:{id:id}}
+                    where:{users:{id:id}},
+                    relations:{users:true}
                 })
             } catch (e) {
                 if(e instanceof EntityNotFoundError){
@@ -62,6 +63,7 @@ export class KitchenStudioService {
             try {
                 return await this.kitchenRepo.find({
                     where:{users:{status:statusUsers}},
+                    order:{createdAt:'ASC'},
                     relations:{users:{level:true}}
                 })
             } catch (e) {
