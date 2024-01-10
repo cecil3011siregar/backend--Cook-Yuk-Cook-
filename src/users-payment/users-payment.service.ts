@@ -50,7 +50,7 @@ export class UsersPaymentService {
       const idTrainee = await this.usersService.getUsersById(id);
       return await this.usersPayRepo.find({
         where: { users: { id: id }, status: statusPay.APPROVE },
-        relations: { regular: true, users: true },
+        relations: { regular: {theme: true}, users: true },
       });
     } catch (e) {
       throw e;
