@@ -102,6 +102,7 @@ export class UsersPayment{
     // bank: Bank;
     @ManyToOne(() => RegularClass, (regular) => regular.usersPay)
     regular: RegularClass;
+
     @ManyToOne(() => PrivateClass, (privclass) => privclass.usersPay)
     privclass: PrivateClass;
 

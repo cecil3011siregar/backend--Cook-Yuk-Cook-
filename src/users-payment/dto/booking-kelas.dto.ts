@@ -1,5 +1,5 @@
 import { IsNotEmpty } from "class-validator";
-import { type } from "../entities/users-payment.entity";
+import { statusPay, type } from "../entities/users-payment.entity";
 
 export class BookingKelasDto{
 
@@ -13,14 +13,18 @@ export class BookingKelasDto{
     @IsNotEmpty()
     idclass: string;
 
+    @IsNotEmpty()
+    typePay: type;
+    
     // @IsNotEmpty()
     // date: Date;
+    
+    // @IsNotEmpty()
+    // status: statusPay;
 
-    price: number;
+    // price: number;
 
     // @IsNotEmpty()
     // totalPayment: number;
     
-    @IsNotEmpty()
-    typePay: type;
 }

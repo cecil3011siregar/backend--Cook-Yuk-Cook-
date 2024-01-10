@@ -19,6 +19,7 @@ import { Type } from 'class-transformer';
 import { timeStamp } from 'console';
 import { from, timestamp } from 'rxjs';
 import { RegularClass } from '#/regular-class/entities/regular-class.entity';
+import { BayarDto } from './dto/bayar-regular.dto';
 @Injectable()
 export class UsersPaymentService {
   constructor(
@@ -32,15 +33,27 @@ export class UsersPaymentService {
     private usersService: UsersService,
   ) {}
 
-  async findRegClassTraineePending(id: string){
+  async findRegClassTraineePending(id: string) {
     try {
-      const idTrainee = await this.usersService.getUsersById(id)
+      const idTrainee = await this.usersService.getUsersById(id);
       return await this.usersPayRepo.find({
-        where: {users:{id:id}, status: statusPay.PENDING},
-        relations:{users:true, regular:true}
-      })
+        where: { users: { id: id }, status: statusPay.PENDING },
+        relations: { users: true, regular: true },
+      });
     } catch (e) {
-      throw e
+      throw e;
+    }
+  }
+
+  async findRegClassTraineeApprove(id: string) {
+    try {
+      const idTrainee = await this.usersService.getUsersById(id);
+      return await this.usersPayRepo.find({
+        where: { users: { id: id }, status: statusPay.APPROVE },
+        relations: { regular: true, users: true },
+      });
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -54,7 +67,7 @@ export class UsersPaymentService {
       const cariJam = jam.date.toLocaleTimeString();
       console.log(cariJam, 'jam');
       return await this.usersPayRepo.findOneOrFail({
-        where: { id },
+        where: { id }, relations: {regular:true}
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
@@ -153,9 +166,9 @@ export class UsersPaymentService {
       const users2 = users.map((items) => items.id);
       console.log(users2, 'Halo');
       const result = await this.usersPayRepo.find({
-        where:{users:{id: In(users2)}, status:statusPay.APPROVE},
-        relations:{users: true, regular:true, privclass:true}
-      })
+        where: { users: { id: In(users2) }, status: statusPay.APPROVE },
+        relations: { users: true, regular: true, privclass: true },
+      });
       return result;
     } catch (e) {
       throw e;
@@ -174,7 +187,7 @@ export class UsersPaymentService {
   //     throw e
   //   }
   // }
-  async findAllUsersPaymentTraineeKitchen2(id: string){
+  async findAllUsersPaymentTraineeKitchen2(id: string) {
     try {
       const users = await this.usersService.findUserByRole(id);
       console.log(users, 'oi');
@@ -201,18 +214,36 @@ export class UsersPaymentService {
         idKitchen,
       );
 
-      const data1 = cari.map((regular) =>regular?.id ).filter((id) => id !== undefined);
+      const data1 = cari
+        .map((regular) => regular?.id)
+        .filter((id) => id !== undefined);
       console.log(data1);
-      const data2 = cari2.map((priv) => (priv?.id)).filter((id) => id !== undefined);
+      const data2 = cari2
+        .map((priv) => priv?.id)
+        .filter((id) => id !== undefined);
       console.log(data2);
-      const result = await this.usersPayRepo.createQueryBuilder('users_payment')
-      .leftJoinAndSelect('users_payment.regular', 'regular_class', 'users_payment.regular_id = regular_class.id ')
-      .leftJoinAndSelect('users_payment.privclass', 'private_class', 'users_payment.privclass_id = private_class.id')
-      .where('(users_payment.regular_id IN (:...regIds) OR users_payment.privclass_id IN (:...privIds))', {regIds: data1, privIds:data2})
-      // .orWhere('users_payment.privclass_id IN (:...privIds)', {privIds:data2})
-      .andWhere('users_payment.status = :status', {status:'approve'})
-      .andWhere('users_payment.type IN (:...types)', {types:[type.REGCLASS, type.PRIVCLASS]})
-      .getMany()
+      const result = await this.usersPayRepo
+        .createQueryBuilder('users_payment')
+        .leftJoinAndSelect(
+          'users_payment.regular',
+          'regular_class',
+          'users_payment.regular_id = regular_class.id ',
+        )
+        .leftJoinAndSelect(
+          'users_payment.privclass',
+          'private_class',
+          'users_payment.privclass_id = private_class.id',
+        )
+        .where(
+          '(users_payment.regular_id IN (:...regIds) OR users_payment.privclass_id IN (:...privIds))',
+          { regIds: data1, privIds: data2 },
+        )
+        // .orWhere('users_payment.privclass_id IN (:...privIds)', {privIds:data2})
+        .andWhere('users_payment.status = :status', { status: 'approve' })
+        .andWhere('users_payment.type IN (:...types)', {
+          types: [type.REGCLASS, type.PRIVCLASS],
+        })
+        .getMany();
       return result;
     } catch (e) {
       throw e;
@@ -247,7 +278,7 @@ export class UsersPaymentService {
       console.log(coba);
       return this.usersPayRepo.findOneOrFail({
         where: { id: coba.identifiers[0].id },
-        relations: {regular: true}
+        relations: { regular: true },
       });
     } catch (e) {
       throw e;
@@ -295,6 +326,41 @@ export class UsersPaymentService {
     }
   }
 
+  async updateStatusToApprove(id: string) {
+    try {
+      await this.findById(id);
+
+      const status: any = 'approve';
+      const userPayment = new UsersPayment();
+      userPayment.status = status;
+
+      await this.usersPayRepo.update(id, userPayment);
+
+      return await this.usersPayRepo.findOneOrFail({
+        where: { id },
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async findUserPayByRegular(id: string) {
+    try {
+      const trainee = await this.usersPayRepo.find({
+        where: { regular: { id }, status: statusPay.PENDING},
+        relations: { regular: true, users: true },
+        order: { createdAt: 'ASC' },
+      });
+      return trainee[trainee.length - 1].id;
+      //  await this.usersPayRepo.find({
+      //   where: { users: { id: id }, status: statusPay.PENDING },
+      //   relations: { users: true, regular: true },
+      // });
+    } catch (e) {
+      throw e;
+    }
+  }
+
   //booking kelas private
   async bookingPrivateTrainee(bookingKelasDto: BookingKelasDto) {
     try {
@@ -334,12 +400,12 @@ export class UsersPaymentService {
     }
   }
 
-  async transaksiAdminToKitchen(id:string){
-    try{
+  async transaksiAdminToKitchen(id: string) {
+    try {
       const cari = await this.regularService.findRegClassByUsersKitchen(id);
       const cari2 = await this.privateService.findPrivClassByUsersKitchen(id);
-    }catch(e){
-      throw e
+    } catch (e) {
+      throw e;
     }
   }
 }

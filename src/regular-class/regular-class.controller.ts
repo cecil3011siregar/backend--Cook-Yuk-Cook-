@@ -26,23 +26,22 @@ export class RegularClassController {
     async getAllRegular(){
         const [data, count] = await this.regularClassService.getAll()
         return {
-            data,
-            
+            data,       
             count,
             StatusCode: HttpStatus.OK,
             message:"Success"
         }
     }
 
-    @Get("/find/:id")
-    async getClassByTrainee(@Param('id') id: string){
-        const data = await this.regularClassService.findClassbyTrainee(id);
-        return {
-            data,
-            statusCode: HttpStatusCode.Ok,
-            message: "success"
-        }
-    }
+    // @Get("/findTrainee/:id")
+    // async getClassByTrainee(@Param('id') id: string){
+    //     const data = await this.regularClassService.findClassbyTrainee(id);
+    //     return {
+    //         data,
+    //         statusCode: HttpStatusCode.Ok,
+    //         message: "success"
+    //     }
+    // }
 
     @Get('/:id')
     async getRegularById(@Param('id', ParseUUIDPipe)id: string){
