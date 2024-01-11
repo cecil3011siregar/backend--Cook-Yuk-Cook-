@@ -138,6 +138,28 @@ export class UsersPaymentService {
     }
   }
 
+  async findPengajuanApprove(id: string){
+    try{
+      const idKitchen = await this.usersService.getUsersById(id)
+      return await this.usersPayRepo.find({
+        where:{users:{id:idKitchen.id}, type: type.CLASSPROP, status: statusPay.APPROVE},
+        relations:{regular:{theme:true}, users:true, }
+      })
+    }catch(e){
+      throw e
+    }
+  }
+  async findPengajuanPending(id: string){
+    try{
+      const idKitchen = await this.usersService.getUsersById(id)
+      return await this.usersPayRepo.find({
+        where:{users:{id:idKitchen.id}, type: type.CLASSPROP, status: statusPay.PENDING},
+        relations:{regular:{theme:true}, users:true, }
+      })
+    }catch(e){
+      throw e
+    }
+  }
   //list pembayaran trainee by trainee
   async findUsersPaymentByTrainee(id: string) {
     try {
@@ -315,6 +337,7 @@ export class UsersPaymentService {
       booking.totalPayment = booking.price;
       booking.date = date;
       booking.type = bookingKelasDto.typePay;
+      booking.payment_method = "BCA VA";
 
       const bookingkelas = await this.usersPayRepo.insert(booking);
       const result = await this.usersPayRepo.findOneOrFail({

@@ -45,7 +45,7 @@ export class Training_theme {
     type: 'text',
   })
   chef_name: string;
-  @Column()
+  @Column( { nullable: true})
   price: number;
 
   @CreateDateColumn({

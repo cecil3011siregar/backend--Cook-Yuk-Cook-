@@ -9,15 +9,18 @@ import { UpdateRegClassDto } from './dto/update-regular-class.dto';
 import { ApproveRejectRegularDto } from './dto/approve-reject-regular.dto';
 import { JumlahBenchesDto } from './dto/update-jumlah-benches.dto';
 import { UsersService } from '#/users/users.service';
+import { UsersPayment, statusPay, type } from '#/users-payment/entities/users-payment.entity';
 
 @Injectable()
 export class RegularClassService {
     constructor(
         @InjectRepository(RegularClass)
         private regClassRepo: Repository<RegularClass>,
+        @InjectRepository(UsersPayment)
+        private usersPay: Repository<UsersPayment>,
         private trainingThemeService: TrainingThemeService,
         private kitchenStudioService: KitchenStudioService,
-        private usersService: UsersService
+        private usersService: UsersService,
     ){}
 
     getAll(){
@@ -50,7 +53,7 @@ export class RegularClassService {
         try{
             return await this.regClassRepo.findOneOrFail({
                 where:{id},
-                relations:{kitchen:{users:true}, theme:true}
+                relations:{kitchen:{users:true}, theme:true, usersPay:true}
             })
         }catch(e){
             if(e instanceof EntityNotFoundError){
@@ -69,8 +72,11 @@ export class RegularClassService {
         try{
             const themeId = await this.trainingThemeService.findOneById(createRegClassDto.theme_id)
             const kitchenId = await this.kitchenStudioService.getKitchenStudioById(createRegClassDto.kitchen_id)
+            const usersId = await this.usersService.getUsersById(kitchenId.users.id)
             const biaya = (createRegClassDto.price * 10)/ 100
             const price = createRegClassDto.price + biaya
+            const date = new Date()
+
             const regular = new RegularClass
             regular.kitchen = kitchenId
             regular.theme = themeId
@@ -81,12 +87,25 @@ export class RegularClassService {
             regular.adminFee = biaya
             regular.price = price
             regular.description = createRegClassDto.description
-
             const buatPengajuan = await this.regClassRepo.insert(regular)
+
+            const pengajuan = new UsersPayment()
+            pengajuan.users = usersId;
+            pengajuan.date = date;
+            pengajuan.price = regular.adminFee;
+            pengajuan.totalPayment = pengajuan.price
+            pengajuan.type = type.CLASSPROP;
+            pengajuan.payment_method= "BCA VA";
+            pengajuan.regular = buatPengajuan.identifiers[0].id
+            const bayar = await this.usersPay.insert(pengajuan)
+            const result2 = await this.usersPay.findOneOrFail({
+                where:{id:bayar.identifiers[0].id}
+            })
+            console.log(bayar , "ini data bayar")
             const result = await this.regClassRepo.findOneOrFail({
                 where:{id:buatPengajuan.identifiers[0].id}
             })
-            return result;
+            return {result, result2};
         }catch(e){
             throw e
         }
@@ -126,14 +145,24 @@ export class RegularClassService {
 
     async approveRegular(id: string){
         try{
-            await this.findById(id)
+            const cariId = await this.findById(id)
+            console.log(cariId, "INI DATA")
+            const idUsersPay = await this.usersPay.findOneOrFail({where:{id:cariId.usersPay.id, type: type.CLASSPROP}})
+            console.log(idUsersPay.id, "ini diaaa")
             const approve: any = "approve"
             const regular = new RegularClass
             regular.status = approve
+            const pengajuan = new UsersPayment
+            pengajuan.status = approve
             await this.regClassRepo.update(id, regular)
-            return await this.regClassRepo.findOneOrFail({
+            await this.usersPay.update(idUsersPay.id, pengajuan)
+            const result1 = await this.regClassRepo.findOneOrFail({
                 where:{id}
             })
+            const result2 = await this.usersPay.findOneOrFail({
+                where:{id: cariId.usersPay.id}
+            })
+            return {result1, result2}
         }catch(e){
             throw e
         } 

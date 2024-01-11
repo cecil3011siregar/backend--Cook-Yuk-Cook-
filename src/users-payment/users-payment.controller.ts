@@ -46,6 +46,22 @@ export class UsersPaymentController {
       message: 'success',
     };
   }
+  @Get('/approve-pengajuan/:id')
+  async getPengajuanApprove(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.usersPaymentService.findPengajuanApprove(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+  @Get('/pending-pengajuan/:id')
+  async getPengajuanPending(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.usersPaymentService.findPengajuanPending(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
 
   @Get('/regular/:id')
   async getUserPayByRegular(@Param('id', ParseUUIDPipe)id: string){

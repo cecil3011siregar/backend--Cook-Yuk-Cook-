@@ -1,3 +1,4 @@
+import { type } from "#/users-payment/entities/users-payment.entity";
 import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateRegClassDto{
@@ -24,4 +25,6 @@ export class CreateRegClassDto{
 
     @IsNotEmpty()
     description: string;
+    
+    type: type;
 }

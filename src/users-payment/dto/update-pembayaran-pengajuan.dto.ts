@@ -20,7 +20,7 @@ export class PembayaranPengajuanDto{
     // @IsNotEmpty()
     // total_payment: number;
 
-    @IsNotEmpty()
+    // @IsNotEmpty()
     typePay: type
 
     // @IsNotEmpty()

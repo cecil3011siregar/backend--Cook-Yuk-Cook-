@@ -22,7 +22,7 @@ export class TrainingThemeService {
            const training_theme = new Training_theme
            training_theme.name = createTraining_themeDto.name
            training_theme.chef_name = createTraining_themeDto.chef_name
-           training_theme.price = createTraining_themeDto.price
+        //    training_theme.price = createTraining_themeDto.price
            training_theme.kitchen = kitchen
 
            const insertTraining_theme = await this.training_themeRepository.insert(training_theme)
@@ -92,7 +92,7 @@ export class TrainingThemeService {
             const training_themeEntity = new Training_theme
             training_themeEntity.name = updateTraining_themeDto.name
             training_themeEntity.chef_name = updateTraining_themeDto.chef_name
-            training_themeEntity.price = updateTraining_themeDto.price
+            // training_themeEntity.price = updateTraining_themeDto.price
 
             await this.training_themeRepository.update(id, training_themeEntity)
 

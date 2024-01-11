@@ -10,7 +10,7 @@ import { PrivateClassModule } from '#/private-class/private-class.module';
 import { RegularClass } from '#/regular-class/entities/regular-class.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([UsersPayment, RegularClass]), BankModule,RegularClassModule, UsersModule, PrivateClassModule],
+  imports:[TypeOrmModule.forFeature([UsersPayment, RegularClass]), BankModule, RegularClassModule, UsersModule, PrivateClassModule],
   controllers: [UsersPaymentController],
   providers: [UsersPaymentService],
   exports:[UsersPaymentService]

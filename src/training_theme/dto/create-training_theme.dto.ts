@@ -7,9 +7,9 @@ export class CreateTraining_themeDto {
     @IsNotEmpty()
     chef_name: string;
 
-    @IsNotEmpty()
-    @IsInt()
-    price: number;
+    // @IsNotEmpty()
+    // @IsInt()
+    // price: number;
 
     @IsNotEmpty()
     kitchen:string;

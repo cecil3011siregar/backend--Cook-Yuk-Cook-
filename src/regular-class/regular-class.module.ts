@@ -7,9 +7,11 @@ import { RegularClass } from './entities/regular-class.entity';
 import { KitchenStudioModule } from '#/kitchen_studio/kitchen_studio.module';
 import { TrainingThemeModule } from '#/training_theme/training_theme.module';
 import { UsersModule } from '#/users/users.module';
+import { UsersPayment } from '#/users-payment/entities/users-payment.entity';
+import { UsersPaymentModule } from '#/users-payment/users-payment.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([RegularClass]), KitchenStudioModule, TrainingThemeModule, UsersModule],
+  imports:[TypeOrmModule.forFeature([RegularClass]), TypeOrmModule.forFeature([UsersPayment]), KitchenStudioModule, TrainingThemeModule, UsersModule],
   controllers: [RegularClassController],
   providers: [RegularClassService],
   exports:[RegularClassService]
