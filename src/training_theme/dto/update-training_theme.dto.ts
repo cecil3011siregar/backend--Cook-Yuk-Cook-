@@ -8,8 +8,8 @@ export class UpdateTraining_themeDto {
   @IsNotEmpty()
   chef_name: string;
 
-  @IsNotEmpty()
-  @IsInt()
-  price: number;
+  // @IsNotEmpty()
+  // @IsInt()
+  // price: number;
 
 }
