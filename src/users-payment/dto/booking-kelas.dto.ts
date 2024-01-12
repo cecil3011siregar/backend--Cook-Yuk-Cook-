@@ -13,7 +13,7 @@ export class BookingKelasDto{
     @IsNotEmpty()
     idclass: string;
 
-    
+    @IsNotEmpty()
     typePay: type;
     
     // @IsNotEmpty()

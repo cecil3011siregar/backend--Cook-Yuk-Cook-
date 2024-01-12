@@ -51,6 +51,7 @@ export class UsersPaymentService {
       return await this.usersPayRepo.find({
         where: { users: { id: id }, status: statusPay.APPROVE },
         relations: { regular: {theme: true}, users: true },
+        order:{updatedAt:"DESC"}
       });
     } catch (e) {
       throw e;
@@ -127,10 +128,10 @@ export class UsersPaymentService {
   }
 
   //list pengajuan kelas (pending)
-  async findUsersPaymentPengajuan() {
+  async findUsersPaymentPengajuan(id: string) {
     try {
-      const data = await this.usersPayRepo.find({
-        where: { type: type.CLASSPROP, status: statusPay.PENDING },
+      const data = await this.usersPayRepo.findOneOrFail({
+        where: {regular:{id:id},  type: type.CLASSPROP },
       });
       return data;
     } catch (e) {
@@ -143,7 +144,8 @@ export class UsersPaymentService {
       const idKitchen = await this.usersService.getUsersById(id)
       return await this.usersPayRepo.find({
         where:{users:{id:idKitchen.id}, type: type.CLASSPROP, status: statusPay.APPROVE},
-        relations:{regular:{theme:true}, users:true, }
+        relations:{regular:{theme:true}, users:true, },
+        order:{updatedAt:'DESC'}
       })
     }catch(e){
       throw e
