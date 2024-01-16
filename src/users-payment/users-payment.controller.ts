@@ -83,9 +83,9 @@ export class UsersPaymentController {
     };
   }
 
-  @Get('/payment-pengajuan')
-  async getPengajuanKelas() {
-    const data = await this.usersPaymentService.findUsersPaymentPengajuan();
+  @Get('/payment-pengajuan/:id')
+  async getPengajuanKelas(@Param('id', ParseUUIDPipe)id: string) {
+    const data = await this.usersPaymentService.findUsersPaymentPengajuan(id);
     return {
       data,
       statusCode: HttpStatus.OK,
